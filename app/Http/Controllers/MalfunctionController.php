@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Technician;
+use App\Models\Equipment;
+use App\Models\Malfunction;
 use Illuminate\Http\Request;
 
-class TecnicoController extends Controller
+class MalfunctionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +14,8 @@ class TecnicoController extends Controller
     public function index()
     {
         //
+        $malfunctions = Malfunction::with('equipment');
+        return view('malfunctions.index', compact('malfunctions'));
     }
 
     /**
@@ -34,7 +37,7 @@ class TecnicoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Technician $tecnico)
+    public function show(Malfunction $avaria)
     {
         //
     }
@@ -42,7 +45,7 @@ class TecnicoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Technician $tecnico)
+    public function edit(Malfunction $avaria)
     {
         //
     }
@@ -50,7 +53,7 @@ class TecnicoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Technician $tecnico)
+    public function update(Request $request, Malfunction $avaria)
     {
         //
     }
@@ -58,7 +61,7 @@ class TecnicoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Technician $tecnico)
+    public function destroy(Malfunction $avaria)
     {
         //
     }

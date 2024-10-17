@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Equipment;
 use App\Models\Malfunction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

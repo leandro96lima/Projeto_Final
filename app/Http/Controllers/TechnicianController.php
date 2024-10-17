@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Malfunction;
+use App\Models\Technician;
 use Illuminate\Http\Request;
 
-class AvariaController extends Controller
+class TechnicianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('technicians.index');
     }
 
     /**
@@ -34,7 +34,7 @@ class AvariaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Malfunction $avaria)
+    public function show(Technician $tecnico)
     {
         //
     }
@@ -42,7 +42,7 @@ class AvariaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Malfunction $avaria)
+    public function edit(Technician $tecnico)
     {
         //
     }
@@ -50,7 +50,7 @@ class AvariaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Malfunction $avaria)
+    public function update(Request $request, Technician $tecnico)
     {
         //
     }
@@ -58,7 +58,7 @@ class AvariaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Malfunction $avaria)
+    public function destroy(Technician $tecnico)
     {
         //
     }

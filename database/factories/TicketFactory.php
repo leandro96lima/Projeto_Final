@@ -18,7 +18,7 @@ class TicketFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
+            'description' => implode(' ', $this->faker->words(20)), // Generates a description with 30 words
             'open_date' => $this->faker->dateTime(),
             'close_date' => null,
             'wait_time' => $this->faker->numberBetween(1, 24),
@@ -27,4 +27,5 @@ class TicketFactory extends Factory
             'malfunction_id' => Malfunction::factory(),
         ];
     }
+
 }

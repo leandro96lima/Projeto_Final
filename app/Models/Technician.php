@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Technician extends Model
 {
+
+    use HasFactory;
     protected $fillable = ['specialty', 'user_id'];
 
     public function user()
