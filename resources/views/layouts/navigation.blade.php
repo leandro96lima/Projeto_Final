@@ -21,6 +21,12 @@
                     <x-nav-link :href="route('malfunctions.index')">
                         {{ __('Avarias') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('tickets.index')">
+                        {{ __('Tickets') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('technicians.index')">
+                        {{ __('Técnicos') }}
+                    </x-nav-link>
                 </div>
             </div>
 

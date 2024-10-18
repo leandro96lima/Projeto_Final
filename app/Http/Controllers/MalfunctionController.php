@@ -13,10 +13,10 @@ class MalfunctionController extends Controller
      */
     public function index()
     {
-        //
-        $malfunctions = Malfunction::with('equipment');
+        $malfunctions = Malfunction::with('equipment')->get(); // Executa a consulta e obtém os dados
         return view('malfunctions.index', compact('malfunctions'));
     }
+
 
     /**
      * Show the form for creating a new resource.

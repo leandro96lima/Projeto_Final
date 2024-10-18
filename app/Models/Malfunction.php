@@ -12,7 +12,7 @@ class Malfunction extends Model
 
     protected $fillable = ['status', 'cost', 'resolution_time', 'diagnosis', 'solution', 'equipment_id'];
 
-    public function equipament(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function equipment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Equipment::class);
     }

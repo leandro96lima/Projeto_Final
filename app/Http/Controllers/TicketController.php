@@ -12,9 +12,10 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
-        return view('tickets.index');
+        $tickets = Ticket::with(['technician.user', 'malfunction'])->get(); // Carrega as relações
+        return view('tickets.index', compact('tickets'));
     }
+
 
     /**
      * Show the form for creating a new resource.

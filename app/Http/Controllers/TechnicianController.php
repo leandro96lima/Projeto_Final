@@ -12,8 +12,11 @@ class TechnicianController extends Controller
      */
     public function index()
     {
-        return view('technicians.index');
+
+        $technicians = Technician::with('user')->get();
+        return view('technicians.index', compact('technicians'));
     }
+
 
     /**
      * Show the form for creating a new resource.
