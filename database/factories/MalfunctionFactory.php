@@ -22,6 +22,7 @@ class MalfunctionFactory extends Factory
             'diagnosis' => $this->faker->sentence(),
             'solution' => $this->faker->sentence(),
             'equipment_id' => Equipment::factory(),
+
         ];
     }
 

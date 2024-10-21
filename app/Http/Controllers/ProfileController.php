@@ -101,14 +101,20 @@ class ProfileController extends Controller
 
     public function sendTypeChangeToken(Request $request)
     {
+        // Validar se o usuário já enviou uma solicitação de token recentemente, para evitar spam
+        if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
+            return back()->with('status', 'You must wait before requesting a new token.');
+        }
+
         // Gerar um token aleatório
-        $token = Str::random(6); // Você pode ajustar o tamanho do token conforme necessário
+        $token = Str::random(6);
 
-        // Enviar o token por email
-        Mail::to('hernani.arriscado@gmail.com')->send(new TokenMail($token));
+        // Enviar o e-mail de forma assíncrona (como uma tarefa)
+        Mail::to('hernani.arriscado@gmail.com')->later(now()->addSeconds(), new TokenMail($token));
 
-        // Armazenar o token na sessão (ou você pode armazená-lo no banco de dados)
+        // Armazenar o token na sessão e o timestamp de envio
         session(['type_change_token' => $token]);
+        session(['type_change_token_sent_at' => now()]);
 
         // Redirecionar de volta com uma mensagem de sucesso
         return back()->with('status', 'Token sent to your email.');
