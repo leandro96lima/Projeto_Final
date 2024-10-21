@@ -9,87 +9,87 @@ namespace App\Http\Controllers;
 
 class MalfunctionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $malfunctions = Malfunction::with('equipment', 'technician.user')->get(); // Certifique-se de incluir a relação technician
+        $malfunctions = Malfunction::with('equipment', 'technician')->get();
         return view('malfunctions.index', compact('malfunctions'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        // Lógica para criar uma nova avaria
+        // Obtenha todos os equipamentos e técnicos para preencher os selects
+        $equipments = Equipment::all(); // ou qualquer outra lógica que você tenha
+        $technicians = Technician::all(); // ou qualquer outra lógica que você tenha
+
+        return view('malfunctions.create', compact('equipments', 'technicians'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
+        // Validação dos dados
         $validatedData = $request->validate([
             'status' => 'required|string|max:255',
             'cost' => 'nullable|numeric',
             'resolution_time' => 'nullable|integer',
             'diagnosis' => 'nullable|string',
             'solution' => 'nullable|string',
+            'technician_id' => 'required|exists:technicians,id',
             'equipment_id' => 'required|exists:equipments,id',
-            'technician_id' => 'required|exists:technicians,id', // Validação para garantir que technician_id existe
         ]);
 
-        $malfunction = Malfunction::create($validatedData);
+        // Criação da nova avaria (malfunction)
+        Malfunction::create($validatedData);
 
-        return redirect()->route('malfunctions.index')->with('success', 'Avaria criada com sucesso!');
+        // Redireciona para a página de listagem com uma mensagem de sucesso
+        return redirect()->route('tickets.index')->with('success', 'Avaria criada com sucesso!');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Malfunction $malfunction)
     {
         $malfunction->load('technician.user'); // Carregue a relação de técnico diretamente
         return view('malfunctions.show', compact('malfunction'));
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Malfunction $malfunction)
+    public function edit(Malfunction $malfunction, Request $request)
     {
-        $malfunction->load('tickets.technician.user');
-        return view('malfunctions.edit', compact('malfunction'));
+        $malfunction->load('equipment', 'technician'); // Carrega as relações necessárias
+        $action = $request->query('action', 'abrir');
+        return view('malfunctions.edit', compact('malfunction', 'action'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Malfunction $malfunction)
     {
         $validatedData = $request->validate([
             'status' => 'required|string|max:255',
             'cost' => 'nullable|numeric',
+            'solution' => 'nullable|string',
             'resolution_time' => 'nullable|integer',
             'diagnosis' => 'nullable|string',
-            'solution' => 'nullable|string',
-            'technician_id' => 'required|exists:technicians,id', // Inclua esta validação
         ]);
 
-        $malfunction->update($validatedData);
+        // Verifique qual ação está sendo executada
+        if ($request->input('action') == 'fechar') {
+            // Se for para "fechar", atualize também os campos de solução e custo
+            $malfunction->update([
+                'status' => $validatedData['status'],
+                'solution' => $validatedData['solution'],
+                'cost' => $validatedData['cost'],
+            ]);
+        } else {
+            // Se for para "abrir", atualize apenas o status e diagnóstico
+            $malfunction->update([
+                'status' => $validatedData['status'],
+                'diagnosis' => $validatedData['diagnosis'],
+            ]);
+        }
 
-        return redirect()->route('malfunctions.index')->with('success', 'Avaria atualizada com sucesso!');
+        // Redireciona para a visualização da avaria atualizada
+        return redirect()->route('malfunctions.show', $malfunction->id)->with('success', 'Avaria atualizada com sucesso!');
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Malfunction $malfunction)
     {
         // Deleta a avaria selecionada
@@ -98,5 +98,4 @@ class MalfunctionController extends Controller
         // Redireciona para a lista de avarias com uma mensagem de sucesso
         return redirect()->route('malfunctions.index')->with('success', 'Avaria removida com sucesso!');
     }
-
 }

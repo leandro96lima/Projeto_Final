@@ -3,6 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Lista de Tickets') }}
         </h2>
+        <a href="{{ route('tickets.create') }}" class="btn btn-success">Criar Novo Ticket</a>
     </x-slot>
 
     <div class="py-12">
@@ -26,11 +27,11 @@
                                 <td class="border px-4 py-2">{{ $ticket->title }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->description }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->close_date ?? 'Por concluir' }}</td>
+                                <td class="border px-4 py-2">{{ $ticket->close_date ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->urgent ? 'Sim' : 'Não' }}</td>
                                 <td class="border px-4 py-2 inline-flex items-center">
-                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.edit', $ticket->id) }}'">Abrir Avaria</button>
-                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', $ticket->id) }}'">Fechar Avaria</button>
+                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Abrir Avaria</button>
+                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Fechar Avaria</button>
                                 </td>
                             </tr>
                         @endforeach

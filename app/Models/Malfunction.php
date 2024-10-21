@@ -15,7 +15,7 @@ class Malfunction extends Model
         return $this->belongsTo(Equipment::class);
     }
 
-    public function tickets()
+    public function ticket()
     {
         return $this->hasMany(Ticket::class);
     }

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Equipment;
 use App\Models\Malfunction;
+use App\Models\Technician;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class MalfunctionFactory extends Factory
             'diagnosis' => $this->faker->sentence(),
             'solution' => $this->faker->sentence(),
             'equipment_id' => Equipment::factory(),
+            'technician_id' => Technician::factory()
         ];
     }
 

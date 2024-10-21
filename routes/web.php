@@ -22,8 +22,6 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::resource('malfunctions', MalfunctionController::class);
-
 Route::resources([
     'equipments' => EquipmentController::class,
     'malfunctions' => MalfunctionController::class,
