@@ -25,6 +25,11 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'type' => [
+                'required',
+                'string',
+                Rule::in(['User', 'Admin', 'Technician']), // Validação para o campo 'type'
+            ],
         ];
     }
 }
