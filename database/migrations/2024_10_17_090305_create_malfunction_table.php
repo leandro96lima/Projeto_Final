@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-            Schema::create('malfunctions', function (Blueprint $table) {
-                $table->id();
-                $table->string('status');
-                $table->float('cost');
-                $table->integer('resolution_time');
-                $table->string('diagnosis');
-                $table->string('solution');
-                $table->foreignId('equipment_id')->constrained('equipments')->onDelete('cascade');
-                $table->timestamps();
+        Schema::create('malfunctions', function (Blueprint $table) {
+            $table->id();
+            $table->string('status');
+            $table->float('cost')->nullable(); // Pode ser nulo
+            $table->integer('resolution_time')->nullable(); // Pode ser nulo
+            $table->string('diagnosis')->nullable(); // Pode ser nulo
+            $table->string('solution')->nullable(); // Pode ser nulo
+            $table->foreignId('equipment_id')->constrained('equipments')->onDelete('cascade');
+            $table->foreignId('technician_id')->nullable()->constrained('technicians')->onDelete('set null'); // Adiciona technician_id
+            $table->timestamps();
         });
     }
 
