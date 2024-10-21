@@ -15,6 +15,7 @@ class EquipmentController extends Controller
         // Get all equipment records
         $equipments = Equipment::all();
         return view('equipments.index', compact('equipments'));
+
     }
 
     /**
