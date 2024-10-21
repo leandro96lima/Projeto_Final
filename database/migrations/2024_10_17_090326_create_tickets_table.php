@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->dateTime('open_date');
             $table->dateTime('close_date')->nullable();
-            $table->integer('wait_time');
+            $table->integer('wait_time')->nullable();
             $table->boolean('urgent');
             $table->foreignId('technician_id')->constrained('technicians')->onDelete('cascade');
             $table->foreignId('malfunction_id')->constrained('malfunctions')->onDelete('cascade');

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Conclusão de Avaria') }}
+            {{ __('Avaria') }}
         </h2>
     </x-slot>
 
@@ -11,7 +11,9 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('malfunctions.update', $malfunction->id) }}" method="POST">
                         @csrf
-                        @method('PUT') <!-- Indica que estamos atualizando -->
+                        @method('PATCH') <!-- Indica que estamos atualizando -->
+
+                        <input type="hidden" name="action" value="{{ $action }}">
 
                         <div class="mb-4">
                             <label for="equipment" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Equipamento') }}</label>
@@ -21,6 +23,7 @@
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Status') }}</label>
                             <select id="status" name="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                                <option value="open" {{ old('status', $malfunction->status) == 'open' ? 'selected' : '' }}>{{ __('Aberto') }}</option>
                                 <option value="in_progress" {{ old('status', $malfunction->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
                                 <option value="closed" {{ old('status', $malfunction->status) == 'closed' ? 'selected' : '' }}>{{ __('Fechado') }}</option>
                             </select>
@@ -31,7 +34,7 @@
 
                         <div class="mb-4">
                             <label for="technician" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Técnico') }}</label>
-                            <input type="text" id="technician" name="technician" value="{{ old('technician', $ticket->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
+                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
                             @error('technician')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
@@ -39,12 +42,14 @@
 
                         <div class="mb-4">
                             <label for="diagnosis" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Diagnóstico') }}</label>
-                            <input type="text" id="diagnosis" name="diagnosis" value="{{ old('diagnosis', $malfunction->diagnosis ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
+                            <input type="text" id="diagnosis" name="diagnosis" value="{{ old('diagnosis', $malfunction->diagnosis ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black"
+                                   @if($action == 'fechar') disabled @endif>
                             @error('diagnosis')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
+                         @if ($action == 'fechar')
                         <div class="mb-4">
                             <label for="solution" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Solução') }}</label>
                             <input type="text" id="solution" name="solution" value="{{ old('solution', $malfunction->solution ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
@@ -60,6 +65,7 @@
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+                        @endif
 
                         <div class="mb-4">
                             <label for="resolution_time" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tempo de Resolução') }}</label>
@@ -70,8 +76,8 @@
                         </div>
 
                         <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Confirmar') }}</button>
-                            <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
+                                <button type="submit" class="btn btn-primary">{{ __('Confirmar') }}</button>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
                         </div>
                     </form>
                 </div>

@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class EquipmentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         // Get all equipment records
@@ -18,18 +15,12 @@ class EquipmentController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         // Return a view to create a new equipment
         return view('equipments.create'); // Ajuste o caminho para a sua view
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // Validate the incoming request data
@@ -47,27 +38,18 @@ class EquipmentController extends Controller
         return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Equipment $equipment)
     {
         // Return a single equipment record
         return view('equipments.show', compact('equipment')); // Ajuste o caminho para a sua view
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Equipment $equipment)
     {
         // Return a view to edit the equipment
         return view('equipments.edit', compact('equipment')); // Ajuste o caminho para a sua view
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Equipment $equipment)
     {
         // Validate the incoming request data
@@ -85,9 +67,6 @@ class EquipmentController extends Controller
         return redirect()->route('equipments.index')->with('success', 'Equipamento atualizado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Equipment $equipment)
     {
         // Delete the equipment record
