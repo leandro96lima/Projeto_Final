@@ -15,4 +15,8 @@ class Technician extends User
     {
         return $this->hasMany(Ticket::class);
     }
+    public function malfunction()
+    {
+        return $this->hasMany(Malfunction::class);
+    }
 }

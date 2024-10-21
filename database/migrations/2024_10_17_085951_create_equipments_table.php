@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('manufacturer');
             $table->string('model');
-            $table->string('room');
+            $table->string('room')->nullable();
             $table->timestamps();
         });
     }

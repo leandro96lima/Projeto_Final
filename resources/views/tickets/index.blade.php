@@ -14,10 +14,10 @@
                         <tr>
                             <th class="px-4 py-2">{{ __('Título') }}</th>
                             <th class="px-4 py-2">{{ __('Descrição') }}</th>
-                            <th class="px-4 py-2">{{ __('Técnico') }}</th>
                             <th class="px-4 py-2">{{ __('Data de Abertura') }}</th>
-                            <th class="px-4 py-2">{{ __('Data de Fechamento') }}</th>
+                            <th class="px-4 py-2">{{ __('Data de Conclusão') }}</th>
                             <th class="px-4 py-2">{{ __('Urgente') }}</th>
+                            <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -25,10 +25,13 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $ticket->title }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->description }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->technician->user->name ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->close_date ?? 'Aberto' }}</td>
+                                <td class="border px-4 py-2">{{ $ticket->close_date ?? 'Por concluir' }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->urgent ? 'Sim' : 'Não' }}</td>
+                                <td class="border px-4 py-2 inline-flex items-center">
+                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.edit', $ticket->id) }}'">Abrir Avaria</button>
+                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', $ticket->id) }}'">Fechar Avaria</button>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

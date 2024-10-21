@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Malfunction extends Model
 {
-
     use HasFactory;
 
+    protected $fillable = ['status', 'cost', 'resolution_time', 'diagnosis', 'solution', 'technician_id', 'equipment_id'];
 
-    protected $fillable = ['status', 'cost', 'resolution_time', 'diagnosis', 'solution', 'equipment_id'];
-
-    public function equipment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function equipment()
     {
         return $this->belongsTo(Equipment::class);
     }
@@ -21,4 +19,10 @@ class Malfunction extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public function technician()
+    {
+        return $this->belongsTo(Technician::class); // Certifique-se de que a relação está correta
+    }
 }
+

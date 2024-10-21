@@ -23,8 +23,8 @@ class EquipmentController extends Controller
      */
     public function create()
     {
-        // Return a view to create a new equipment (if using Blade)
-        return view('equipments.create'); // Adjust the path to your view
+        // Return a view to create a new equipment
+        return view('equipments.create'); // Ajuste o caminho para a sua view
     }
 
     /**
@@ -37,60 +37,63 @@ class EquipmentController extends Controller
             'type' => 'required|string|max:255',
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
-            'room' => 'required|string|max:255',
+            'room' => 'nullable|string|max:255',
         ]);
 
         // Create a new equipment record
-        $equipment = Equipment::create($validatedData);
+        Equipment::create($validatedData);
 
-        return response()->json($equipment, 201); // Respond with the created equipment
+        // Redirect to the index with a success message
+        return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Equipment $equipamento)
+    public function show(Equipment $equipment)
     {
         // Return a single equipment record
-        return response()->json($equipamento);
+        return view('equipments.show', compact('equipment')); // Ajuste o caminho para a sua view
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Equipment $equipamento)
+    public function edit(Equipment $equipment)
     {
-        // Return a view to edit the equipment (if using Blade)
-        return view('equipments.edit', compact('equipamento')); // Adjust the path to your view
+        // Return a view to edit the equipment
+        return view('equipments.edit', compact('equipment')); // Ajuste o caminho para a sua view
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Equipment $equipamento)
+    public function update(Request $request, Equipment $equipment)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
-            'room' => 'required|string|max:255',
+            'room' => 'nullable|string|max:255',
         ]);
 
         // Update the equipment record
-        $equipamento->update($validatedData);
+        $equipment->update($validatedData);
 
-        return response()->json($equipamento);
+        // Redirect to the index with a success message
+        return redirect()->route('equipments.index')->with('success', 'Equipamento atualizado com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Equipment $equipamento)
+    public function destroy(Equipment $equipment)
     {
         // Delete the equipment record
-        $equipamento->delete();
+        $equipment->delete();
 
-        return response()->json(null, 204); // Respond with no content
+        // Redirect to the index with a success message
+        return redirect()->route('equipments.index')->with('success', 'Equipamento eliminado com sucesso!');
     }
 }
