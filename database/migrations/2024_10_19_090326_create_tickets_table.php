@@ -19,8 +19,8 @@ return new class extends Migration
             $table->dateTime('close_date')->nullable();
             $table->integer('wait_time')->nullable();
             $table->boolean('urgent');
-            $table->foreignId('technician_id')->constrained('technicians')->onDelete('cascade');
-            $table->foreignId('malfunction_id')->constrained('malfunctions')->onDelete('cascade');
+            $table->foreignId('technician_id')->nullable()->constrained('technicians')->onDelete('cascade');
+            $table->foreignId('malfunction_id')->nullable()->constrained('malfunctions')->onDelete('cascade');
             $table->timestamps();
         });
     }

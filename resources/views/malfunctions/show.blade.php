@@ -13,6 +13,7 @@
                         <p><strong>{{ __('Equipamento') }}</strong> {{ $malfunction->equipment->type ?? 'N/A' }}</p>
                         <p><strong>{{ __('Técnico') }}</strong> {{ $malfunction->technician->user->name ?? 'N/A' }}</p>
                         <p><strong>{{ __('Status:') }}</strong> {{ $malfunction->status ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Urgente:') }}</strong> {{ $malfunction->urgent ? 'Sim' : 'Não' }}</p>
                         <p><strong>{{ __('Diagnóstico:') }}</strong> {{ $malfunction->diagnosis ?? 'N/A' }}</p>
                         <p><strong>{{ __('Solução:') }}</strong> {{ $malfunction->solution ?? 'N/A' }}</p>
                         <p><strong>{{ __('Custo:') }}</strong> {{ $malfunction->cost ?? 'N/A' }}</p>

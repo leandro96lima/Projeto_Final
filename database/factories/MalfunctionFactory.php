@@ -22,6 +22,7 @@ class MalfunctionFactory extends Factory
             'resolution_time' => $this->faker->numberBetween(1, 48),
             'diagnosis' => $this->faker->sentence(),
             'solution' => $this->faker->sentence(),
+            'urgent' => $this->faker->boolean(),
             'equipment_id' => Equipment::factory(),
             'technician_id' => Technician::factory()
         ];

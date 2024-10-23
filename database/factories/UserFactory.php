@@ -32,6 +32,20 @@ class UserFactory extends Factory
         ];
     }
 
+    public function technician(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'Technician', // Define o tipo como Technician
+        ]);
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'Admin', // Define o tipo como Technician
+        ]);
+    }
+
     /**
      * Indicate that the model's email address should be unverified.
      */

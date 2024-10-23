@@ -25,12 +25,6 @@
                             <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></textarea>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="urgent" class="inline-flex items-center">
-                                <input type="checkbox" id="urgent" name="urgent" class="mr-2">
-                                {{ __('Urgente') }}
-                            </label>
-                        </div>
 
                         <div class="flex items-center justify-between">
                             <button type="submit" class="btn btn-primary">{{ __('Criar Avaria') }}</button>

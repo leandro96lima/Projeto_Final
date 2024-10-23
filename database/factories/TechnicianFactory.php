@@ -17,7 +17,7 @@ class TechnicianFactory extends Factory
     {
         return [
             'specialty' => $this->faker->randomElement(['Electrical', 'Mechanical', 'Software']),
-            'user_id' => User::factory(),
+            'user_id' => User::factory()->technician(),
         ];
     }
 }

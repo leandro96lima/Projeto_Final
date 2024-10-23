@@ -24,7 +24,6 @@ class MalfunctionController extends Controller
         return view('malfunctions.create', compact('equipments', 'technicians'));
     }
 
-
     public function store(Request $request)
     {
         // Validação dos dados
@@ -66,6 +65,7 @@ class MalfunctionController extends Controller
             'solution' => 'nullable|string',
             'resolution_time' => 'nullable|integer',
             'diagnosis' => 'nullable|string',
+            'urgent' => 'required|boolean',
         ]);
 
         // Verifique qual ação está sendo executada
@@ -81,14 +81,13 @@ class MalfunctionController extends Controller
             $malfunction->update([
                 'status' => $validatedData['status'],
                 'diagnosis' => $validatedData['diagnosis'],
+                'urgent' => $validatedData['urgent'],
             ]);
         }
 
         // Redireciona para a visualização da avaria atualizada
         return redirect()->route('malfunctions.show', $malfunction->id)->with('success', 'Avaria atualizada com sucesso!');
     }
-
-
 
     public function destroy(Malfunction $malfunction)
     {

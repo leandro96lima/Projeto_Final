@@ -33,9 +33,12 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="technician" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Técnico') }}</label>
-                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
-                            @error('technician')
+                            <label for="urgent" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Urgência') }}</label>
+                            <select id="urgent" name="urgent" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                                <option value="0" {{ old('urgent', $malfunction->urgent) == 0 ? 'selected' : '' }}>{{ __('Não') }}</option>
+                                <option value="1" {{ old('urgent', $malfunction->urgent) == 1 ? 'selected' : '' }}>{{ __('Sim') }}</option>
+                            </select>
+                            @error('urgent')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -68,9 +71,9 @@
                         @endif
 
                         <div class="mb-4">
-                            <label for="resolution_time" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tempo de Resolução') }}</label>
-                            <input type="text" id="resolution_time" name="resolution_time" value="{{ old('resolution_time', $malfunction->resolution_time ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
-                            @error('resolution_time')
+                            <label for="technician" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Técnico') }}</label>
+                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
+                            @error('technician')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>

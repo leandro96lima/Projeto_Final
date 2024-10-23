@@ -33,7 +33,7 @@ class TicketController extends Controller
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'urgent' => $validatedData['urgent'] ?? false,
-            'open_date' => now(), // Define a data de abertura como o momento atual
+            'open_date' => now(),
         ]);
 
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
