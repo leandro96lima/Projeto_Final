@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Jobs\SendTypeChangeTokenEmail;
 use App\Mail\TokenMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -101,22 +102,27 @@ class ProfileController extends Controller
 
     public function sendTypeChangeToken(Request $request)
     {
-        // Validar se o usuário já enviou uma solicitação de token recentemente, para evitar spam
+        // Obtém o usuário logado
+        $user = auth()->user();
+
+        // Valida se o usuário já enviou uma solicitação de token recentemente, para evitar spam
         if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
             return back()->with('status', 'You must wait before requesting a new token.');
         }
 
-        // Gerar um token aleatório
+        // Gera um token aleatório
         $token = Str::random(6);
 
-        // Enviar o e-mail de forma assíncrona (como uma tarefa)
-        Mail::to('hernani.arriscado@gmail.com')->later(now()->addSeconds(), new TokenMail($token));
+        // Despacha o job de envio de e-mail para a fila
+        SendTypeChangeTokenEmail::dispatch($user->email, $token)->delay(now()->addSeconds(10));
 
-        // Armazenar o token na sessão e o timestamp de envio
+        // Armazena o token na sessão e o timestamp de envio
         session(['type_change_token' => $token]);
         session(['type_change_token_sent_at' => now()]);
 
-        // Redirecionar de volta com uma mensagem de sucesso
+        // Redireciona de volta com uma mensagem de sucesso
         return back()->with('status', 'Token sent to your email.');
     }
+
+
 }
