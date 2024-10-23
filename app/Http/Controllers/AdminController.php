@@ -89,6 +89,6 @@ class AdminController extends Controller
         $request->update(['status' => 'rejected']);
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
-}
+
 
 }
