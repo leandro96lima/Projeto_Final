@@ -22,6 +22,10 @@
                     <div class="mt-4">
                         <a href="{{ route('malfunctions.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>
                     </div>
+
+                    <div class="border px-4 py-2 inline-flex items-center">
+                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$malfunction->id]) }}'">Editar Avaria</button>
+                    </div>
                 </div>
             </div>
         </div>

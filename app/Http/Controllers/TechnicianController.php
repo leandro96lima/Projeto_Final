@@ -7,62 +7,55 @@ use Illuminate\Http\Request;
 
 class TechnicianController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-
         $technicians = Technician::with('user')->get();
         return view('technicians.index', compact('technicians'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('technicians.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'specialty' => 'required|string|max:255',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        Technician::create($validatedData);
+
+        return redirect()->route('technicians.index')->with('success', 'Técnico criado com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Technician $tecnico)
+    public function show(Technician $technician)
     {
-        //
+        return view('technicians.show', compact('technician'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Technician $tecnico)
+    public function edit(Technician $technician)
     {
-        //
+        return view('technicians.edit', compact('technician'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Technician $tecnico)
+    public function update(Request $request, Technician $technician)
     {
-        //
+
+//        $validatedData = $request->validate([
+//            'specialty' => 'required|string|in:Electrical,Mechanical,Software',
+//            'user_id' => 'required|exists:users,id',
+//        ]);
+        // dd($validatedData($request->all()));
+        //$technician->update($validatedData);
+        Technician::findOrFail($technician->id)->update($request->all());
+        return redirect()->route('technicians.index')->with('success', 'Técnico atualizado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Technician $tecnico)
+    public function destroy(Technician $technician)
     {
-        //
+        $technician->delete();
+        return redirect()->route('technicians.index')->with('success', 'Técnico removido com sucesso!');
     }
 }
