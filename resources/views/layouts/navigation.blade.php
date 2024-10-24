@@ -15,6 +15,8 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if(in_array(Auth::user()->getType(), ['Admin', 'Technician']))
                     <x-nav-link :href="route('equipments.index')">
                         {{ __('Equipamentos') }}
                     </x-nav-link>
@@ -27,6 +29,9 @@
                     <x-nav-link :href="route('malfunctions.index')">
                         {{ __('Relatório de Avarias') }}
                     </x-nav-link>
+                    @endif
+
+
                 </div>
             </div>
 

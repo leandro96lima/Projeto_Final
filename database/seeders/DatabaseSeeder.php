@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\Malfunction;
 use App\Models\Equipment;
 use App\Models\Technician;
@@ -21,7 +22,7 @@ class DatabaseSeeder extends Seeder
 //        Malfunction::factory(20)->create();
 
 
-        User::factory()->create([
+        User::factory()->admin()->create([
             'name' => 'Leandro',
             'email' => 'admin@gmail.com',
             'password' => '123456789',

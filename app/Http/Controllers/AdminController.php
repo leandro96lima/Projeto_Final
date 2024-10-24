@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\TypeChangeRequest;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -62,4 +63,32 @@ class AdminController extends Controller
     {
         //
     }
+
+    // Método para listar as solicitações pendentes
+    public function typeChangeRequests()
+    {
+        $requests = TypeChangeRequest::where('status', 'pending')->get();
+        return view('admin.type-change-requests', compact('requests'));
+    }
+
+    // Método para aprovar uma solicitação
+    public function approveTypeChangeRequest(TypeChangeRequest $request)
+    {
+        $request->update(['status' => 'approved']);
+
+        // Atualizar o tipo de usuário
+        $user = $request->user;
+        $user->update(['type' => $request->requested_type]);
+
+        return redirect()->back()->with('status', 'Solicitação aprovada e tipo de usuário atualizado.');
+    }
+
+    // Método para rejeitar uma solicitação
+    public function rejectTypeChangeRequest(TypeChangeRequest $request)
+    {
+        $request->update(['status' => 'rejected']);
+        return redirect()->back()->with('status', 'Solicitação rejeitada.');
+    }
+
+
 }

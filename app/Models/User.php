@@ -13,7 +13,7 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $fillable = ['name', 'type', 'phone', 'email', 'password'];
+    protected $fillable = ['name', 'type' , 'phone', 'email', 'password'];
 
     protected $hidden = [
         'password',
@@ -40,6 +40,10 @@ class User extends Authenticatable
         });
     }
 
+    public function getType(): ?string
+    {
+        return $this->type ?? null; // Retorna null se não estiver inicializado
+    }
 
 //
 //    public function newFromBuilder($attributes = [], $connection = null)
