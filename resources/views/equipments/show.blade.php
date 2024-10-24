@@ -10,7 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="mb-4">
-                        <p><strong>{{ __('Tipo:') }}</strong> {{ $equipment->type ?? 'N/A' }}</p>>
+                        <p><strong>{{ __('Tipo:') }}</strong> {{ $equipment->type ?? 'N/A' }}</p>
                         <p><strong>{{ __('Fabricante:') }}</strong> {{ $equipment->manufacturer ?? 'N/A' }}</p>
                         <p><strong>{{ __('Modelo:') }}</strong> {{ $equipment->model ?? 'N/A' }}</p>
                         <p><strong>{{ __('Sala:') }}</strong> {{ $equipment->room ?? 'N/A' }}</p>

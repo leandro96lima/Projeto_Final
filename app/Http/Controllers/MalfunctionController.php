@@ -35,6 +35,7 @@ class MalfunctionController extends Controller
             'solution' => 'nullable|string',
             'technician_id' => 'required|exists:technicians,id',
             'equipment_id' => 'required|exists:equipments,id',
+            'urgent' => 'required|boolean',
         ]);
 
         // Criação da nova avaria (malfunction)
@@ -53,7 +54,7 @@ class MalfunctionController extends Controller
     public function edit(Malfunction $malfunction, Request $request)
     {
         $malfunction->load('equipment', 'technician'); // Carrega as relações necessárias
-        $action = $request->query('action', 'abrir');
+        $action = $request->query('action', '');
         return view('malfunctions.edit', compact('malfunction', 'action'));
     }
 

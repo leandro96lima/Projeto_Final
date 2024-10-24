@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('malfunctions.update', $malfunction->id) }}" method="POST">
                         @csrf
-                        @method('PATCH') <!-- Indica que estamos atualizando -->
+                        @method('PATCH')
 
                         <input type="hidden" name="action" value="{{ $action }}">
 
@@ -52,7 +52,7 @@
                             @enderror
                         </div>
 
-                         @if ($action == 'fechar')
+                         @if ($action != 'abrir')
                         <div class="mb-4">
                             <label for="solution" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Solução') }}</label>
                             <input type="text" id="solution" name="solution" value="{{ old('solution', $malfunction->solution ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">

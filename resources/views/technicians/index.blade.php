@@ -16,6 +16,7 @@
                             <th class="px-4 py-2">{{ __('Email') }}</th>
                             <th class="px-4 py-2">{{ __('Especialidade') }}</th>
                             <th class="px-4 py-2">{{ __('Total de Tickets') }}</th>
+                            <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -25,6 +26,7 @@
                                 <td class="border px-4 py-2">{{ $technician->user->email ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $technician->specialty ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $technician->tickets->count() }}</td>
+                                <td class="border px-4 py-2"><a href="{{ route('technicians.show', $technician->id) }}">{{ __('Perfil') }}</a></td>
                             </tr>
                         @endforeach
                         </tbody>
