@@ -27,17 +27,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/request-token', [ProfileController::class, 'sendTypeChangeToken'])->name('profile.request-token');
 
     // Rotas para técnicos com middleware CheckUserType
+    Route::middleware([CheckUserType::class . ':Admin,Technician'])->group(function () {
         Route::resources([
             'equipments' => EquipmentController::class,
             'malfunctions' => MalfunctionController::class,
             'tickets' => TicketController::class,
-
+            'technicians' => TechnicianController::class
         ]);
         // Adicione mais rotas específicas para técnicos aqui
+    });
 
-    Route::get('/technicians', [TechnicianController::class, 'index'])
-        ->name('technicians.index')
-        ->middleware(CheckUserType::class . ':Admin');
 });
 
 

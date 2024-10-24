@@ -15,11 +15,11 @@ class CheckUserType
      *
      * @param  Request  $request
      * @param Closure $next
-     * @param string $type
+     * @param string $types
      * @return mixed
      */
 
-    public function handle(Request $request, Closure $next, string $type): mixed
+    public function handle(Request $request, Closure $next, string $types): mixed
     {
         if (Auth::check()) {
             $user = Auth::user()->fresh(); // Recarrega o usuário autenticado
@@ -32,20 +32,21 @@ class CheckUserType
                 ]);
 
                 $userType = strtolower(trim($user->getType()));
-                $expectedType = strtolower(trim($type));
+                $expectedTypes = array_map('strtolower', array_map('trim', explode(',', $types))); // Suporte para múltiplos tipos
 
                 Log::info('Verificando tipo de usuário:', [
                     'user_type' => $userType,
-                    'expected_type' => $expectedType,
+                    'expected_types' => $expectedTypes,
                 ]);
 
-                if ($userType === $expectedType) {
+                // Verifica se o tipo de usuário está na lista de tipos permitidos
+                if (in_array($userType, $expectedTypes)) {
                     return $next($request);
                 } else {
                     Log::warning('Tipo de usuário inválido.', [
                         'user_id' => $user->id,
                         'user_type' => $userType,
-                        'expected_type' => $expectedType,
+                        'expected_types' => $expectedTypes,
                     ]);
                 }
             } else {
@@ -59,9 +60,9 @@ class CheckUserType
 
         Log::warning('Acesso negado ao usuário.', [
             'user_id' => Auth::check() ? Auth::user()->id : 'não autenticado',
-            'user_type' => Auth::user()->getType(),
+            'user_type' => Auth::check() ? Auth::user()->getType() : 'não autenticado',
             'requested_route' => $request->url(),
-            'expected_type' => $type,
+            'expected_types' => $types,
         ]);
 
         return redirect('/dashboard')->with('error', 'Você não tem permissão para acessar esta área.');
