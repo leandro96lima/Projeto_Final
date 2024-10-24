@@ -27,27 +27,26 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/request-token', [ProfileController::class, 'sendTypeChangeToken'])->name('profile.request-token');
 
     // Rotas para técnicos com middleware CheckUserType
-    Route::middleware([CheckUserType::class . ':Admin,Technician'])->group(function () {
-        Route::resources([
-            'equipments' => EquipmentController::class,
-            'malfunctions' => MalfunctionController::class,
-            'tickets' => TicketController::class,
-            'technicians' => TechnicianController::class
-        ]);
-        // Adicione mais rotas específicas para técnicos aqui
-    });
+
+
 
 });
 
+Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {
+    Route::resources([
+        'equipments' => EquipmentController::class,
+        'malfunctions' => MalfunctionController::class,
+        'tickets' => TicketController::class,
+        'technicians' => TechnicianController::class
+    ]);
+    // Adicione mais rotas específicas para técnicos aqui
+});
 
-//Route::middleware('auth', 'is_admin')->prefix('admin')->group(function () {
-//    Route::get('type-change-requests', [AdminController::class, 'typeChangeRequests'])->name('admin.type-change-requests');
-//    Route::post('type-change-requests/{request}/approve', [AdminController::class, 'approveTypeChangeRequest'])->name('admin.approve-type-change-request');
-//    Route::post('type-change-requests/{request}/reject', [AdminController::class, 'rejectTypeChangeRequest'])->name('admin.reject-type-change-request');
-//});
 
-
-
-
+Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {
+    Route::get('/admin/type-change-requests', [AdminController::class, 'typeChangeRequests'])->name('admin.type-change-requests');
+    Route::post('/admin/type-change-requests/{request}/approve', [AdminController::class, 'approveTypeChangeRequest'])->name('admin.approve-type-change-request');
+    Route::post('/admin/type-change-requests/{request}/reject', [AdminController::class, 'rejectTypeChangeRequest'])->name('admin.reject-type-change-request');
+});
 
 require __DIR__.'/auth.php';
