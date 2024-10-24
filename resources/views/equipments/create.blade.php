@@ -36,6 +36,14 @@
                             @enderror
                         </div>
 
+                        <div class="mb-4">
+                            <label for="room" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Sala') }}</label>
+                            <input type="text" id="room" name="room" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
+                            @error('room')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                         <div class="flex items-center justify-between">
                             <button type="submit" class="btn btn-primary">{{ __('Criar Equipamento') }}</button>
                             <a href="{{ route('equipments.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>

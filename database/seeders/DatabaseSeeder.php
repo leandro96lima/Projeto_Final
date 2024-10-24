@@ -12,16 +12,13 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        User::factory(10)->create();
-        Technician::factory(5)->create();
-        Equipment::factory(10)->create();
-        Ticket::factory(20)->create();
-        Malfunction::factory(20)->create();
+//        User::factory(10)->create();
+//        Technician::factory(5)->create();
+//        Equipment::factory(10)->create();
+//        Ticket::factory(20)->create();
+//        Malfunction::factory(20)->create();
 
 
         User::factory()->create([

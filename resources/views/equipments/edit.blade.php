@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form action="{{ route('equipments.update', $equipment->id) }}" method="POST">
                         @csrf
-                        @method('PUT') <!-- Indica que estamos atualizando -->
+                        @method('PUT')
 
                         <div class="mb-4">
                             <label for="type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo') }}</label>

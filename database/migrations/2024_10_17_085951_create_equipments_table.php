@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('equipments', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->string('manufacturer');
-            $table->string('model');
+            $table->string('manufacturer')->nullable();
+            $table->string('model')->nullable();
             $table->string('room')->nullable();
             $table->timestamps();
         });

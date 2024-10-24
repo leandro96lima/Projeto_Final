@@ -13,12 +13,21 @@
                         @csrf
 
                         <div class="mb-4">
+                            <label for="type" class="block text-sm font-medium text-gray-700">{{ __('Equipamento') }}</label>
+                            <input type="text" id="type" name="type" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                            @error('title')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Título') }}</label>
                             <input type="text" id="title" name="title" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
                             @error('title')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
+
 
                         <div class="mb-4">
                             <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Descrição') }}</label>
