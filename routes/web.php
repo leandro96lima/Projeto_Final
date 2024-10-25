@@ -30,6 +30,11 @@ Route::middleware('auth')->group(function () {
 
 
 
+    Route::get('/tickets/partials/user-create-equipment', function () {
+        return view('user-create-equipment'); // Retorna a view do partial
+    })->name('user.create.equipment');
+
+
 });
 
 Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {

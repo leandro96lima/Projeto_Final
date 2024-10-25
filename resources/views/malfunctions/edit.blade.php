@@ -15,11 +15,13 @@
 
                         <input type="hidden" name="action" value="{{ $action }}">
 
+                        <!-- Tipo de Equipamento (editável se action não for abrir ou fechar) -->
                         <div class="mb-4">
-                            <label for="equipment" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Equipamento') }}</label>
-                            <input type="text" id="equipment" name="equipment" value="{{ old('equipment', $malfunction->equipment->type ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
+                            <label for="equipment_type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo de Equipamento') }}</label>
+                            <input type="text" id="equipment_type" name="equipment_type" value="{{ $malfunction->equipment->type }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" {{ $action ? 'readonly' : '' }}>
                         </div>
 
+                        <!-- Status -->
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Status') }}</label>
                             <select id="status" name="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
@@ -32,55 +34,58 @@
                             @enderror
                         </div>
 
+                        <!-- Urgência -->
                         <div class="mb-4">
                             <label for="urgent" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Urgência') }}</label>
                             <select id="urgent" name="urgent" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                                <option value="0" {{ old('urgent', $malfunction->urgent) == 0 ? 'selected' : '' }}>{{ __('Não') }}</option>
-                                <option value="1" {{ old('urgent', $malfunction->urgent) == 1 ? 'selected' : '' }}>{{ __('Sim') }}</option>
+                                <option value="0" {{ old('urgent', $malfunction->urgent ?? 0) == 0 ? 'selected' : '' }}>{{ __('Não') }}</option>
+                                <option value="1" {{ old('urgent', $malfunction->urgent ?? 0) == 1 ? 'selected' : '' }}>{{ __('Sim') }}</option>
                             </select>
                             @error('urgent')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
+                        <!-- Diagnóstico -->
                         <div class="mb-4">
                             <label for="diagnosis" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Diagnóstico') }}</label>
-                            <input type="text" id="diagnosis" name="diagnosis" value="{{ old('diagnosis', $malfunction->diagnosis ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black"
-                                   @if($action == 'fechar') disabled @endif>
+                            <input type="text" id="diagnosis" name="diagnosis" value="{{ old('diagnosis', $malfunction->diagnosis ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
                             @error('diagnosis')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
-                         @if ($action != 'abrir')
-                        <div class="mb-4">
-                            <label for="solution" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Solução') }}</label>
-                            <input type="text" id="solution" name="solution" value="{{ old('solution', $malfunction->solution ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                            @error('solution')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="cost" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Custo') }}</label>
-                            <input type="text" id="cost" name="cost" value="{{ old('cost', $malfunction->cost ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                            @error('cost')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        @endif
-
+                        <!-- Técnico (editável se action não for abrir ou fechar) -->
                         <div class="mb-4">
                             <label for="technician" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Técnico') }}</label>
-                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" disabled>
+                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" {{ $action ? 'readonly' : '' }}>
                             @error('technician')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
+                        <!-- Solução e Custo (aparecem apenas na action fechar ou sem action) -->
+                        @if (!$action || $action == 'fechar')
+                            <div class="mb-4">
+                                <label for="solution" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Solução') }}</label>
+                                <input type="text" id="solution" name="solution" value="{{ old('solution', $malfunction->solution ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
+                                @error('solution')
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="cost" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Custo') }}</label>
+                                <input type="text" id="cost" name="cost" value="{{ old('cost', $malfunction->cost ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
+                                @error('cost')
+                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
+
                         <div class="flex items-center justify-between">
-                                <button type="submit" class="btn btn-primary">{{ __('Confirmar') }}</button>
-                                <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
+                            <button type="submit" class="btn btn-primary">{{ __('Confirmar') }}</button>
+                            <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
                         </div>
                     </form>
                 </div>

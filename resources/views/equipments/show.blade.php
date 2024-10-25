@@ -13,6 +13,7 @@
                         <p><strong>{{ __('Tipo:') }}</strong> {{ $equipment->type ?? 'N/A' }}</p>
                         <p><strong>{{ __('Fabricante:') }}</strong> {{ $equipment->manufacturer ?? 'N/A' }}</p>
                         <p><strong>{{ __('Modelo:') }}</strong> {{ $equipment->model ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Serial Number:') }}</strong> {{ $equipment->serial_number ?? 'N/A' }}</p>
                         <p><strong>{{ __('Sala:') }}</strong> {{ $equipment->room ?? 'N/A' }}</p>
                     </div>
                     <div class="mt-4">

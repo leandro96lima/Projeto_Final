@@ -6,28 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('malfunctions', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
-            $table->float('cost')->nullable(); // Pode ser nulo
-            $table->integer('resolution_time')->nullable(); // Pode ser nulo
-            $table->string('diagnosis')->nullable(); // Pode ser nulo
-            $table->string('solution')->nullable(); // Pode ser nulo
-            $table->boolean('urgent')->nullable();
+            $table->string('status')->default('open');
+            $table->float('cost')->nullable();
+            $table->integer('resolution_time')->nullable();
+            $table->string('diagnosis')->nullable();
+            $table->string('solution')->nullable();
             $table->foreignId('equipment_id')->constrained('equipments')->onDelete('cascade');
-            $table->foreignId('technician_id')->nullable()->constrained('technicians')->onDelete('set null'); // Adiciona technician_id
+            $table->foreignId('technician_id')->nullable()->constrained('technicians')->onDelete('set null');
+            $table->boolean('urgent')->default(false); // Adicionei a coluna urgent
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('malfunctions');

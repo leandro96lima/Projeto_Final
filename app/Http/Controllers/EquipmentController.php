@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use Illuminate\Http\Request;
+use App\Enums\EquipmentType;
 
 class EquipmentController extends Controller
 {
@@ -22,14 +23,26 @@ class EquipmentController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
+            'new_type' => 'nullable|string|max:255',
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
+            'serial_number' => 'required|string|max:255|unique:equipments',
         ]);
 
-        Equipment::create($validatedData);
+        if (in_array($validatedData['type'], ['OTHER', 'NEW']) && !empty($validatedData['new_type'])) {
+            $validatedData['type'] = $validatedData['new_type'];
+        }
 
-        return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
+        $equipment = Equipment::create(array_merge($validatedData));
+
+        return $request->input('type') === 'OTHER'
+            ? view('tickets.create', [
+                'other_type' => $equipment->type,
+                'other_serial_number' => $equipment->serial_number,
+                'success' => 'Equipamento criado com sucesso!'
+            ])
+            : redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
 
     public function show(Equipment $equipment)
@@ -49,6 +62,7 @@ class EquipmentController extends Controller
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
+            'serial_number' => 'required|string|max:255|unique:equipments,serial_number,' . $equipment->id,
         ]);
 
         $equipment->update($validatedData);
