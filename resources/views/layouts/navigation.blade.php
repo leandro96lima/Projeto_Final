@@ -29,6 +29,9 @@
                     <x-nav-link :href="route('malfunctions.index')">
                         {{ __('Relatório de Avarias') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.type-change-requests')">
+                        {{ __('Admin') }}
+                    </x-nav-link>
                     @endif
 
 
