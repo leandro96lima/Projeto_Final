@@ -108,7 +108,7 @@ class AdminController extends Controller
 
         $user = User::find($user_id);
         // Envia o e-mail de forma assíncrona
-        Mail::to('hernani.arriscado@gmail.com')->later(now()->addSeconds(10), new TokenMail($token));
+        Mail::to('admin@gmail.com')->later(now()->addSeconds(10), new TokenMail($token));
 
         // Armazena o token na sessão e o timestamp de envio
         session(['type_change_token' => $token]);
