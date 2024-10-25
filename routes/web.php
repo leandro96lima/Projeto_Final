@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
         // Adicione mais rotas específicas para técnicos aqui
     });
 
+    Route::get('/tickets/partials/user-create-equipment', function () {
+        return view('user-create-equipment'); // Retorna a view do partial
+    })->name('user.create.equipment');
+
+
 });
 
 

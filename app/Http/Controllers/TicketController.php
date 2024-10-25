@@ -7,6 +7,7 @@ use App\Models\Ticket;
 use App\Models\Technician;
 use App\Models\Malfunction;
 use Illuminate\Http\Request;
+use App\Enums\EquipmentType;
 
 class TicketController extends Controller
 {
@@ -27,9 +28,10 @@ class TicketController extends Controller
     public function create()
     {
         // Obtém todos os equipamentos agrupados por tipo
-        $equipments = Equipment::all()->groupBy('type');
+        $equipments = Equipment::all();
+        $equipmentTypes = EquipmentType::cases();
 
-        return view('tickets.create', compact('equipments'));
+        return view('tickets.create', compact('equipments', 'equipmentTypes'));
     }
 
     public function store(Request $request)

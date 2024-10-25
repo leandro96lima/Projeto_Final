@@ -23,26 +23,27 @@ class EquipmentController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
-            'new_type' => 'nullable|string|max:255', // Novo campo para o tipo
+            'new_type' => 'nullable|string|max:255',
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
             'serial_number' => 'required|string|max:255|unique:equipments',
         ]);
 
-        // Verifica se o tipo é 'OTHER' e, se sim, usa o novo tipo
-        if ($validatedData['type'] === 'OTHER' && !empty($validatedData['new_type'])) {
+        if (in_array($validatedData['type'], ['OTHER', 'NEW']) && !empty($validatedData['new_type'])) {
             $validatedData['type'] = $validatedData['new_type'];
-
-            // Aqui você pode adicionar lógica para atualizar o enum ou banco de dados com o novo tipo, se necessário
         }
 
-        Equipment::create($validatedData);
+        $equipment = Equipment::create(array_merge($validatedData));
 
-        return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
+        return $request->input('type') === 'OTHER'
+            ? view('tickets.create', [
+                'other_type' => $equipment->type,
+                'other_serial_number' => $equipment->serial_number,
+                'success' => 'Equipamento criado com sucesso!'
+            ])
+            : redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
-
-
 
     public function show(Equipment $equipment)
     {

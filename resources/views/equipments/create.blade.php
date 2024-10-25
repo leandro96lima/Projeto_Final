@@ -19,14 +19,14 @@
                                 @foreach(App\Enums\EquipmentType::cases() as $equipmentType)
                                     <option value="{{ $equipmentType->value }}">{{ $equipmentType->name }}</option>
                                 @endforeach
-                                <option value="OTHER">{{ __('OTHER') }}</option> <!-- A opção "Outro" -->
+                                <option value="NEW">{{ __('NEW') }}</option>
                             </select>
                             @error('type')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="mb-4" id="newTypeContainer" style="display: none;"> <!-- Novo input para o tipo -->
+                        <div class="mb-4" id="newTypeContainer" style="display: none;">
                             <label for="new_type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Novo Tipo de Equipamento') }}</label>
                             <input type="text" id="new_type" name="new_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
                         </div>
@@ -74,16 +74,14 @@
     </div>
 
     <script>
-        // Adicionando o evento ao dropdown
         document.getElementById('type').addEventListener('change', function() {
             const selectedType = this.value;
             const newTypeContainer = document.getElementById('newTypeContainer');
 
-            // Verifica se a opção "Outro" foi selecionada
-            if (selectedType === 'OTHER') {
-                newTypeContainer.style.display = 'block'; // Mostra o novo input
+            if (selectedType === 'NEW') {
+                newTypeContainer.style.display = 'block';
             } else {
-                newTypeContainer.style.display = 'none'; // Oculta o novo input
+                newTypeContainer.style.display = 'none';
             }
         });
     </script>
