@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\TokenMail;
 use App\Models\Admin;
 use App\Models\TypeChangeRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -76,11 +80,11 @@ class AdminController extends Controller
     {
         $request->update(['status' => 'approved']);
 
-        // Atualizar o tipo de usuário
-        $user = $request->user;
-        $user->update(['type' => $request->requested_type]);
+        // Busca o usuário pelo ID e envia o token
+        $user = User::find($request->user_id);
+        $this->sendTypeChangeToken($request->user_id);
 
-        return redirect()->back()->with('status', 'Solicitação aprovada e tipo de usuário atualizado.');
+        return redirect()->back()->with('status', 'Solicitação aprovada.');
     }
 
     // Método para rejeitar uma solicitação
@@ -90,5 +94,28 @@ class AdminController extends Controller
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
 
+    public function sendTypeChangeToken(Int $user_id)
+    {
+
+
+        // Valida se o usuário já enviou uma solicitação de token recentemente, para evitar spam
+        if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
+            return back()->with('status', 'You must wait before requesting a new token.');
+        }
+
+        // Gera um token aleatório
+        $token = Str::random(6);
+
+        $user = User::find($user_id);
+        // Envia o e-mail de forma assíncrona
+        Mail::to('hernani.arriscado@gmail.com')->later(now()->addSeconds(10), new TokenMail($token));
+
+        // Armazena o token na sessão e o timestamp de envio
+        session(['type_change_token' => $token]);
+        session(['type_change_token_sent_at' => now()]);
+
+        // Redireciona de volta com uma mensagem de sucesso
+        return back()->with('status', 'Token sent to User email.');
+    }
 
 }

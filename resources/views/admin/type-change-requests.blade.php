@@ -31,14 +31,14 @@
                                 <td class="border px-4 py-2">{{ $request->reason }}</td>
                                 <td class="border px-4 py-2">{{ $request->status }}</td>
                                 <td class="border px-4 py-2 inline-flex items-center">
-{{--                                    <form method="POST" action="{{ route('admin.type-change-requests.approve', $request) }}" class="inline-block mx-1">
+                                   <form method="POST" action="{{ route('admin.approve-type-change-request', $request) }}" class="inline-block mx-1">
                                         @csrf
                                         <button type="submit" class="btn btn-success">Approve</button>
                                     </form>
-                                    <form method="POST" action="{{ route('admin.type-change-requests.reject', $request) }}" class="inline-block mx-1">
+                                    <form method="POST" action="{{ route('admin.reject-type-change-request', $request) }}" class="inline-block mx-1">
                                         @csrf
                                         <button type="submit" class="btn btn-danger">Reject</button>
-                                    </form>--}}
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

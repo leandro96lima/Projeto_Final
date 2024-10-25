@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/profile/request-token', [ProfileController::class, 'sendTypeChangeToken'])->name('profile.request-token');
+    Route::post('/profile/request-token', [ProfileController::class, 'requestTypeChangeToken'])->name('profile.request-token');
 
     // Rotas para técnicos com middleware CheckUserType
 
@@ -43,7 +43,7 @@ Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(f
 });
 
 
-Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {
+Route::middleware(['auth', CheckUserType::class . ':Admin'])->group(function () {
     Route::get('/admin/type-change-requests', [AdminController::class, 'typeChangeRequests'])->name('admin.type-change-requests');
     Route::post('/admin/type-change-requests/{request}/approve', [AdminController::class, 'approveTypeChangeRequest'])->name('admin.approve-type-change-request');
     Route::post('/admin/type-change-requests/{request}/reject', [AdminController::class, 'rejectTypeChangeRequest'])->name('admin.reject-type-change-request');

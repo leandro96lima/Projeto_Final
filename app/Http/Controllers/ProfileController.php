@@ -104,7 +104,7 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function sendTypeChangeToken(Request $request)
+    public function requestTypeChangeToken(Request $request)
     {
         // Validação dos campos
         try {
@@ -142,7 +142,8 @@ class ProfileController extends Controller
                 'reason' => $request->input('request_reason'),
             ]);
 
-            TypeChangeRequest::create([
+// Cria a solicitação
+            $typeChangeRequest = TypeChangeRequest::create([
                 'user_id' => $user->id,
                 'requested_type' => $request->input('requested_type'),
                 'reason' => $request->input('request_reason'),
@@ -154,9 +155,9 @@ class ProfileController extends Controller
             ]);
 
             // Notifica o administrador (opcional: pode ser via e-mail)
-            Notification::route('mail', 'hernani.arriscado@gmail.com')->notify(new TypeChangeRequestNotification());
+            Notification::route('mail', 'admin@gmail.com')->notify(new TypeChangeRequestNotification($typeChangeRequest));
             Log::info('Notificação enviada ao administrador.', [
-                'admin_email' => 'hernani.arriscado@gmail.com',
+                'admin_email' => 'admin@gmail.com',
             ]);
 
             return back()->with('status', 'Sua solicitação foi enviada e está aguardando aprovação.');
