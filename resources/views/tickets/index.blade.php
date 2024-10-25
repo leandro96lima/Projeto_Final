@@ -12,7 +12,7 @@
                     <select name="status" onchange="this.form.submit()" class="form-select">
                         <option value="">{{ __('Todos os Tickets') }}</option>
                         <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>{{ __('Pendentes') }}</option>
-                        <option value="in-progress" {{ request('status') == 'in-progress' ? 'selected' : '' }}>{{ __('Em Curso') }}</option>
+                        <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>{{ __('Em Curso') }}</option>
                         <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>{{ __('Fechados') }}</option>
                     </select>
                 </form>

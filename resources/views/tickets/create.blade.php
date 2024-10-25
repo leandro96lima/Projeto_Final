@@ -13,27 +13,37 @@
                         @csrf
 
                         <div class="mb-4">
-                            <label for="type" class="block text-sm font-medium text-gray-700">{{ __('Equipamento') }}</label>
-                            <input type="text" id="type" name="type" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
-                            @error('title')
+                            <label for="type" class="block text-sm font-medium text-gray-700">{{ __('Tipo de Equipamento') }}</label>
+                            <select id="type" name="type" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                <option value="">Selecione um Tipo de Equipamento</option>
+                                @foreach($equipments as $type => $equipmentGroup)
+                                    <option value="{{ $type }}">{{ $type }}</option>
+                                @endforeach
+                            </select>
+                            @error('type')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="serial_number" class="block text-sm font-medium text-gray-700">{{ __('Número de Série') }}</label>
+                            <select id="serial_number" name="serial_number" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                <option value="">Selecione um Número de Série</option>
+                            </select>
+                            @error('serial_number')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Título') }}</label>
-                            <input type="text" id="title" name="title" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
-                            @error('title')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
+                            <textarea id="title" name="title" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></textarea>
                         </div>
-
 
                         <div class="mb-4">
                             <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Descrição') }}</label>
                             <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></textarea>
                         </div>
-
 
                         <div class="flex items-center justify-between">
                             <button type="submit" class="btn btn-primary">{{ __('Criar Avaria') }}</button>
@@ -54,4 +64,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('type').addEventListener('change', function() {
+            const selectedType = this.value;
+            const serialNumberSelect = document.getElementById('serial_number');
+            serialNumberSelect.innerHTML = '<option value="">Selecione um Número de Série</option>'; // Limpa as opções
+
+            @foreach($equipments as $type => $equipmentGroup)
+            if (selectedType === '{{ $type }}') {
+                @foreach($equipmentGroup as $equipment)
+                const option = document.createElement('option');
+                option.value = '{{ $equipment->serial_number }}';
+                option.text = '{{ $equipment->serial_number }}';
+                serialNumberSelect.appendChild(option);
+                @endforeach
+            }
+            @endforeach
+        });
+    </script>
 </x-app-layout>

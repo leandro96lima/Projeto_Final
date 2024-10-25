@@ -53,7 +53,7 @@ class MalfunctionController extends Controller
 
         $equipmentType = $malfunction->equipment->type;
 
-        $ticketUrgent = $malfunction->urgent; // Atualize para usar o urgent do próprio malfunction
+        $ticketUrgent = $malfunction->urgent;
 
         $action = $request->query('action', '');
 
@@ -68,10 +68,9 @@ class MalfunctionController extends Controller
             'solution' => 'nullable|string',
             'resolution_time' => 'nullable|integer',
             'diagnosis' => 'nullable|string',
-            'urgent' => 'required|boolean', // Validação para urgent
+            'urgent' => 'required|boolean',
         ]);
 
-        // Atualiza o status e solução apenas se a ação for fechar
         if ($request->input('action') != 'abrir') {
             $malfunction->update([
                 'status' => $validatedData['status'],
@@ -85,7 +84,6 @@ class MalfunctionController extends Controller
                 'urgent' => $validatedData['urgent'],
             ]);
         }
-
 
         return redirect()->route('malfunctions.show', $malfunction->id);
     }

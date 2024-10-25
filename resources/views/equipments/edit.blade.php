@@ -38,6 +38,14 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="serial_number" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Número de Série') }}</label>
+                            <input type="text" id="serial_number" name="serial_number" value="{{ old('serial_number', $equipment->serial_number) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                            @error('serial_number')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
                             <label for="room" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Sala') }}</label>
                             <input type="text" id="room" name="room" value="{{ old('room', $equipment->room) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
                             @error('room')

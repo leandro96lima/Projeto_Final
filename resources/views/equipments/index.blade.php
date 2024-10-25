@@ -19,6 +19,7 @@
                             <th class="px-4 py-2">{{ __('Tipo') }}</th>
                             <th class="px-4 py-2">{{ __('Fabricante') }}</th>
                             <th class="px-4 py-2">{{ __('Modelo') }}</th>
+                            <th class="px-4 py-2">{{ __('Serial Number') }}</th>
                             <th class="px-4 py-2">{{ __('Sala') }}</th>
                             <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
@@ -29,6 +30,7 @@
                                 <td class="border px-4 py-2">{{ $equipment->type ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $equipment->manufacturer ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $equipment->model ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $equipment->serial_number ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $equipment->room ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2 inline-flex items-center">
                                     <button type="button" class="btn btn-success mx-1" onclick="window.location.href='{{ route('equipments.show', $equipment->id) }}'">Detalhes</button>

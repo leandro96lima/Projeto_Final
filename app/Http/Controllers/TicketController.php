@@ -26,7 +26,10 @@ class TicketController extends Controller
 
     public function create()
     {
-        return view('tickets.create');
+        // Obtém todos os equipamentos agrupados por tipo
+        $equipments = Equipment::all()->groupBy('type');
+
+        return view('tickets.create', compact('equipments'));
     }
 
     public function store(Request $request)
@@ -35,15 +38,20 @@ class TicketController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255',
+            'serial_number' => 'required|string|max:255',
             'description' => 'required|string',
         ]);
 
-        // Verificar se o equipamento já existe ou criar um novo
-        $equipment = Equipment::firstOrCreate([
-            'type' => $validatedData['type'],
-        ]);
+        // Verificar se o equipamento existe pelo tipo e número de série
+        $equipment = Equipment::where('type', $validatedData['type'])
+            ->where('serial_number', $validatedData['serial_number'])
+            ->first();
 
-        // Criação de um novo Malfunction (não inclui 'urgent', pois ele pertence a Ticket)
+        if (!$equipment) {
+            return redirect()->back()->withErrors(['serial_number' => 'Número de série inválido para este tipo de equipamento.'])->withInput();
+        }
+
+        // Criação de um novo Malfunction
         $malfunction = new Malfunction();
         $malfunction->status = 'open'; // Definindo o status como 'open'
         $malfunction->equipment_id = $equipment->id;  // Associando o equipamento
@@ -54,16 +62,14 @@ class TicketController extends Controller
         $ticket->title = $validatedData['title'];
         $ticket->description = $validatedData['description'];
         $ticket->open_date = now();
-
-        // Atribuímos o malfunction_id ao ticket
-        $ticket->malfunction_id = $malfunction->id;
-
-        // Salvando o ticket
-        $ticket->save();
+        $ticket->malfunction_id = $malfunction->id; // Atribuindo o malfunction_id ao ticket
+        $ticket->save(); // Salvando o ticket
 
         // Redirecionando ou retornando uma resposta adequada
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
     }
+
+
 
     public function show(Ticket $ticket)
     {

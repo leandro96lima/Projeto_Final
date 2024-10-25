@@ -16,6 +16,7 @@ class EquipmentFactory extends Factory
             'manufacturer' => $this->faker->company(),
             'model' => $this->faker->bothify('Model-####'),
             'room' => $this->faker->numberBetween(100, 500),
+            'serial_number' => $this->faker->unique()->regexify('[A-Z0-9]{10}'),
         ];
     }
 }

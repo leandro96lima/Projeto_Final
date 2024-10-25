@@ -14,10 +14,21 @@
 
                         <div class="mb-4">
                             <label for="type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo') }}</label>
-                            <input type="text" id="type" name="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                            <select id="type" name="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                                <option value="">Selecione um Tipo de Equipamento</option>
+                                @foreach(App\Enums\EquipmentType::cases() as $equipmentType)
+                                    <option value="{{ $equipmentType->value }}">{{ $equipmentType->name }}</option>
+                                @endforeach
+                                <option value="OTHER">{{ __('OTHER') }}</option> <!-- A opção "Outro" -->
+                            </select>
                             @error('type')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
+                        </div>
+
+                        <div class="mb-4" id="newTypeContainer" style="display: none;"> <!-- Novo input para o tipo -->
+                            <label for="new_type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Novo Tipo de Equipamento') }}</label>
+                            <input type="text" id="new_type" name="new_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
                         </div>
 
                         <div class="mb-4">
@@ -32,6 +43,14 @@
                             <label for="model" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Modelo') }}</label>
                             <input type="text" id="model" name="model" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
                             @error('model')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="serial_number" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Número de Série') }}</label>
+                            <input type="text" id="serial_number" name="serial_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                            @error('serial_number')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
@@ -53,4 +72,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Adicionando o evento ao dropdown
+        document.getElementById('type').addEventListener('change', function() {
+            const selectedType = this.value;
+            const newTypeContainer = document.getElementById('newTypeContainer');
+
+            // Verifica se a opção "Outro" foi selecionada
+            if (selectedType === 'OTHER') {
+                newTypeContainer.style.display = 'block'; // Mostra o novo input
+            } else {
+                newTypeContainer.style.display = 'none'; // Oculta o novo input
+            }
+        });
+    </script>
 </x-app-layout>
+
