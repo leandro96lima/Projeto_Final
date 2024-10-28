@@ -26,15 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/request-token', [ProfileController::class, 'requestTypeChangeToken'])->name('profile.request-token');
 
-    // Rotas para técnicos com middleware CheckUserType
-
 
 
     Route::get('/tickets/partials/user-create-equipment', function () {
         return view('user-create-equipment'); // Retorna a view do partial
     })->name('user.create.equipment');
-
-
 });
 
 Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {
@@ -44,7 +40,6 @@ Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(f
         'tickets' => TicketController::class,
         'technicians' => TechnicianController::class
     ]);
-    // Adicione mais rotas específicas para técnicos aqui
 });
 
 

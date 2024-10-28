@@ -132,10 +132,6 @@ class TicketController extends Controller
         return redirect()->route('malfunctions.show', $malfunction->id);
     }
 
-
-
-
-
     public function destroy(Ticket $ticket)
     {
         $ticket->delete();

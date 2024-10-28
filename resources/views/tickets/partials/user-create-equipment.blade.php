@@ -5,29 +5,17 @@
                 <form action="{{ route('equipments.store') }}" method="POST">
                     @csrf
 
+                    <!-- Campo oculto para indicar a origem do request -->
+                    <input type="hidden" name="from_partial" value="user-create-equipment">
+
                     <div class="mb-4">
                         <label for="type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo') }}</label>
-
-                        @if(isset($selectedType) && $selectedType === 'OTHER')
-                            <!-- Se selectedType for 'OTHER', exibe um input readonly -->
-                            <input type="text" id="type" name="type" value="OTHER" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                        @else
-                            <!-- Se selectedType não estiver definido, exibe o select -->
-                            <select id="type" name="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                                <option value="">Selecione um Tipo de Equipamento</option>
-                                @foreach(App\Enums\EquipmentType::cases() as $equipmentType)
-                                    <option value="{{ $equipmentType->value }}" >
-                                        {{ $equipmentType->name }}
-                                    </option>
-                                @endforeach
-                                <option value="OTHER" {{ __('OTHER') }}</option>
-                            </select>
-                        @endif
-
+                        <input type="text" id="type" name="type" value="" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
                         @error('type')
                         <span class="text-red-600 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
+
 
                     <div class="mb-4" id="newTypeContainer">
                         <label for="new_type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Novo Tipo de Equipamento') }}</label>
@@ -58,6 +46,14 @@
                         @enderror
                     </div>
 
+                    <div class="mb-4">
+                        <label for="room" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Sala') }}</label>
+                        <input type="text" id="room" name="room" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
+                        @error('room')
+                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     <div class="flex items-center justify-between">
                         <button type="submit" class="btn btn-primary">{{ __('Criar Equipamento') }}</button>
                         <a href="{{ route('tickets.create') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
@@ -67,3 +63,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Captura o campo de tipo e o campo novo tipo
+        const typeInput = document.getElementById('type');
+        const newTypeContainer = document.getElementById('newTypeContainer');
+
+        // Função para verificar o valor do tipo selecionado
+        function checkType() {
+            // Verifica se o valor do tipo é 'OTHER'
+            if (typeInput.value !== 'OTHER') { // Altere 'OTHER' para o valor que deseja verificar
+                newTypeContainer.style.display = 'none'; // Oculta o campo de novo tipo
+            } else {
+                newTypeContainer.style.display = 'block'; // Exibe o campo de novo tipo
+            }
+        }
+
+        // Inicializa a verificação ao carregar a página
+        checkType();
+
+        // Adiciona um listener para mudanças no campo de tipo
+        typeInput.addEventListener('input', checkType);
+    });
+</script>

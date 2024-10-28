@@ -36,13 +36,19 @@ class EquipmentController extends Controller
 
         $equipment = Equipment::create(array_merge($validatedData));
 
-        return $request->input('type') === 'OTHER'
-            ? view('tickets.create', [
+        // Verifica se o request veio da partial específica
+        if ($request->input('from_partial') === 'user-create-equipment') {
+            return view('tickets.create', [
                 'other_type' => $equipment->type,
                 'other_serial_number' => $equipment->serial_number,
+                'other_room' => $equipment->room,
+                'equipments' => Equipment::all(),
                 'success' => 'Equipamento criado com sucesso!'
-            ])
-            : redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
+            ]);
+        }
+
+        // Redireciona para a lista de equipamentos
+        return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
 
     public function show(Equipment $equipment)
