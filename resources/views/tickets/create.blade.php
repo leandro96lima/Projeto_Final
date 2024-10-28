@@ -81,11 +81,11 @@
     </div>
 
     <script>
-        // #region Variáveis e Dados Iniciais
+        //  Variáveis e Dados Iniciais
         const equipmentData = @json($equipments); // Dados dos equipamentos passados do backend
-        // #endregion
 
-        // #region Função: Alternar Exibição de Conteúdo
+
+        // Função: Alternar Exibição de Conteúdo
         /**
          * Alterna a exibição dos conteúdos com base no tipo e no número de série selecionado.
          * Exibe 'partialContent' quando o tipo é 'OTHER' ou o número de série é 'NEW'.
@@ -104,9 +104,9 @@
                 document.querySelector('#partialContent input[name="type"]').value = selectedType;
             }
         }
-        // #endregion
 
-        // #region Função: Atualizar Números de Série
+
+        // Função: Atualizar Números de Série
         /**
          * Atualiza as opções do dropdown de números de série com base no tipo selecionado.
          * Adiciona a opção "Novo" sempre ao final do dropdown.
@@ -142,27 +142,30 @@
             newOption.textContent = 'Novo';
             serialNumberSelect.appendChild(newOption);
         }
-        // #endregion
 
+        // Função: Atualizar Sala com Base no Número de Série
+        /**
+         * Atualiza o campo de sala com base no número de série selecionado.
+         * Se um equipamento com sala associada for encontrado, o campo é preenchido e definido como somente leitura.
+         */
         function updateRoomBasedOnSerial() {
-            const serialNumberSelect = document.getElementById('serial_number');
+            const serialNumberSelect = document.getElementById('serial_number'); // Seleciona o dropdown de número de série
             const roomInput = document.getElementById('room'); // Seleciona o campo de sala
-            const selectedSerial = serialNumberSelect.value;
+            const selectedSerial = serialNumberSelect.value; // Obtém o número de série selecionado
 
-            // Limpa o campo de sala e remove o readonly
+            // Limpa o campo de sala e remove o readonly para permitir edição inicial
             roomInput.value = '';
             roomInput.readOnly = false;
 
             // Busca o equipamento correspondente ao número de série selecionado
             const selectedEquipment = equipmentData.find(equipment => equipment.serial_number === selectedSerial);
 
-            // Atualiza o campo de sala e o define como readonly se uma sala for encontrada
+            // Se uma sala associada for encontrada, preenche o campo de sala e o define como readonly
             if (selectedEquipment && selectedEquipment.room) {
-                roomInput.value = selectedEquipment.room; // Preenche a sala associada
-                roomInput.readOnly = true; // Define como readonly
+                roomInput.value = selectedEquipment.room; // Preenche a sala associada ao equipamento
+                roomInput.readOnly = true; // Define o campo como somente leitura
             }
         }
-
 
         // Adiciona o evento de mudança ao select de tipo
         document.getElementById('type').addEventListener('change', updateSerialNumbers);
@@ -174,6 +177,6 @@
             togglePartialDisplay(); // Atualiza a exibição do conteúdo
         });
         document.getElementById('serial_number').addEventListener('change', togglePartialDisplay); // Atualiza a exibição do conteúdo ao mudar o número de série
-        // #endregion
+
     </script>
 </x-app-layout>
