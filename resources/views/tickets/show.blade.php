@@ -17,6 +17,7 @@
                         <p><strong>{{ __('Descrição:') }}</strong> {{ $ticket->description ?? 'N/A' }}</p>
                         <p><strong>{{ __('Data de abertura:') }}</strong> {{ $ticket->open_date ?? 'N/A' }}</p>
                         <p><strong>{{ __('Status:') }}</strong> {{ $ticket->malfunction->status ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Tempo de espera') }}</strong> {{ $ticket->wait_time ?? 'N/A' }}</p>
                     </div>
                     <div class="mt-4">
                         <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>

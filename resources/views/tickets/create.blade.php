@@ -84,7 +84,6 @@
         function togglePartialDisplay() {
             const selectedType = document.getElementById('type').value.toUpperCase();
             const selectedSerial = document.getElementById('serial_number').value;
-            console.log('Selected Serial:', selectedSerial);
             const shouldShowPartial = (selectedType === 'OTHER' || selectedSerial === 'NEW');
 
             // Exibe ou oculta os conteúdos conforme a condição combinada
