@@ -6,6 +6,7 @@ use App\Mail\TokenMail;
 use App\Models\Admin;
 use App\Models\TypeChangeRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -31,11 +32,16 @@ class AdminController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
-    }
+        $validatedData = $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
 
+        Admin::create($validatedData);
+
+        return redirect()->route('admins.index')->with('success', 'Admin criado com sucesso!');
+    }
     /**
      * Display the specified resource.
      */
