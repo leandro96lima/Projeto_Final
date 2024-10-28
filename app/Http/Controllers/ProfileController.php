@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Jobs\SendTypeChangeTokenEmail;
 use App\Mail\TokenMail;
+use App\Models\Technician;
 use App\Models\TypeChangeRequest;
 use App\Models\User;
 use App\Notifications\TypeChangeRequestNotification;
@@ -30,8 +31,16 @@ class ProfileController extends Controller
 
     public function edit(Request $request): View
     {
+        // Obtém o usuário logado
+        $user = $request->user();
+
+        // Verifica se o tipo de usuário é 'Technician' e carrega a instância correta
+        if ($user->type === 'Technician') {
+            $user = Technician::find($user->id);
+        }
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
         ]);
     }
 

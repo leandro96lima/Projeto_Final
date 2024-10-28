@@ -43,6 +43,11 @@
                         <x-text-input id="type" name="type" type="type" class="mt-1 block w-full" :value="old('type', $user->type)" readonly  />
                         <x-input-error class="mt-2" :messages="$errors->get('type')" />
                     </div>
+
+                    @if ($user->type === 'Technician')
+                        <p>Specialty: {{ $user->specialty }}</p>
+                    @endif
+
                 </div>
 
                 <!-- Botão de salvar -->

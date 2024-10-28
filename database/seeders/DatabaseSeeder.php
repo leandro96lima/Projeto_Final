@@ -10,6 +10,7 @@ use App\Models\Ticket;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,10 +23,20 @@ class DatabaseSeeder extends Seeder
 //        Malfunction::factory(20)->create();
 
 
-        User::factory()->admin()->create([
+        User::factory()->withTechnician([
+            'specialty' => 'Tech',
+        ])->create([
             'name' => 'Leandro',
-            'email' => 'admin@gmail.com',
-            'password' => '123456789',
+            'email' => 'tech@gmail.com',
+            'password' => Hash::make('123456789'),
         ]);
+
+//        User::factory()->withAdmin([
+//
+//        ])->create([
+//            'name' => 'Leandro',
+//            'email' => 'admin@gmail.com',
+//            'password' => Hash::make('123456789'),
+//        ]);
     }
 }
