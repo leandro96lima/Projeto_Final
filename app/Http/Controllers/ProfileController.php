@@ -50,13 +50,13 @@ class ProfileController extends Controller
             return Redirect::route('profile.edit')->withErrors(['token' => 'Invalid token.']);
         }
 
-        // Preenche os dados validados e invalida o email verificado se foi alterado
+        // Preenche os dados validados e invalida o endereço eletrónico verificado se foi alterado
         $user->fill($validatedData);
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // Verifica se o 'type' foi alterado e atualiza a instância do tipo de usuário
+        // Verifica se o 'type' foi alterado e atualiza a instância do tipo de utilizador
         if ($newType && $user->type !== $newType) {
             $this->updateUserTypeInstance($user, $newType);
         }
@@ -117,7 +117,7 @@ class ProfileController extends Controller
 
             $request->validate([
                 'requested_type' => 'required|string|in:User,Admin,Technician', // O campo requested_type é obrigatório e deve ser 'User', 'Admin' ou 'Technician'
-                'request_reason' => 'required|string|max:255', // O campo request_reason é obrigatório e deve ser uma string
+                'request_reason' => 'required|string|max:255', // O campo request_reason é obrigatório e deve ser uma ‘string’
             ]);
 
             Log::info('Validação concluída com sucesso.', [
@@ -125,14 +125,14 @@ class ProfileController extends Controller
                 'request_reason' => $request->input('request_reason'),
             ]);
 
-            // Obtém o usuário logado
+            // Obtém o utilizador logado
             $user = auth()->user();
             Log::info('Usuário autenticado.', [
                 'user_id' => $user->id,
                 'user_name' => $user->name,
             ]);
 
-            // Valida se o usuário já tem uma solicitação pendente
+            // Valida se o utilizador já tem uma solicitação pendente
             if (TypeChangeRequest::where('user_id', $user->id)->where('status', 'pending')->exists()) {
                 Log::warning('Usuário já possui uma solicitação pendente.', [
                     'user_id' => $user->id,
@@ -159,7 +159,7 @@ class ProfileController extends Controller
                 'requested_type' => $request->input('requested_type'),
             ]);
 
-            // Notifica o administrador (opcional: pode ser via e-mail)
+            // Notifica o administrador (opcional: pode ser via endereço eletrónico)
             Notification::route('mail', 'admin@gmail.com')->notify(new TypeChangeRequestNotification($typeChangeRequest));
             Log::info('Notificação enviada ao administrador.', [
                 'admin_email' => 'admin@gmail.com',
@@ -167,7 +167,7 @@ class ProfileController extends Controller
 
             return back()->with('status', 'Sua solicitação foi enviada e está aguardando aprovação.');
         } catch (Exception $e) {
-            // Log de erro caso ocorra alguma exceção
+            // ‘Log’ de erro caso ocorra alguma exceção
             Log::error('Erro ao processar a solicitação de mudança de tipo.', [
                 'error_message' => $e->getMessage(),
                 'user_id' => auth()->check() ? auth()->user()->id : 'não autenticado',

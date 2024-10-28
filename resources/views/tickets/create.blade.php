@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Problema') }}</label>
+                            <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Título') }}</label>
                             <input id="title" name="title" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></input>
                         </div>
 
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Gerar Ticket') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Criar Avaria') }}</button>
                             <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
                         </div>
                     </form>
@@ -81,12 +81,21 @@
     </div>
 
     <script>
+        //  Variáveis e Dados Iniciais
+        const equipmentData = @json($equipments); // Dados dos equipamentos passados do backend
+
+
+        // Função: Alternar Exibição de Conteúdo
+        /**
+         * Alterna a exibição dos conteúdos com base no tipo e no número de série selecionado.
+         * Exibe 'partialContent' quando o tipo é 'OTHER' ou o número de série é 'NEW'.
+         */
         function togglePartialDisplay() {
             const selectedType = document.getElementById('type').value.toUpperCase();
             const selectedSerial = document.getElementById('serial_number').value;
             const shouldShowPartial = (selectedType === 'OTHER' || selectedSerial === 'NEW');
 
-            // Exibe ou oculta os conteúdos conforme a condição combinada
+            // Exibe ou oculta os conteúdos com base na condição
             document.getElementById('formContent').style.display = shouldShowPartial ? 'none' : 'block';
             document.getElementById('partialContent').style.display = shouldShowPartial ? 'block' : 'none';
 
@@ -96,73 +105,78 @@
             }
         }
 
-        document.getElementById('type').addEventListener('change', togglePartialDisplay);
-        document.getElementById('serial_number').addEventListener('change', togglePartialDisplay);
 
-    </script>
-    <script>
-        const equipmentData = @json($equipments); // Obtendo os dados dos equipamentos
-
+        // Função: Atualizar Números de Série
+        /**
+         * Atualiza as opções do dropdown de números de série com base no tipo selecionado.
+         * Adiciona a opção "Novo" sempre ao final do dropdown.
+         */
         function updateSerialNumbers() {
-            const typeSelect = document.getElementById('type');
-            const serialNumberSelect = document.getElementById('serial_number');
-            const selectedType = typeSelect.value;
+            const typeSelect = document.getElementById('type'); // Elemento do select de tipo
+            const serialNumberSelect = document.getElementById('serial_number'); // Elemento do select de número de série
+            const selectedType = typeSelect.value; // Obtém o tipo selecionado
 
             // Limpa o dropdown de números de série
             serialNumberSelect.innerHTML = '<option value="">Selecione um Número de Série</option>';
 
-
-
-            if (selectedType) {
-                // Filtra equipamentos pelo tipo selecionado
-                const filteredEquipments = equipmentData.filter(equipment => equipment.type === selectedType);
-
-                // Se houver equipamentos filtrados, adiciona seus números de série ao dropdown
-                if (filteredEquipments.length > 0) {
-                    filteredEquipments.forEach(equipment => {
-                        const option = document.createElement('option');
-                        option.value = equipment.serial_number; // Usando o número de série do equipamento
-                        option.textContent = equipment.serial_number; // Usando o número de série do equipamento
-                        serialNumberSelect.appendChild(option);
-                    });
-                } else {
-                    // Caso não haja equipamentos disponíveis para o tipo selecionado
-                    const option = document.createElement('option');
-                    option.value = ''; // Sem valor
-                    option.textContent = 'Nenhum número de série disponível'; // Mensagem de erro
-                    serialNumberSelect.appendChild(option);
-                }
+            // Filtra os equipamentos com base no tipo selecionado e adiciona ao dropdown
+            const filteredEquipments = equipmentData.filter(equipment => equipment.type === selectedType);
+            if (filteredEquipments.length > 0) {
+                filteredEquipments.forEach(equipment => {
+                    const option = document.createElement('option'); // Cria uma nova opção
+                    option.value = equipment.serial_number; // Define o valor como número de série do equipamento
+                    option.textContent = equipment.serial_number; // Define o texto como número de série
+                    serialNumberSelect.appendChild(option); // Adiciona a opção ao dropdown
+                });
+            } else {
+                // Exibe uma opção de erro caso não haja números de série disponíveis
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'Nenhum número de série disponível';
+                serialNumberSelect.appendChild(option);
             }
 
-            // Adiciona sempre a opção "Novo"
+            // Adiciona sempre a opção "Novo" ao final do dropdown
             const newOption = document.createElement('option');
             newOption.value = 'NEW';
             newOption.textContent = 'Novo';
             serialNumberSelect.appendChild(newOption);
         }
 
+        // Função: Atualizar Sala com Base no Número de Série
+        /**
+         * Atualiza o campo de sala com base no número de série selecionado.
+         * Se um equipamento com sala associada for encontrado, o campo é preenchido e definido como somente leitura.
+         */
         function updateRoomBasedOnSerial() {
-            const serialNumberSelect = document.getElementById('serial_number');
+            const serialNumberSelect = document.getElementById('serial_number'); // Seleciona o dropdown de número de série
             const roomInput = document.getElementById('room'); // Seleciona o campo de sala
-            const selectedSerial = serialNumberSelect.value;
+            const selectedSerial = serialNumberSelect.value; // Obtém o número de série selecionado
 
-            // Limpa o campo de sala e remove o readonly
+            // Limpa o campo de sala e remove o readonly para permitir edição inicial
             roomInput.value = '';
             roomInput.readOnly = false;
 
             // Busca o equipamento correspondente ao número de série selecionado
             const selectedEquipment = equipmentData.find(equipment => equipment.serial_number === selectedSerial);
 
-            // Atualiza o campo de sala e o define como readonly se uma sala for encontrada
+            // Se uma sala associada for encontrada, preenche o campo de sala e o define como readonly
             if (selectedEquipment && selectedEquipment.room) {
-                roomInput.value = selectedEquipment.room; // Preenche a sala associada
-                roomInput.readOnly = true; // Define como readonly
+                roomInput.value = selectedEquipment.room; // Preenche a sala associada ao equipamento
+                roomInput.readOnly = true; // Define o campo como somente leitura
             }
         }
-
 
         // Adiciona o evento de mudança ao select de tipo
         document.getElementById('type').addEventListener('change', updateSerialNumbers);
         document.getElementById('serial_number').addEventListener('change', updateRoomBasedOnSerial);
+        // #region Eventos de Mudança
+        // Adiciona eventos de mudança ao select de tipo e número de série
+        document.getElementById('type').addEventListener('change', () => {
+            updateSerialNumbers(); // Atualiza o dropdown de números de série
+            togglePartialDisplay(); // Atualiza a exibição do conteúdo
+        });
+        document.getElementById('serial_number').addEventListener('change', togglePartialDisplay); // Atualiza a exibição do conteúdo ao mudar o número de série
+
     </script>
 </x-app-layout>
