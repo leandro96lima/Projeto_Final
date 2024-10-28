@@ -81,29 +81,38 @@ class AdminController extends Controller
         return view('admin.type-change-requests', compact('requests'));
     }
 
-    // Método para aprovar uma solicitação
+// Método para aprovar uma solicitação
     public function approveTypeChangeRequest(TypeChangeRequest $request)
     {
-        $request->update(['status' => 'approved']);
+        $admin = auth()->user(); // Obtém o admin autenticado
 
-        // Busca o usuário pelo ID e envia o token
-        $user = User::find($request->user_id);
+        $request->update([
+            'status' => 'approved',
+            'processed_by_admin_id' => $admin->id, // Armazena o ID do administrador que aprovou
+        ]);
+
+        // Envia o token para o usuário
         $this->sendTypeChangeToken($request->user_id);
 
         return redirect()->back()->with('status', 'Solicitação aprovada.');
     }
 
-    // Método para rejeitar uma solicitação
+// Método para rejeitar uma solicitação
     public function rejectTypeChangeRequest(TypeChangeRequest $request)
     {
-        $request->update(['status' => 'rejected']);
+        $admin = auth()->user(); // Obtém o admin autenticado
+
+        $request->update([
+            'status' => 'rejected',
+            'processed_by_admin_id' => $admin->id, // Armazena o ID do administrador que rejeitou
+        ]);
+
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
 
+// Método para enviar o token de mudança de tipo
     public function sendTypeChangeToken(Int $user_id)
     {
-
-
         // Valida se o usuário já enviou uma solicitação de token recentemente, para evitar spam
         if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
             return back()->with('status', 'You must wait before requesting a new token.');

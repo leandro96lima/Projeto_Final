@@ -11,11 +11,6 @@ class Technician extends Model
     protected $fillable = ['specialty', 'user_id'];
 
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function tickets()
     {
         return $this->hasMany(Ticket::class);

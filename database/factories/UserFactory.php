@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
+use App\Models\Technician;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -36,14 +38,14 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'type' => 'Technician', // Define o tipo como Technician
-        ]);
+        ])->new(Technician::class);
     }
 
     public function admin(): static
     {
         return $this->state(fn (array $attributes) => [
             'type' => 'Admin', // Define o tipo como Technician
-        ]);
+        ])->new(Admin::class);
     }
 
     /**

@@ -159,11 +159,14 @@ class ProfileController extends Controller
                 'requested_type' => $request->input('requested_type'),
             ]);
 
-            // Notifica o administrador (opcional: pode ser via endereço eletrónico)
-            Notification::route('mail', 'admin@gmail.com')->notify(new TypeChangeRequestNotification($typeChangeRequest));
-            Log::info('Notificação enviada ao administrador.', [
-                'admin_email' => 'admin@gmail.com',
-            ]);
+            // Envia a notificação para todos os administradores
+            $admins = User::where('type', 'Admin')->get();
+            foreach ($admins as $admin) {
+                Notification::route('mail', $admin->email)->notify(new TypeChangeRequestNotification($typeChangeRequest));
+                Log::info('Notificação enviada ao administrador.', [
+                    'admin_email' => $admin->email,
+                ]);
+            }
 
             return back()->with('status', 'Sua solicitação foi enviada e está aguardando aprovação.');
         } catch (Exception $e) {
