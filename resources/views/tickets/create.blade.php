@@ -91,15 +91,15 @@
          * Exibe 'partialContent' quando o tipo é 'OTHER' ou o número de série é 'NEW'.
          */
         function togglePartialDisplay() {
-            const selectedType = document.getElementById('type').value.toUpperCase(); // Tipo selecionado em maiúsculas
-            const selectedSerial = document.getElementById('serial_number').value; // Número de série selecionado
-            const shouldShowPartial = (selectedType === 'OTHER' || selectedSerial === 'NEW'); // Condição para exibição parcial
+            const selectedType = document.getElementById('type').value.toUpperCase();
+            const selectedSerial = document.getElementById('serial_number').value;
+            const shouldShowPartial = (selectedType === 'OTHER' || selectedSerial === 'NEW');
 
             // Exibe ou oculta os conteúdos com base na condição
             document.getElementById('formContent').style.display = shouldShowPartial ? 'none' : 'block';
             document.getElementById('partialContent').style.display = shouldShowPartial ? 'block' : 'none';
 
-            // Atualiza o valor do tipo no campo da partial, se necessário
+            // Atualiza o valor de 'selectedType' no campo da partial, se necessário
             if (shouldShowPartial) {
                 document.querySelector('#partialContent input[name="type"]').value = selectedType;
             }
@@ -144,6 +144,29 @@
         }
         // #endregion
 
+        function updateRoomBasedOnSerial() {
+            const serialNumberSelect = document.getElementById('serial_number');
+            const roomInput = document.getElementById('room'); // Seleciona o campo de sala
+            const selectedSerial = serialNumberSelect.value;
+
+            // Limpa o campo de sala e remove o readonly
+            roomInput.value = '';
+            roomInput.readOnly = false;
+
+            // Busca o equipamento correspondente ao número de série selecionado
+            const selectedEquipment = equipmentData.find(equipment => equipment.serial_number === selectedSerial);
+
+            // Atualiza o campo de sala e o define como readonly se uma sala for encontrada
+            if (selectedEquipment && selectedEquipment.room) {
+                roomInput.value = selectedEquipment.room; // Preenche a sala associada
+                roomInput.readOnly = true; // Define como readonly
+            }
+        }
+
+
+        // Adiciona o evento de mudança ao select de tipo
+        document.getElementById('type').addEventListener('change', updateSerialNumbers);
+        document.getElementById('serial_number').addEventListener('change', updateRoomBasedOnSerial);
         // #region Eventos de Mudança
         // Adiciona eventos de mudança ao select de tipo e número de série
         document.getElementById('type').addEventListener('change', () => {

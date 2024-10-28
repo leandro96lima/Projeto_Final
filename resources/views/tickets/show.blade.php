@@ -13,7 +13,7 @@
                         <p><strong>{{ __('Equipamento') }}</strong> {{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</p>
                         <p><strong>{{ __('Serial Number:') }}</strong> {{ $ticket->malfunction ? $ticket->malfunction->equipment->serial_number : 'N/A' }}</p>
                         <p><strong>{{ __('Sala:') }}</strong> {{ $ticket->malfunction->equipment->room ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Título:') }}</strong> {{ $ticket->title ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Problema:') }}</strong> {{ $ticket->title ?? 'N/A' }}</p>
                         <p><strong>{{ __('Descrição:') }}</strong> {{ $ticket->description ?? 'N/A' }}</p>
                         <p><strong>{{ __('Data de abertura:') }}</strong> {{ $ticket->open_date ?? 'N/A' }}</p>
                         <p><strong>{{ __('Status:') }}</strong> {{ $ticket->malfunction->status ?? 'N/A' }}</p>
