@@ -31,7 +31,7 @@
                         <thead>
                         <tr>
                             <th class="px-4 py-2">{{ __('Equipamento') }}</th>
-                            <th class="px-4 py-2">{{ __('Descrição') }}</th>
+                            <th class="px-4 py-2">{{ __('Problema') }}</th>
                             <th class="px-4 py-2">{{ __('Data de Abertura') }}</th>
                             <th class="px-4 py-2">{{ __('Status') }}</th>
                             <th class="px-4 py-2">{{ __('Ações') }}</th>
@@ -41,7 +41,7 @@
                         @foreach ($tickets as $ticket)
                             <tr>
                                 <td class="border px-4 py-2">{{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->description }}</td>
+                                <td class="border px-4 py-2">{{ $ticket->title }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->malfunction->status ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2 inline-flex items-center">

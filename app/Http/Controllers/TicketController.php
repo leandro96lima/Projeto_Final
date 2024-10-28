@@ -27,7 +27,6 @@ class TicketController extends Controller
 
     public function create()
     {
-        // Obtém todos os equipamentos agrupados por tipo
         $equipments = Equipment::all();
         $equipmentTypes = EquipmentType::cases();
 
@@ -36,7 +35,6 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
-        // Validação dos dados de entrada
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255',
@@ -44,7 +42,6 @@ class TicketController extends Controller
             'description' => 'required|string',
         ]);
 
-        // Verificar se o equipamento existe pelo tipo e número de série
         $equipment = Equipment::where('type', $validatedData['type'])
             ->where('serial_number', $validatedData['serial_number'])
             ->first();
@@ -53,21 +50,18 @@ class TicketController extends Controller
             return redirect()->back()->withErrors(['serial_number' => 'Número de série inválido para este tipo de equipamento.'])->withInput();
         }
 
-        // Criação de um novo Malfunction
         $malfunction = new Malfunction();
-        $malfunction->status = 'open'; // Definindo o status como 'open'
-        $malfunction->equipment_id = $equipment->id;  // Associando o equipamento
-        $malfunction->save();  // Salvando o Malfunction
+        $malfunction->status = 'open';
+        $malfunction->equipment_id = $equipment->id;
+        $malfunction->save();
 
-        // Criação do Ticket e associação ao Malfunction
         $ticket = new Ticket();
         $ticket->title = $validatedData['title'];
         $ticket->description = $validatedData['description'];
         $ticket->open_date = now();
-        $ticket->malfunction_id = $malfunction->id; // Atribuindo o malfunction_id ao ticket
-        $ticket->save(); // Salvando o ticket
+        $ticket->malfunction_id = $malfunction->id;
+        $ticket->save();
 
-        // Redirecionando ou retornando uma resposta adequada
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
     }
 

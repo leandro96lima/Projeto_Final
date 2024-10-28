@@ -36,7 +36,6 @@ class EquipmentController extends Controller
 
         $equipment = Equipment::create(array_merge($validatedData));
 
-        // Verifica se o request veio da partial específica
         if ($request->input('from_partial') === 'user-create-equipment') {
             return view('tickets.create', [
                 'other_type' => $equipment->type,
@@ -47,7 +46,6 @@ class EquipmentController extends Controller
             ]);
         }
 
-        // Redireciona para a lista de equipamentos
         return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
 

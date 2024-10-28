@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Título') }}</label>
+                            <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Problema') }}</label>
                             <input id="title" name="title" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></input>
                         </div>
 
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Criar Avaria') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Gerar Ticket') }}</button>
                             <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
                         </div>
                     </form>
@@ -142,7 +142,28 @@
             serialNumberSelect.appendChild(newOption);
         }
 
+        function updateRoomBasedOnSerial() {
+            const serialNumberSelect = document.getElementById('serial_number');
+            const roomInput = document.getElementById('room'); // Seleciona o campo de sala
+            const selectedSerial = serialNumberSelect.value;
+
+            // Limpa o campo de sala e remove o readonly
+            roomInput.value = '';
+            roomInput.readOnly = false;
+
+            // Busca o equipamento correspondente ao número de série selecionado
+            const selectedEquipment = equipmentData.find(equipment => equipment.serial_number === selectedSerial);
+
+            // Atualiza o campo de sala e o define como readonly se uma sala for encontrada
+            if (selectedEquipment && selectedEquipment.room) {
+                roomInput.value = selectedEquipment.room; // Preenche a sala associada
+                roomInput.readOnly = true; // Define como readonly
+            }
+        }
+
+
         // Adiciona o evento de mudança ao select de tipo
         document.getElementById('type').addEventListener('change', updateSerialNumbers);
+        document.getElementById('serial_number').addEventListener('change', updateRoomBasedOnSerial);
     </script>
 </x-app-layout>
