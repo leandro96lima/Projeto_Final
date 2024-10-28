@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Technician;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TechnicianController extends Controller
@@ -18,7 +20,7 @@ class TechnicianController extends Controller
         return view('technicians.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
             'specialty' => 'required|string|max:255',

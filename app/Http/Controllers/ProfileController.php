@@ -6,7 +6,9 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Jobs\SendTypeChangeTokenEmail;
 use App\Mail\TokenMail;
 use App\Models\TypeChangeRequest;
+use App\Models\User;
 use App\Notifications\TypeChangeRequestNotification;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,43 +40,25 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        // Preencher os dados do usuário com os campos validados
         $user = $request->user();
-        $user->fill($request->validated());
+        $validatedData = $request->validated();
+        $newType = $request->input('type');
+        $token = $request->input('token');
 
-        // Verificar se o email foi alterado, caso tenha sido, invalidar a verificação anterior
+        // Guard clause: Verifica o token de segurança
+        if ($newType && (!$token || $token !== session('type_change_token'))) {
+            return Redirect::route('profile.edit')->withErrors(['token' => 'Invalid token.']);
+        }
+
+        // Preenche os dados validados e invalida o email verificado se foi alterado
+        $user->fill($validatedData);
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        // Verificar se o campo 'type' está presente e precisa ser atualizado
-        if ($request->has('type')) {
-            $newType = $request->input('type');
-            $token = $request->input('token');
-
-            // Verificar se o token é válido
-            if (session('type_change_token') && $token === session('type_change_token')) {
-                if ($user->type !== $newType) {
-                    $user->type = $newType;
-
-                    // Dependendo do tipo, criar a instância correta
-                    switch ($newType) {
-                        case 'Admin':
-                            app(AdminController::class)->store($user);
-                            break;
-
-                        case 'Technician':
-                            app(TechnicianController::class)->store($user);
-                            break;
-
-                        default:
-                            // Se não for Admin nem Technician, não faça nada.
-                            break;
-                    }
-                }
-            } else {
-                return Redirect::route('profile.edit')->withErrors(['token' => 'Invalid token.']);
-            }
+        // Verifica se o 'type' foi alterado e atualiza a instância do tipo de usuário
+        if ($newType && $user->type !== $newType) {
+            $this->updateUserTypeInstance($user, $newType);
         }
 
         // Salvar as alterações no banco de dados
@@ -82,6 +66,27 @@ class ProfileController extends Controller
 
         // Redirecionar de volta para a página de edição do perfil com uma mensagem de sucesso
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+// Método auxiliar para gerenciar a instância do tipo de usuário
+    private function updateUserTypeInstance(User $user, string $newType): void
+    {
+        $controllerMap = [
+            'Admin' => AdminController::class,
+            'Technician' => TechnicianController::class,
+        ];
+
+        // Remove a instância do tipo anterior, se existir
+        foreach ($controllerMap as $type => $controller) {
+            if ($user->{$type}()->exists()) {
+                $user->{$type}()->delete();
+            }
+        }
+
+        // Cria a nova instância, se necessário
+        if ($newType !== 'User' && isset($controllerMap[$newType])) {
+            app($controllerMap[$newType])->store($user);
+        }
     }
     /**
      * Delete the user's account.
@@ -161,7 +166,7 @@ class ProfileController extends Controller
             ]);
 
             return back()->with('status', 'Sua solicitação foi enviada e está aguardando aprovação.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log de erro caso ocorra alguma exceção
             Log::error('Erro ao processar a solicitação de mudança de tipo.', [
                 'error_message' => $e->getMessage(),
