@@ -9,6 +9,7 @@ use App\Models\Technician;
 use App\Models\TypeChangeRequest;
 use App\Models\User;
 use App\Notifications\TypeChangeRequestNotification;
+use App\Repositories\TypeChangeRequestRepository;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,6 +23,13 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    protected TypeChangeRequestRepository $typeChangeRequestRepository;
+
+    public function __construct(TypeChangeRequestRepository $typeChangeRequestRepository)
+    {
+        $this->typeChangeRequestRepository = $typeChangeRequestRepository;
+    }
+
     public function index()
     {
         //
@@ -118,73 +126,42 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function requestTypeChangeToken(Request $request)
+    public function requestTypeChangeToken(Request $request, TypeChangeRequestRepository $typeChangeRequestRepository)
     {
-        // Validação dos campos
         try {
             Log::info('Iniciando validação dos campos.');
 
+            // Valida os campos
             $request->validate([
-                'requested_type' => 'required|string|in:User,Admin,Technician', // O campo requested_type é obrigatório e deve ser 'User', 'Admin' ou 'Technician'
-                'request_reason' => 'required|string|max:255', // O campo request_reason é obrigatório e deve ser uma ‘string’
+                'requested_type' => 'required|string|in:User,Admin,Technician',
+                'request_reason' => 'required|string|max:255',
             ]);
 
-            Log::info('Validação concluída com sucesso.', [
-                'requested_type' => $request->input('requested_type'),
-                'request_reason' => $request->input('request_reason'),
-            ]);
-
-            // Obtém o utilizador logado
             $user = auth()->user();
-            Log::info('Usuário autenticado.', [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-            ]);
+            Log::info('Usuário autenticado.', ['user_id' => $user->id, 'user_name' => $user->name]);
 
-            // Valida se o utilizador já tem uma solicitação pendente
-            if (TypeChangeRequest::where('user_id', $user->id)->where('status', 'pending')->exists()) {
-                Log::warning('Usuário já possui uma solicitação pendente.', [
-                    'user_id' => $user->id,
-                ]);
+            // Checa se há solicitação pendente
+            if ($typeChangeRequestRepository->hasPendingRequest($user)) {
                 return back()->with('status', 'Você já possui uma solicitação pendente.');
             }
 
-            // Cria a solicitação
-            Log::info('Criando solicitação de mudança de tipo.', [
-                'user_id' => $user->id,
-                'requested_type' => $request->input('requested_type'),
-                'reason' => $request->input('request_reason'),
-            ]);
-
-// Cria a solicitação
-            $typeChangeRequest = TypeChangeRequest::create([
-                'user_id' => $user->id,
-                'requested_type' => $request->input('requested_type'),
-                'reason' => $request->input('request_reason'),
-            ]);
-
-            Log::info('Solicitação de mudança de tipo criada com sucesso.', [
-                'user_id' => $user->id,
-                'requested_type' => $request->input('requested_type'),
-            ]);
-
-            // Envia a notificação para todos os administradores
-            $admins = User::where('type', 'Admin')->get();
-            foreach ($admins as $admin) {
-                Notification::route('mail', $admin->email)->notify(new TypeChangeRequestNotification($typeChangeRequest));
-                Log::info('Notificação enviada ao administrador.', [
-                    'admin_email' => $admin->email,
-                ]);
+            // Verifica se a mudança de tipo é permitida
+            if (!$typeChangeRequestRepository->canRequestAdminType($user)) {
+                return back()->with('status', 'Não é possível mudar de tipo no momento devido à contagem de administradores.');
             }
+
+            // Cria a solicitação de mudança de tipo e envia notificação
+            $typeChangeRequest = $typeChangeRequestRepository->processTypeChangeRequest(
+                $user,
+                $request->input('requested_type'),
+                $request->input('request_reason')
+            );
 
             return back()->with('status', 'Sua solicitação foi enviada e está aguardando aprovação.');
         } catch (Exception $e) {
-            // ‘Log’ de erro caso ocorra alguma exceção
             Log::error('Erro ao processar a solicitação de mudança de tipo.', [
                 'error_message' => $e->getMessage(),
                 'user_id' => auth()->check() ? auth()->user()->id : 'não autenticado',
-                'requested_type' => $request->input('requested_type', 'não fornecido'),
-                'request_reason' => $request->input('request_reason', 'não fornecido'),
             ]);
 
             return back()->withErrors(['error' => 'Ocorreu um erro ao processar sua solicitação.']);

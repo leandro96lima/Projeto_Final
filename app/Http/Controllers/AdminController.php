@@ -111,26 +111,24 @@ class AdminController extends Controller
     }
 
 // Método para enviar o token de mudança de tipo
-    public function sendTypeChangeToken(Int $user_id)
+    public function sendTypeChangeToken(int $user_id, string $requestedType = null)
     {
-        // Valida se o usuário já enviou uma solicitação de token recentemente, para evitar spam
+        // Valida se o usuário já enviou uma solicitação de token recentemente
         if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
-            return back()->with('status', 'You must wait before requesting a new token.');
+            return back()->with('status', 'Você deve esperar antes de solicitar um novo token.');
         }
 
-        // Gera um token aleatório
+        // Gera e envia o token
         $token = Str::random(6);
-
         $user = User::find($user_id);
-        // Envia o e-mail de forma assíncrona
-        Mail::to($user->email)->later(now()->addSeconds(10), new TokenMail($token));
+        $recipientEmail = ($requestedType === 'Admin' && User::where('type', 'Admin')->count() === 0)
+            ? 'helpdesk@example.com'
+            : $user->email;
 
-        // Armazena o token na sessão e o timestamp de envio
-        session(['type_change_token' => $token]);
-        session(['type_change_token_sent_at' => now()]);
+        Mail::to($recipientEmail)->later(now()->addSeconds(10), new TokenMail($token));
+        session(['type_change_token' => $token, 'type_change_token_sent_at' => now()]);
 
-        // Redireciona de volta com uma mensagem de sucesso
-        return back()->with('status', 'Token sent to User email.');
+        return back()->with('status', 'Token enviado para ' . ($recipientEmail === 'helpdesk@example.com' ? 'o e-mail do helpdesk.' : 'o e-mail do usuário.'));
     }
 
 }
