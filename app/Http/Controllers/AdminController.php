@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Mail\TokenMail;
+use App\Services\Mail\TokenMail;
 use App\Models\Admin;
 use App\Models\TypeChangeRequest;
 use App\Models\User;
@@ -21,7 +20,6 @@ class AdminController extends Controller
     {
         $this->typeChangeRequestRepository = $typeChangeRequestRepository;
     }
-
 
     public function index()
     {
@@ -49,6 +47,7 @@ class AdminController extends Controller
 
         return redirect()->route('admins.index')->with('success', 'Admin criado com sucesso!');
     }
+
     /**
      * Display the specified resource.
      */
@@ -88,44 +87,25 @@ class AdminController extends Controller
         return view('admin.type-change-requests', compact('requests'));
     }
 
-// Método para aprovar uma solicitação
-    public function approveTypeChangeRequest(TypeChangeRequest $request, TypeChangeRequestRepository $repository)
+    // Método para aprovar uma solicitação
+    public function approveTypeChangeRequest(TypeChangeRequest $request)
     {
         $admin = Auth::user(); // Obtém o admin autenticado
 
-        $repository->approveRequest($request, $admin->id);
+        $this->typeChangeRequestRepository->approveRequest($request, $admin->id);
 
         // Envia o token para o usuário após a aprovação
-        $this->sendTypeChangeToken($request->user_id, $request->requested_type);
+        $response = $this->typeChangeRequestRepository->sendTypeChangeToken($request->user_id, $request->requested_type);
 
-        return redirect()->back()->with('status', 'Solicitação aprovada.');
+        return redirect()->back()->with('status', $response['message']);
     }
 
-    public function rejectTypeChangeRequest(TypeChangeRequest $request, TypeChangeRequestRepository $repository)
+    public function rejectTypeChangeRequest(TypeChangeRequest $request)
     {
         $admin = Auth::user(); // Obtém o admin autenticado
 
-        $repository->rejectRequest($request, $admin->id);
+        $this->typeChangeRequestRepository->rejectRequest($request, $admin->id);
 
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
-
-    public function sendTypeChangeToken(int $user_id, string $requestedType = null)
-    {
-        if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
-            return back()->with('status', 'Você deve esperar antes de solicitar um novo token.');
-        }
-
-        $token = Str::random(6);
-        $user = User::find($user_id);
-        $recipientEmail = ($requestedType === 'Admin' && User::where('type', 'Admin')->count() === 0)
-            ? 'helpdesk@example.com'
-            : $user->email;
-
-        Mail::to($recipientEmail)->later(now()->addSeconds(10), new TokenMail($token));
-        session(['type_change_token' => $token, 'type_change_token_sent_at' => now()]);
-
-        return back()->with('status', 'Token enviado para ' . ($recipientEmail === 'helpdesk@example.com' ? 'o e-mail do helpdesk.' : 'o e-mail do usuário.'));
-    }
-
 }

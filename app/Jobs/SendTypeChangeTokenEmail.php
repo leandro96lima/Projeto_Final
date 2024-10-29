@@ -3,11 +3,13 @@
 namespace App\Jobs;
 
 use App\Mail\TokenMail;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SendTypeChangeTokenEmail implements ShouldQueue
@@ -34,6 +36,13 @@ class SendTypeChangeTokenEmail implements ShouldQueue
      */
     public function handle()
     {
-        Mail::to($this->email)->send(new TokenMail($this->token));
+        try {
+            Mail::to($this->email)->send(new TokenMail($this->token));
+        } catch (Exception $e) {
+            // Registra o erro para monitoramento
+            Log::error("Falha ao enviar o e-mail de token: " . $e->getMessage());
+            // Você também pode lançar a exceção novamente para que o job tente ser reprocessado
+            throw $e;
+        }
     }
 }

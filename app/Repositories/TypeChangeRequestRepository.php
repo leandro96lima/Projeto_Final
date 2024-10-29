@@ -7,7 +7,10 @@ use App\Models\TypeChangeRequest;
 use App\Models\User;
 use App\Notifications\TypeChangeRequestNotification;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class TypeChangeRequestRepository
 {
@@ -29,7 +32,7 @@ class TypeChangeRequestRepository
         // Se não houver administradores e o usuário deseja se tornar Admin
         if ($adminCount === 0 && $requestedType === 'Admin') {
             Log::warning('Sem administradores. Enviando notificação para o helpdesk.', ['user_id' => $user->id]);
-            app(AdminController::class)->sendTypeChangeToken($user->id, 'Admin');
+            $this->sendTypeChangeToken($user->id, 'Admin'); // Chama o método no repositório
             return true; // Permite que o usuário solicite mudança para Admin
         }
 
@@ -96,5 +99,28 @@ class TypeChangeRequestRepository
         ]);
 
         Log::info('Solicitação rejeitada.', ['request_id' => $request->id]);
+    }
+
+    // Envia um token de mudança de tipo
+    public function sendTypeChangeToken(int $user_id, string $requestedType = null)
+    {
+        if (Session::has('type_change_token_sent_at') && now()->diffInMinutes(Session::get('type_change_token_sent_at')) < 5) {
+            return ['status' => false, 'message' => 'Você deve esperar antes de solicitar um novo token.'];
+        }
+
+        $token = Str::random(6);
+        $user = User::find($user_id);
+        $recipientEmail = ($requestedType === 'Admin' && User::where('type', 'Admin')->count() === 0)
+            ? 'helpdesk@example.com'
+            : $user->email;
+
+        Mail::to($recipientEmail)->later(now()->addSeconds(10), new TokenMail($token));
+        Session::put('type_change_token', $token);
+        Session::put('type_change_token_sent_at', now());
+
+        return [
+            'status' => true,
+            'message' => 'Token enviado para ' . ($recipientEmail === 'helpdesk@example.com' ? 'o e-mail do helpdesk.' : 'o e-mail do usuário.'),
+        ];
     }
 }
