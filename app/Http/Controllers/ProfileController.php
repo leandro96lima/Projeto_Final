@@ -146,14 +146,15 @@ class ProfileController extends Controller
             }
 
             // Verifica se a mudança de tipo é permitida
-            if (!$typeChangeRequestRepository->canRequestAdminType($user)) {
+            $requestedType = $request->input('requested_type');
+            if (!$typeChangeRequestRepository->canRequestAdminType($user, $requestedType)) {
                 return back()->with('status', 'Não é possível mudar de tipo no momento devido à contagem de administradores.');
             }
 
             // Cria a solicitação de mudança de tipo e envia notificação
             $typeChangeRequest = $typeChangeRequestRepository->processTypeChangeRequest(
                 $user,
-                $request->input('requested_type'),
+                $requestedType,
                 $request->input('request_reason')
             );
 

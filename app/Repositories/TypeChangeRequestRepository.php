@@ -22,19 +22,24 @@ class TypeChangeRequestRepository
     }
 
     // Verifica se é possível solicitar a mudança para Admin
-    public function canRequestAdminType($user): bool
+    public function canRequestAdminType($user, $requestedType): bool
     {
         $adminCount = User::where('type', 'Admin')->count();
-        if ($adminCount === 0) {
+
+        // Se não houver administradores e o usuário deseja se tornar Admin
+        if ($adminCount === 0 && $requestedType === 'Admin') {
             Log::warning('Sem administradores. Enviando notificação para o helpdesk.', ['user_id' => $user->id]);
             app(AdminController::class)->sendTypeChangeToken($user->id, 'Admin');
-            return false;
+            return true; // Permite que o usuário solicite mudança para Admin
         }
-        if ($adminCount === 1) {
-            Log::warning('Mudança para Admin negada, apenas um administrador restante.', ['user_id' => $user->id]);
-            return false;
+
+        // Se há apenas um Admin e o usuário é esse único Admin tentando mudar para outro tipo
+        if ($adminCount === 1 && $user->type === 'Admin' && $requestedType !== 'Admin') {
+            Log::warning('Mudança de tipo negada: o usuário é o único administrador restante.', ['user_id' => $user->id]);
+            return false; // Bloqueia a mudança se ele é o único Admin e quer mudar para outro tipo
         }
-        return true;
+
+        return true; // Permite a mudança em outras condições
     }
 
     // Processa a solicitação de mudança de tipo e notifica administradores
