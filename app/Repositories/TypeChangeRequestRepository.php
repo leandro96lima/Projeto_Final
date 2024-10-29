@@ -75,4 +75,26 @@ class TypeChangeRequestRepository
             Log::info('Notificação enviada ao administrador.', ['admin_email' => $admin->email]);
         });
     }
+
+    // Atualiza a solicitação como aprovada
+    public function approveRequest(TypeChangeRequest $request, $adminId): void
+    {
+        $request->update([
+            'status' => 'approved',
+            'processed_by_admin_id' => $adminId,
+        ]);
+
+        Log::info('Solicitação aprovada.', ['request_id' => $request->id]);
+    }
+
+    // Atualiza a solicitação como rejeitada
+    public function rejectRequest(TypeChangeRequest $request, $adminId): void
+    {
+        $request->update([
+            'status' => 'rejected',
+            'processed_by_admin_id' => $adminId,
+        ]);
+
+        Log::info('Solicitação rejeitada.', ['request_id' => $request->id]);
+    }
 }
