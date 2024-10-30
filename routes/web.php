@@ -47,6 +47,8 @@ Route::middleware(['auth', CheckUserType::class . ':Admin'])->group(function () 
     Route::get('/admin/requests', [AdminController::class, 'requests'])->name('admin.requests');
     Route::post('/admin/requests/{request}/approve', [AdminController::class, 'approveTypeChangeRequest'])->name('admin.approve-type-change-request');
     Route::post('/admin/requests/{request}/reject', [AdminController::class, 'rejectTypeChangeRequest'])->name('admin.reject-type-change-request');
+    Route::post('/admin/requests/{request}/approve', [AdminController::class, 'approveNewEquipmentRequest'])->name('admin.approve-new-equipment-request');
+    Route::post('/admin/requests/{request}/reject', [AdminController::class, 'rejectNewEquipmentRequest'])->name('admin.reject-new-equipment-request');
 });
 
 require __DIR__.'/auth.php';

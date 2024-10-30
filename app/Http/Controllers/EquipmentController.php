@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\NotifyAdminsOfEquipment;
 use App\Models\Equipment;
+use App\Models\EquipmentApprovalRequest;
 use App\Models\User;
 use App\Notifications\EquipmentCreatedNotification;
 use Illuminate\Http\Request;
@@ -51,6 +52,14 @@ class EquipmentController extends Controller
         if ($request->input('from_partial') === 'user-create-equipment') {
             // Enviar notificação para todos os admins
             NotifyAdminsOfEquipment::dispatch($equipment);
+
+            // Cria a solicitação de aprovação
+            EquipmentApprovalRequest::create([
+                'equipment_id' => $equipment->id, // Ajuste isso conforme a lógica de como você associa tickets a equipamentos
+                'user_id' => auth()->id(), // Usuário que criou o equipamento
+                'status' => 'pending',
+            ]);
+
 
             return view('tickets.create', [
                 'other_type' => $equipment->type,
