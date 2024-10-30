@@ -26,7 +26,7 @@
                                 <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->technician->user->name ?? 'Sem técnico' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->diagnosis ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->resolution_time ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $malfunction->ticket->resolution_time !== null ? $malfunction->ticket->resolution_time : 'Em espera para terminar' }} minuto(s) </td>
                                 <td>
                                     <a href="{{ route('malfunctions.show', $malfunction->id) }}">{{ __('Detalhes') }}</a>
                                     <form action="{{ route('malfunctions.destroy', $malfunction->id) }}" method="POST" class="inline-block mx-1" onsubmit="return confirm('Tem certeza que deseja eliminar esta avaria?')">

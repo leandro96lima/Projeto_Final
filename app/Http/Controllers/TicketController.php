@@ -4,15 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use App\Models\Ticket;
-use App\Models\Technician;
 use App\Models\Malfunction;
+use App\Traits\CalculateResolutionTime;
+use App\Traits\CalculateWaitTime;
+use App\Models\Technician;
 use App\Models\TicketApprovalRequest;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
 
 class TicketController extends Controller
 {
-    public function index(Request $request)
+    use CalculateWaitTime;
+    use CalculateResolutionTime;
+
+    public function index()
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
 
@@ -93,8 +98,6 @@ class TicketController extends Controller
     }
 
 
-
-
     public function edit(Ticket $ticket)
     {
         $technicians = Technician::all();
@@ -116,25 +119,13 @@ class TicketController extends Controller
             'status' => 'nullable|string|in:open,in_progress,closed',
         ]);
 
-        // Atualiza o ticket e calcula o tempo de espera
         $ticket->update($validatedData + ['wait_time' => $this->calculateWaitTime($ticket)]);
+
+        $ticket->update($validatedData + ['resolution_time' => $this->calculateResolutionTime($ticket)]);
 
         return redirect()->route('malfunctions.show', $ticket->malfunction_id);
     }
 
-    private function calculateWaitTime($ticket)
-    {
-        if ($ticket) {
-            if ($ticket->status == 'open') {
-                return (int)\Carbon\Carbon::parse($ticket->open_date)->diffInMinutes(now());
-            }
-
-            if ($ticket->status == 'in_progress' && $ticket->progress_date) {
-                return (int)\Carbon\Carbon::parse($ticket->open_date)->diffInMinutes($ticket->progress_date);
-            }
-        }
-        return null;
-    }
 
     public function destroy(Ticket $ticket)
     {
@@ -142,4 +133,3 @@ class TicketController extends Controller
         return redirect()->route('tickets.index');
     }
 }
-
