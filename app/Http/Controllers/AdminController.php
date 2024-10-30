@@ -1,11 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\TicketApprovalRequest;
-use App\Services\Mail\TokenMail;
+use App\Models\EquipmentApprovalRequest;
 use App\Models\Admin;
 use App\Models\TypeChangeRequest;
-use App\Models\User;
 use App\Repositories\TypeChangeRequestRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -85,7 +83,7 @@ class AdminController extends Controller
     public function requests()
     {
         $typeChangeRequests = TypeChangeRequest::where('status', 'pending')->get();
-        $ticketApprovalRequests = TicketApprovalRequest::where('status', 'pending')->get();
+        $ticketApprovalRequests = EquipmentApprovalRequest::where('status', 'pending')->get();
 
         return view('admin.requests', compact('typeChangeRequests', 'ticketApprovalRequests'));
     }
@@ -112,7 +110,7 @@ class AdminController extends Controller
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
 
-    public function approveTicketRequest(TicketApprovalRequest $request)
+    public function approveNewEquipmentRequest(EquipmentApprovalRequest $request)
     {
         $request->update([
             'status' => 'approved',
@@ -123,7 +121,7 @@ class AdminController extends Controller
     }
 
     // Rejeita uma solicitação de ticket
-    public function rejectTicketRequest(TicketApprovalRequest $request)
+    public function rejectNewEquipmentRequest(EquipmentApprovalRequest $request)
     {
         $request->update([
             'status' => 'rejected',

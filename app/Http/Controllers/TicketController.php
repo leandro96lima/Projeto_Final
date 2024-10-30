@@ -68,22 +68,6 @@ class TicketController extends Controller
         $ticket->wait_time;
         $ticket->save();
 
-        // Verifica se o ticket foi criado via partial e precisa de aprovação
-        if (session('ticket_requires_approval', false)) {
-            // Cria a solicitação de aprovação
-            TicketApprovalRequest::create([
-                'ticket_id' => $ticket->id,
-                'user_id' => auth()->id(), // Usuário que criou o ticket
-                'status' => 'pending',
-            ]);
-
-            // Limpa a variável da sessão para evitar que o estado persista acidentalmente
-            session()->forget('ticket_requires_approval');
-
-            // Redireciona com uma mensagem de notificação sobre a aprovação pendente
-            return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso! Aguarde a aprovação de um administrador.');
-        }
-
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
     }
 

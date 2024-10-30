@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TicketApprovalRequest extends Model
+class EquipmentApprovalRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ticket_id', 'user_id', 'approved_by_admin_id', 'status', 'comments'];
+    protected $fillable = ['equipment_id', 'user_id', 'approved_by_admin_id', 'status', 'comments'];
 
     // Relacionamento com o ticket
-    public function ticket()
+    public function equipment()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->belongsTo(Equipment::class);
     }
 
     // Relacionamento com o usuário que criou o ticket
