@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\NotifyAdminsOfEquipment;
 use App\Models\Equipment;
+use App\Models\User;
+use App\Notifications\EquipmentCreatedNotification;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
 
@@ -36,7 +39,11 @@ class EquipmentController extends Controller
 
         $equipment = Equipment::create(array_merge($validatedData));
 
+        // Se a rota parcial for 'user-create-equipment', envie a notificação ao admin
         if ($request->input('from_partial') === 'user-create-equipment') {
+            // Enviar notificação para todos os admins
+            NotifyAdminsOfEquipment::dispatch($equipment);
+
             return view('tickets.create', [
                 'other_type' => $equipment->type,
                 'other_serial_number' => $equipment->serial_number,

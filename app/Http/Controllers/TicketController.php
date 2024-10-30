@@ -6,6 +6,7 @@ use App\Models\Equipment;
 use App\Models\Ticket;
 use App\Models\Technician;
 use App\Models\Malfunction;
+use App\Models\TicketApprovalRequest;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
 
@@ -42,6 +43,7 @@ class TicketController extends Controller
             'description' => 'required|string',
         ]);
 
+        // Verifica se o equipamento existe e é válido
         $equipment = Equipment::where('type', $validatedData['type'])
             ->where('serial_number', $validatedData['serial_number'])
             ->first();
@@ -50,17 +52,35 @@ class TicketController extends Controller
             return redirect()->back()->withErrors(['serial_number' => 'Número de série inválido para este tipo de equipamento.'])->withInput();
         }
 
+        // Cria o registro de malfuncionamento
         $malfunction = new Malfunction();
         $malfunction->status = 'open';
         $malfunction->equipment_id = $equipment->id;
         $malfunction->save();
 
+        // Cria o ticket
         $ticket = new Ticket();
         $ticket->title = $validatedData['title'];
         $ticket->description = $validatedData['description'];
         $ticket->open_date = now();
         $ticket->malfunction_id = $malfunction->id;
         $ticket->save();
+
+        // Verifica se o ticket foi criado via partial e precisa de aprovação
+        if (session('ticket_requires_approval', false)) {
+            // Cria a solicitação de aprovação
+            TicketApprovalRequest::create([
+                'ticket_id' => $ticket->id,
+                'user_id' => auth()->id(), // Usuário que criou o ticket
+                'status' => 'pending',
+            ]);
+
+            // Limpa a variável da sessão para evitar que o estado persista acidentalmente
+            session()->forget('ticket_requires_approval');
+
+            // Redireciona com uma mensagem de notificação sobre a aprovação pendente
+            return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso! Aguarde a aprovação de um administrador.');
+        }
 
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
     }
