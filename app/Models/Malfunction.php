@@ -8,7 +8,7 @@ class Malfunction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cost', 'diagnosis', 'solution', 'technician_id', 'ticket_id', 'equipment_id'];
+    protected $fillable = ['cost', 'diagnosis', 'solution', 'technician_id', 'equipment_id'];
 
 
     public function equipment()
@@ -16,12 +16,10 @@ class Malfunction extends Model
         return $this->belongsTo(Equipment::class);
     }
 
-    // No modelo Malfunction
     public function ticket()
     {
         return $this->hasOne(Ticket::class);
     }
-
 
     public function technician()
     {

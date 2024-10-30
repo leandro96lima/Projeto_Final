@@ -17,15 +17,8 @@ class MalfunctionController extends Controller
 
     public function index()
     {
-        $query = Malfunction::with(['equipment', 'technician', 'ticket']);
+        $malfunctions = Malfunction::with('equipment', 'technician', 'ticket')->get();
 
-        $malfunctions = $query->get();
-
-        foreach ($malfunctions as $malfunction) {
-            if ($malfunction->ticket) {
-                $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction);
-            }
-        }
         return view('malfunctions.index', compact('malfunctions'));
     }
 
@@ -56,10 +49,8 @@ class MalfunctionController extends Controller
 
     public function show(Malfunction $malfunction)
     {
-        $malfunction->load('technician.user', 'tickets');
-
+        $malfunction->load('technician.user');
         $malfunction->ticket->resolution_time = $this->calculateWaitTime($malfunction);
-
         return view('malfunctions.show', compact('malfunction'));
     }
 

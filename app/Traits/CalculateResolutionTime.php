@@ -8,15 +8,13 @@ trait CalculateResolutionTime
 {
     private function calculateResolutionTime($ticket): int
     {
-        if (!$ticket) {
+        if (!$ticket || !$ticket->progress_date || !$ticket->close_date) {
             return 0;
         }
 
         $progressDate = Carbon::parse($ticket->progress_date);
         $closeDate = Carbon::parse($ticket->close_date);
 
-        return $ticket->progress_date && $ticket->close_date
-            ? $progressDate->diffInMinutes($closeDate)
-            : 0;
+        return $progressDate->diffInMinutes($closeDate);
     }
 }
