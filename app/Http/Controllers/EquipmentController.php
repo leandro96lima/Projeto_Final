@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Equipment;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
+use Illuminate\Validation\Rule;
 
 class EquipmentController extends Controller
 {
@@ -27,7 +28,14 @@ class EquipmentController extends Controller
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
-            'serial_number' => 'required|string|max:255|unique:equipments',
+            'serial_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('equipments')->where(function ($query) use ($request) {
+                    return $query->where('type', $request->type);
+                }),
+            ],
         ]);
 
         if (in_array($validatedData['type'], ['OTHER', 'NEW']) && !empty($validatedData['new_type'])) {
@@ -66,7 +74,14 @@ class EquipmentController extends Controller
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
-            'serial_number' => 'required|string|max:255|unique:equipments,serial_number,' . $equipment->id,
+            'serial_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('equipments')->ignore($equipment->id)->where(function ($query) use ($request) {
+                    return $query->where('type', $request->type);
+                }),
+            ],
         ]);
 
         $equipment->update($validatedData);

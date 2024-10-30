@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('manufacturer')->nullable();
             $table->string('model')->nullable();
             $table->string('room')->nullable();
-            $table->string('serial_number')->unique();
+            $table->string('serial_number');
             $table->timestamps();
+
+            $table->unique(['type', 'serial_number']);
         });
     }
 

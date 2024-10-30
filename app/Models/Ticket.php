@@ -10,19 +10,19 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description', 'open_date', 'close_date', 'wait_time', 'urgent', 'technician_id', 'malfunction_id'];
+    protected $fillable = ['title', 'description', 'status', 'urgent','open_date', 'close_date', 'wait_time', 'progress_date', 'resolution_time',  'technician_id', 'malfunction_id', ];
 
-    public function setStatusAttribute($value)
+    protected static function boot()
     {
-        // Se o status está sendo atualizado para "in progress"
-        if ($value === 'in_progress' && $this->status === 'open') {
-            // Calcula o tempo de espera em minutos desde a criação do ticket
-            $this->wait_time = Carbon::now()->diffInMinutes($this->open_date);
-        }
+        parent::boot();
 
-        // Atribui o novo status
-        $this->attributes['status'] = $value;
+        static::creating(function ($ticket) {
+            if (empty($ticket->status)) {
+                $ticket->status = 'open';
+            }
+        });
     }
+
 
     public function technician()
     {

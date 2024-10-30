@@ -23,7 +23,7 @@
                         @foreach ($malfunctions as $malfunction)
                             <tr>
                                 <td class="border px-4 py-2">{{ $malfunction->equipment->type ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->status ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->technician->user->name ?? 'Sem técnico' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->diagnosis ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->resolution_time ?? 'N/A' }}</td>

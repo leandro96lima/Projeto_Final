@@ -13,11 +13,19 @@
                         <p><strong>{{ __('Equipamento') }}</strong> {{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</p>
                         <p><strong>{{ __('Serial Number:') }}</strong> {{ $ticket->malfunction ? $ticket->malfunction->equipment->serial_number : 'N/A' }}</p>
                         <p><strong>{{ __('Sala:') }}</strong> {{ $ticket->malfunction->equipment->room ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Problema:') }}</strong> {{ $ticket->title ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Avaria:') }}</strong> {{ $ticket->title ?? 'N/A' }}</p>
                         <p><strong>{{ __('Descrição:') }}</strong> {{ $ticket->description ?? 'N/A' }}</p>
                         <p><strong>{{ __('Data de abertura:') }}</strong> {{ $ticket->open_date ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Status:') }}</strong> {{ $ticket->malfunction->status ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Tempo de espera') }}</strong> {{ $ticket->wait_time ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Status:') }}</strong> {{ $ticket->status ?? 'N/A' }}</p>
+                        <p><strong>Tempo de Espera:</strong>
+                            <span class="waitTime">
+                                @if($ticket->malfunction)
+                                    {{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)
+                                @else
+                                    Em espera para iniciar
+                                @endif
+                            </span>
+                        </p>
                     </div>
                     <div class="mt-4">
                         <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>

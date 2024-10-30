@@ -17,12 +17,9 @@ class MalfunctionFactory extends Factory
     public function definition()
     {
         return [
-            'status' => $this->faker->randomElement(['open', 'closed', 'in-progress']),
             'cost' => $this->faker->randomFloat(2, 100, 5000),
-            'resolution_time' => $this->faker->numberBetween(1, 48),
             'diagnosis' => $this->faker->sentence(),
             'solution' => $this->faker->sentence(),
-            'urgent' => $this->faker->boolean(),
             'equipment_id' => Equipment::factory(),
             'technician_id' => Technician::factory()
         ];

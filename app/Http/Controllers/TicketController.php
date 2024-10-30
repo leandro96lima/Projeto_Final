@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Equipment;
 use App\Models\Ticket;
-use App\Models\Technician;
 use App\Models\Malfunction;
+use App\Models\Technician;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
 
@@ -15,13 +15,13 @@ class TicketController extends Controller
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
 
-        if ($request->has('status') && $request->status != '') {
-            $query->whereHas('malfunction', function ($query) use ($request) {
-                $query->where('status', $request->status);
-            });
-        }
-
         $tickets = $query->get();
+
+        foreach ($tickets as $ticket) {
+            if ($ticket->malfunction) {
+                $ticket->wait_time = $this->calculateWaitTime($ticket);
+            }
+        }
         return view('tickets.index', compact('tickets'));
     }
 
@@ -51,7 +51,6 @@ class TicketController extends Controller
         }
 
         $malfunction = new Malfunction();
-        $malfunction->status = 'open';
         $malfunction->equipment_id = $equipment->id;
         $malfunction->save();
 
@@ -60,17 +59,23 @@ class TicketController extends Controller
         $ticket->description = $validatedData['description'];
         $ticket->open_date = now();
         $ticket->malfunction_id = $malfunction->id;
+        $ticket->wait_time;
         $ticket->save();
 
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
     }
 
 
-
-    public function show(Ticket $ticket)
+    public function show($id)
     {
+        $ticket = Ticket::findOrFail($id);
+
+        $ticket->wait_time = $this->calculateWaitTime($ticket);
+
         return view('tickets.show', compact('ticket'));
     }
+
+
 
     public function edit(Ticket $ticket)
     {
@@ -82,10 +87,8 @@ class TicketController extends Controller
 
     public function update(Request $request, Ticket $ticket)
     {
-        // Validação dos dados de entrada
         $validatedData = $request->validate([
             'malfunction_id' => 'required|exists:malfunctions,id',
-            'technician_id' => 'required|exists:technicians,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'cost' => 'nullable|numeric',
@@ -95,35 +98,24 @@ class TicketController extends Controller
             'status' => 'nullable|string|in:open,in_progress,closed',
         ]);
 
-        // Atualizando os dados do ticket
-        $ticket->update($validatedData);
+        // Atualiza o ticket e calcula o tempo de espera
+        $ticket->update($validatedData + ['wait_time' => $this->calculateWaitTime($ticket)]);
 
-        // Atualizando a malfunction associada
-        $malfunction = Malfunction::find($validatedData['malfunction_id']);
+        return redirect()->route('malfunctions.show', $ticket->malfunction_id);
+    }
 
-        // Verifica se existe status a ser atualizado
-        if (isset($validatedData['status'])) {
-            $malfunction->status = $validatedData['status'];
-        }
+    private function calculateWaitTime($ticket)
+    {
+        if ($ticket) {
+            if ($ticket->status == 'open') {
+                return (int)\Carbon\Carbon::parse($ticket->open_date)->diffInMinutes(now());
+            }
 
-        // Outros campos de malfunção
-        if (isset($validatedData['cost'])) {
-            $malfunction->cost = $validatedData['cost'];
+            if ($ticket->status == 'in_progress' && $ticket->progress_date) {
+                return (int)\Carbon\Carbon::parse($ticket->open_date)->diffInMinutes($ticket->progress_date);
+            }
         }
-        if (isset($validatedData['resolution_time'])) {
-            $malfunction->resolution_time = $validatedData['resolution_time'];
-        }
-        if (isset($validatedData['diagnosis'])) {
-            $malfunction->diagnosis = $validatedData['diagnosis'];
-        }
-        if (isset($validatedData['solution'])) {
-            $malfunction->solution = $validatedData['solution'];
-        }
-
-        // Atualiza a malfunção
-        $malfunction->save();
-
-        return redirect()->route('malfunctions.show', $malfunction->id);
+        return null;
     }
 
     public function destroy(Ticket $ticket)
