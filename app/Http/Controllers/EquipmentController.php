@@ -28,33 +28,32 @@ class EquipmentController extends Controller
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
-            'serial_number' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('equipments')->where(function ($query) use ($request) {
-                    return $query->where('type', $request->type);
-                }),
-            ],
+            'serial_number' => 'required|string|max:255',
         ]);
 
-        if (in_array($validatedData['type'], ['OTHER', 'NEW']) && !empty($validatedData['new_type'])) {
-            $validatedData['type'] = $validatedData['new_type'];
+        $validatedData['type'] = in_array($validatedData['type'], ['OTHER', 'NEW']) && !empty($validatedData['new_type'])
+            ? $validatedData['new_type']
+            : $validatedData['type'];
+
+        // Verificação manual de duplicidade
+        if (Equipment::where('type', $validatedData['type'])->where('serial_number', $validatedData['serial_number'])->exists()) {
+            return redirect()->back()->withErrors([
+                'serial_number' => 'Este número de série já existe para este tipo de equipamento.'
+            ])->withInput();
         }
 
-        $equipment = Equipment::create(array_merge($validatedData));
+        $equipment = Equipment::create($validatedData);
 
-        if ($request->input('from_partial') === 'user-create-equipment') {
-            return view('tickets.create', [
+        // Renderização condicional da resposta
+        return $request->input('from_partial') === 'user-create-equipment'
+            ? view('tickets.create', [
                 'other_type' => $equipment->type,
                 'other_serial_number' => $equipment->serial_number,
                 'other_room' => $equipment->room,
                 'equipments' => Equipment::all(),
-                'success' => 'Equipamento criado com sucesso!'
-            ]);
-        }
-
-        return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
+                'success' => 'Equipamento criado com sucesso!',
+            ])
+            : redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
     }
 
     public function show(Equipment $equipment)
@@ -78,12 +77,12 @@ class EquipmentController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('equipments')->ignore($equipment->id)->where(function ($query) use ($request) {
-                    return $query->where('type', $request->type);
-                }),
+                Rule::unique('equipments')
+                    ->ignore($equipment->id)
+                    ->where('type', $request->input('type'))
+                    ->where('serial_number', $request->input('serial_number')),
             ],
         ]);
-
         $equipment->update($validatedData);
 
         return redirect()->route('equipments.index')->with('success', 'Equipamento atualizado com sucesso!');

@@ -6,14 +6,26 @@ use App\Models\Ticket;
 use App\Models\Equipment;
 use App\Models\Malfunction;
 use App\Models\Technician;
+use App\Traits\CalculateResolutionTime;
 use Illuminate\Http\Request;
+use App\Traits\CalculateWaitTime;
 
 class MalfunctionController extends Controller
 {
+    use CalculateWaitTime;
+    use CalculateResolutionTime;
+
     public function index()
     {
-        $malfunctions = Malfunction::with('equipment', 'technician', 'ticket')->get();
+        $query = Malfunction::with(['equipment', 'technician', 'ticket']);
 
+        $malfunctions = $query->get();
+
+        foreach ($malfunctions as $malfunction) {
+            if ($malfunction->ticket) {
+                $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction);
+            }
+        }
         return view('malfunctions.index', compact('malfunctions'));
     }
 
@@ -44,7 +56,10 @@ class MalfunctionController extends Controller
 
     public function show(Malfunction $malfunction)
     {
-        $malfunction->load('technician.user');
+        $malfunction->load('technician.user', 'tickets');
+
+        $malfunction->ticket->resolution_time = $this->calculateWaitTime($malfunction);
+
         return view('malfunctions.show', compact('malfunction'));
     }
 
@@ -72,7 +87,6 @@ class MalfunctionController extends Controller
             'urgent' => 'required|boolean',
         ]);
 
-        // Obtenha o ticket associado ao malfunction
         $ticket = $malfunction->ticket;
 
         if ($request->input('action') != 'abrir') {
@@ -107,6 +121,13 @@ class MalfunctionController extends Controller
             $ticket->wait_time = $this->calculateWaitTime($ticket);
         }
 
+        if ($ticket && $ticket->status == 'closed') {
+            $ticket->progress_date = now();
+            $ticket->save();
+
+            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+        }
+
         return redirect()->route('malfunctions.show', $malfunction->id);
     }
 
@@ -116,25 +137,4 @@ class MalfunctionController extends Controller
 
         return redirect()->route('malfunctions.index')->with('success', 'Avaria removida com sucesso!');
     }
-
-    private function calculateWaitTime($ticket)
-    {
-        // Verifica se o ticket tem um malfunction associado
-        if ($ticket) {
-            // Se o ticket estiver aberto
-            if ($ticket->status == 'open') {
-                // Converte open_date para um objeto Carbon e calcula a diferença em minutos
-                return \Carbon\Carbon::parse($ticket->open_date)->diffInMinutes(now());
-            }
-
-            // Se o ticket estiver em progresso
-            if ($ticket->status == 'in_progress' && $ticket->progress_date) {
-                // Converte open_date e progress_date para objetos Carbon e calcula a diferença em minutos
-                return \Carbon\Carbon::parse($ticket->progress_date)->diffInMinutes($ticket->open_date);
-            }
-        }
-
-        return null; // Retorna null se o ticket não estiver aberto ou em progresso
-    }
-
 }

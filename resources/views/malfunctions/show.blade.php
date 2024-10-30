@@ -17,12 +17,19 @@
                         <p><strong>{{ __('Diagnóstico:') }}</strong> {{ $malfunction->diagnosis ?? 'N/A' }}</p>
                         <p><strong>{{ __('Solução:') }}</strong> {{ $malfunction->solution ?? 'N/A' }}</p>
                         <p><strong>{{ __('Custo:') }}</strong> {{ $malfunction->cost ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Tempo de Resolução:') }}</strong> {{ $malfunction->resolution_time ?? 'N/A' }}</p>
+                        <p><strong>Tempo de Resolução:</strong>
+                            <span class="resolutionTime">
+                                @if($malfunction->ticket)
+                                    {{ $malfunction->ticket->resolution_time !== null ? $malfunction->ticket->resolution_time : 'Em espera para terminar' }} minuto(s)
+                                @else
+                                    Em espera para terminar
+                                @endif
+                            </span>
+                        </p>
                     </div>
                     <div class="mt-4">
                         <a href="{{ route('malfunctions.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>
                     </div>
-
                     <div class="border px-4 py-2 inline-flex items-center">
                         <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$malfunction->id]) }}'">Editar Avaria</button>
                     </div>
