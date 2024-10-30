@@ -1,21 +1,26 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Mail\TokenMail;
+use App\Services\Mail\TokenMail;
 use App\Models\Admin;
 use App\Models\TypeChangeRequest;
 use App\Models\User;
+use App\Repositories\TypeChangeRequestRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected TypeChangeRequestRepository $typeChangeRequestRepository;
+
+    public function __construct(TypeChangeRequestRepository $typeChangeRequestRepository)
+    {
+        $this->typeChangeRequestRepository = $typeChangeRequestRepository;
+    }
+
     public function index()
     {
         //
@@ -42,6 +47,7 @@ class AdminController extends Controller
 
         return redirect()->route('admins.index')->with('success', 'Admin criado com sucesso!');
     }
+
     /**
      * Display the specified resource.
      */
@@ -84,44 +90,22 @@ class AdminController extends Controller
     // Método para aprovar uma solicitação
     public function approveTypeChangeRequest(TypeChangeRequest $request)
     {
-        $request->update(['status' => 'approved']);
+        $admin = Auth::user(); // Obtém o admin autenticado
 
-        // Busca o usuário pelo ID e envia o token
-        $user = User::find($request->user_id);
-        $this->sendTypeChangeToken($request->user_id);
+        $this->typeChangeRequestRepository->approveRequest($request, $admin->id);
 
-        return redirect()->back()->with('status', 'Solicitação aprovada.');
+        // Envia o token para o usuário após a aprovação
+        $response = $this->typeChangeRequestRepository->sendTypeChangeToken($request->user_id, $request->requested_type);
+
+        return redirect()->back()->with('status', $response['message']);
     }
 
-    // Método para rejeitar uma solicitação
     public function rejectTypeChangeRequest(TypeChangeRequest $request)
     {
-        $request->update(['status' => 'rejected']);
+        $admin = Auth::user(); // Obtém o admin autenticado
+
+        $this->typeChangeRequestRepository->rejectRequest($request, $admin->id);
+
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
-
-    public function sendTypeChangeToken(Int $user_id)
-    {
-
-
-        // Valida se o usuário já enviou uma solicitação de token recentemente, para evitar spam
-        if (session()->has('type_change_token_sent_at') && now()->diffInMinutes(session('type_change_token_sent_at')) < 5) {
-            return back()->with('status', 'You must wait before requesting a new token.');
-        }
-
-        // Gera um token aleatório
-        $token = Str::random(6);
-
-        $user = User::find($user_id);
-        // Envia o e-mail de forma assíncrona
-        Mail::to($user->email)->later(now()->addSeconds(10), new TokenMail($token));
-
-        // Armazena o token na sessão e o timestamp de envio
-        session(['type_change_token' => $token]);
-        session(['type_change_token_sent_at' => now()]);
-
-        // Redireciona de volta com uma mensagem de sucesso
-        return back()->with('status', 'Token sent to User email.');
-    }
-
 }

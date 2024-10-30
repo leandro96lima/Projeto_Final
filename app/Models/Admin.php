@@ -9,10 +9,6 @@ class Admin extends User
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'additional_admin_attributes'];
+    protected $fillable = ['user_id'];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
+use App\Models\Technician;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -32,17 +35,29 @@ class UserFactory extends Factory
         ];
     }
 
-    public function technician(): static
+    public function withTechnician(array $technicianAttributes = []): static
     {
-        return $this->state(fn (array $attributes) => [
-            'type' => 'Technician', // Define o tipo como Technician
+        return $this->afterCreating(function (User $user) use ($technicianAttributes) {
+            if ($user->type === 'Technician') {
+                Technician::create(array_merge([
+                    'user_id' => $user->id,
+                ], $technicianAttributes));
+            }
+        })->state(fn (array $attributes) => [
+            'type' => 'Technician',
         ]);
     }
 
-    public function admin(): static
+    public function withAdmin(array $adminAttributes = []): static
     {
-        return $this->state(fn (array $attributes) => [
-            'type' => 'Admin', // Define o tipo como Technician
+        return $this->afterCreating(function (User $user) use ($adminAttributes) {
+            if ($user->type === 'Admin') {
+                Admin::create(array_merge([
+                    'user_id' => $user->id,
+                ], $adminAttributes));
+            }
+        })->state(fn (array $attributes) => [
+            'type' => 'Admin',
         ]);
     }
 

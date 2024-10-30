@@ -40,7 +40,7 @@ class TypeChangeRequestNotification extends Notification implements ShouldQueue
      * Cria a mensagem de e-mail para a notificação.
      *
      * @param mixed $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {
