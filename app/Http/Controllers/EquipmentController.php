@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\NotifyAdminsOfEquipment;
 use App\Models\Equipment;
+use App\Models\User;
+use App\Notifications\EquipmentCreatedNotification;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
 use Illuminate\Validation\Rule;
@@ -44,18 +47,22 @@ class EquipmentController extends Controller
 
         $equipment = Equipment::create($validatedData);
 
-        // Renderização condicional da resposta
-        return $request->input('from_partial') === 'user-create-equipment'
-            ? view('tickets.create', [
+        // Se a rota parcial for 'user-create-equipment', envie a notificação ao admin
+        if ($request->input('from_partial') === 'user-create-equipment') {
+            // Enviar notificação para todos os admins
+            NotifyAdminsOfEquipment::dispatch($equipment);
+
+            return view('tickets.create', [
                 'other_type' => $equipment->type,
                 'other_serial_number' => $equipment->serial_number,
                 'other_room' => $equipment->room,
                 'equipments' => Equipment::all(),
                 'success' => 'Equipamento criado com sucesso!',
-            ])
-            : redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
-    }
+            ]);
+        }
 
+        return redirect()->route('equipments.index')->with('success', 'Equipamento criado com sucesso!');
+        }
     public function show(Equipment $equipment)
     {
         return view('equipments.show', compact('equipment'));

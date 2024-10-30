@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\TicketApprovalRequest;
 use App\Services\Mail\TokenMail;
 use App\Models\Admin;
 use App\Models\TypeChangeRequest;
@@ -81,10 +82,12 @@ class AdminController extends Controller
     }
 
     // Método para listar as solicitações pendentes
-    public function typeChangeRequests()
+    public function requests()
     {
-        $requests = TypeChangeRequest::where('status', 'pending')->get();
-        return view('admin.type-change-requests', compact('requests'));
+        $typeChangeRequests = TypeChangeRequest::where('status', 'pending')->get();
+        $ticketApprovalRequests = TicketApprovalRequest::where('status', 'pending')->get();
+
+        return view('admin.requests', compact('typeChangeRequests', 'ticketApprovalRequests'));
     }
 
     // Método para aprovar uma solicitação
@@ -108,4 +111,27 @@ class AdminController extends Controller
 
         return redirect()->back()->with('status', 'Solicitação rejeitada.');
     }
+
+    public function approveTicketRequest(TicketApprovalRequest $request)
+    {
+        $request->update([
+            'status' => 'approved',
+            'approved_by_admin_id' => auth()->id(), // Salva o ID do admin que aprovou
+        ]);
+
+        return redirect()->route('admin.requests')->with('success', 'Ticket request approved successfully.');
+    }
+
+    // Rejeita uma solicitação de ticket
+    public function rejectTicketRequest(TicketApprovalRequest $request)
+    {
+        $request->update([
+            'status' => 'rejected',
+            'approved_by_admin_id' => auth()->id(), // Salva o ID do admin que rejeitou
+        ]);
+
+        return redirect()->route('admin.requests')->with('error', 'Ticket request rejected.');
+    }
+
+
 }

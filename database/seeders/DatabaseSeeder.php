@@ -23,20 +23,20 @@ class DatabaseSeeder extends Seeder
 //        Malfunction::factory(20)->create();
 
 
-        User::factory()->withTechnician([
-            'specialty' => 'Tech',
-        ])->create([
-            'name' => 'Leandro',
-            'email' => 'tech@gmail.com',
-            'password' => Hash::make('123456789'),
-        ]);
-
-//        User::factory()->withAdmin([
-//
+//        User::factory()->withTechnician([
+//            'specialty' => 'Tech',
 //        ])->create([
 //            'name' => 'Leandro',
-//            'email' => 'admin@gmail.com',
+//            'email' => 'tech@gmail.com',
 //            'password' => Hash::make('123456789'),
 //        ]);
+
+        User::factory()->withAdmin([
+
+        ])->create([
+            'name' => 'Leandro',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('123456789'),
+        ]);
     }
 }
