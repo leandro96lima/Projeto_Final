@@ -43,7 +43,7 @@ class EquipmentController extends Controller
         if (Equipment::where('type', $validatedData['type'])->where('serial_number', $validatedData['serial_number'])->exists()) {
             return redirect()->back()->withErrors([
                 'serial_number' => 'Este número de série já existe para este tipo de equipamento.'
-            ])->withInput();
+            ])->withInput()->with('from_partial', 'user-create-equipment'); // Adicionando a variável para a partial
         }
 
         $equipment = Equipment::create($validatedData);
@@ -93,12 +93,12 @@ class EquipmentController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('equipments')
-                    ->ignore($equipment->id)
-                    ->where('type', $request->input('type'))
-                    ->where('serial_number', $request->input('serial_number')),
+                Rule::unique('equipments')->ignore($equipment->id)->where(function ($query) use ($request) {
+                    return $query->where('type', $request->type);
+                }),
             ],
         ]);
+
         $equipment->update($validatedData);
 
         return redirect()->route('equipments.index')->with('success', 'Equipamento atualizado com sucesso!');
