@@ -45,7 +45,7 @@ class User extends Authenticatable
         return $this->type ?? null; // Retorna null se não estiver inicializado
     }
 
-//
+
 //    public function newFromBuilder($attributes = [], $connection = null)
 //    {
 //        $instance = parent::newFromBuilder($attributes, $connection);

@@ -23,13 +23,13 @@ class DatabaseSeeder extends Seeder
 //        Malfunction::factory(20)->create();
 
 
-//        User::factory()->withTechnician([
-//            'specialty' => 'Tech',
-//        ])->create([
-//            'name' => 'Leandro',
-//            'email' => 'tech@gmail.com',
-//            'password' => Hash::make('123456789'),
-//        ]);
+        User::factory()->withTechnician([
+            'specialty' => 'Tech',
+        ])->create([
+            'name' => 'Leandro',
+            'email' => 'tech@gmail.com',
+            'password' => Hash::make('123456789'),
+        ]);
 
         User::factory()->withAdmin([
 
