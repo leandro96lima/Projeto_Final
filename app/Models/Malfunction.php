@@ -8,28 +8,20 @@ class Malfunction extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status', 'cost', 'resolution_time', 'diagnosis', 'solution', 'technician_id', 'equipment_id', 'urgent'];
+    protected $fillable = ['cost', 'diagnosis', 'solution', 'technician_id', 'ticket_id', 'equipment_id'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($malfunction) {
-            if (empty($malfunction->status)) {
-                $malfunction->status = 'open';
-            }
-        });
-    }
 
     public function equipment()
     {
         return $this->belongsTo(Equipment::class);
     }
 
+    // No modelo Malfunction
     public function ticket()
     {
-        return $this->belongsTo(Ticket::class);
+        return $this->hasOne(Ticket::class);
     }
+
 
     public function technician()
     {

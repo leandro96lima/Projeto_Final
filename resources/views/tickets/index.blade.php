@@ -31,9 +31,10 @@
                         <thead>
                         <tr>
                             <th class="px-4 py-2">{{ __('Equipamento') }}</th>
-                            <th class="px-4 py-2">{{ __('Problema') }}</th>
+                            <th class="px-4 py-2">{{ __('Avaria') }}</th>
                             <th class="px-4 py-2">{{ __('Data de Abertura') }}</th>
                             <th class="px-4 py-2">{{ __('Status') }}</th>
+                            <th class="px-4 py-2">{{ __('Tempo de Espera') }}</th>
                             <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
                         </thead>
@@ -43,7 +44,11 @@
                                 <td class="border px-4 py-2">{{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->title }}</td>
                                 <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->malfunction->status ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $ticket->status ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s) </td>
+
+
+
                                 <td class="border px-4 py-2 inline-flex items-center">
                                     <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.show', [$ticket->id]) }}'">Detalhes</button>
                                     <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
@@ -58,4 +63,3 @@
         </div>
     </div>
 </x-app-layout>
-

@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
+            $table->string('status')->default('open');
+            $table->boolean('urgent')->default(false);
             $table->dateTime('open_date');
             $table->dateTime('close_date')->nullable();
             $table->integer('wait_time')->nullable();
+            $table->dateTime('progress_date')->nullable();
+            $table->integer('resolution_time')->nullable();
             $table->foreignId('technician_id')->nullable()->constrained('technicians')->onDelete('cascade');
             $table->foreignId('malfunction_id')->nullable()->constrained('malfunctions')->onDelete('cascade');
             $table->timestamps();
