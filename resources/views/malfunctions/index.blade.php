@@ -52,6 +52,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-4">
+                        {{ $malfunctions->links() }}
+                    </div>
                 </div>
             </div>
         </div>

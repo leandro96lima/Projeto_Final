@@ -29,7 +29,7 @@ class MalfunctionController extends Controller
             })->orWhere('diagnosis', 'like', '%' . $search . '%');
         }
 
-        $malfunctions = $query->get();
+        $malfunctions = $query->paginate(10);
 
         // Atualiza o resolution_time para malfunctions com ticket status 'in_progress'
         foreach ($malfunctions as $malfunction) {

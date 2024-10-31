@@ -41,7 +41,7 @@ class TicketController extends Controller
             });
         }
 
-        $tickets = $query->get();
+        $tickets = $query->paginate(10);
 
         foreach ($tickets as $ticket) {
             if ($ticket->malfunction) {

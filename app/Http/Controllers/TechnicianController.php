@@ -22,7 +22,7 @@ class TechnicianController extends Controller
             })->orWhere('specialty', 'like', '%' . $search . '%');
         }
 
-        $technicians = $query->get();
+        $technicians = $query->paginate(10);
 
         return view('technicians.index', compact('technicians'));
     }

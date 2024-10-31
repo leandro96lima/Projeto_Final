@@ -38,6 +38,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    <div class="mt-4">
+                        {{ $technicians->links() }}
+                    </div>
                 </div>
             </div>
         </div>

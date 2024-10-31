@@ -28,7 +28,7 @@ class EquipmentController extends Controller
             });
         }
 
-        $equipments = $query->get();
+        $equipments = $query->paginate(10);
 
         return view('equipments.index', compact('equipments'));
     }
