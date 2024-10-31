@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
+use App\Models\EquipmentApprovalRequest;
 use App\Models\Ticket;
 use App\Models\Malfunction;
 use App\Traits\CalculateResolutionTime;
@@ -88,15 +89,27 @@ class TicketController extends Controller
         $ticket->open_date = now();
         $ticket->malfunction_id = $malfunction->id;
 
+        // Verifica se a requisição veio do EquipmentController
         $comesFromEquipmentController = session('from_equipment_controller', false);
 
-        if ($comesFromEquipmentController) {
-            $ticket->status = 'pending_approval';
-            session()->forget('from_equipment_controller');
-        }
+        // Define o status como 'pending_approval' ou 'open'
+        $ticket->status = $comesFromEquipmentController ? 'pending_approval' : '    open';
+        $ticket->wait_time = null; // Ou ajuste conforme necessário
+        $ticket->save(); // Salva o ticket
 
-        $ticket->wait_time;
-        $ticket->save();
+        if ($comesFromEquipmentController) {
+            // Aqui, associar o ticket_id à EquipmentApprovalRequest
+            $equipmentApprovalRequest = EquipmentApprovalRequest::where('equipment_id', $equipment->id)
+                ->where('status', 'pending') // Certifique-se de pegar a solicitação correta
+                ->first();
+
+            if ($equipmentApprovalRequest) {
+                $equipmentApprovalRequest->ticket_id = $ticket->id; // Atribui o ID do ticket
+                $equipmentApprovalRequest->save(); // Salva a alteração
+            }
+
+            session()->forget('from_equipment_controller'); // Limpa a sessão
+        }
 
         return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
     }

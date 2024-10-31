@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('equipment_approval_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('equipment_id')->constrained('equipments')->onDelete('cascade'); // ID do ticket que requer aprovação
+            $table->foreignId('equipment_id')->constrained('equipments')->onDelete('cascade');
+            $table->foreignId('ticket_id')->nullable()->constrained('tickets')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // ID do usuário que criou o ticket
             $table->foreignId('approved_by_admin_id')->nullable()->constrained('users')->onDelete('set null'); // Admin que aprovou/rejeitou
             $table->string('status')->default('pending'); // 'pending', 'approved', 'rejected'
