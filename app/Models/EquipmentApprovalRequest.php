@@ -9,7 +9,7 @@ class EquipmentApprovalRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['equipment_id', 'user_id', 'approved_by_admin_id', 'status', 'comments'];
+    protected $fillable = ['equipment_id', 'user_id', 'ticket_id', 'approved_by_admin_id', 'status', 'comments'];
 
     // Relacionamento com o ticket
     public function equipment()
