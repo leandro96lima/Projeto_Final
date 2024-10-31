@@ -17,19 +17,41 @@ class TicketController extends Controller
     use CalculateWaitTime;
     use CalculateResolutionTime;
 
-    public function index()
+    public function index(Request $request)
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
+
+        // Verifica se há um status a ser filtrado
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Verifica se há uma pesquisa a ser realizada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                // Adicione as condições que você deseja pesquisar
+                $q->whereHas('malfunction', function($q) use ($search) {
+                    $q->where('title', 'like', '%' . $search . '%')
+                        ->orWhereHas('equipment', function($q) use ($search) {
+                            $q->where('type', 'like', '%' . $search . '%');
+                        });
+                });
+            });
+        }
 
         $tickets = $query->get();
 
         foreach ($tickets as $ticket) {
             if ($ticket->malfunction) {
                 $ticket->wait_time = $this->calculateWaitTime($ticket);
+                $ticket->resolution_time = $this->calculateResolutionTime($ticket);
             }
         }
+
         return view('tickets.index', compact('tickets'));
     }
+
 
     public function create()
     {
@@ -65,6 +87,14 @@ class TicketController extends Controller
         $ticket->description = $validatedData['description'];
         $ticket->open_date = now();
         $ticket->malfunction_id = $malfunction->id;
+
+        $comesFromEquipmentController = session('from_equipment_controller', false);
+
+        if ($comesFromEquipmentController) {
+            $ticket->status = 'pending_approval';
+            session()->forget('from_equipment_controller');
+        }
+
         $ticket->wait_time;
         $ticket->save();
 
@@ -103,9 +133,27 @@ class TicketController extends Controller
             'status' => 'nullable|string|in:open,in_progress,closed',
         ]);
 
-        $ticket->update($validatedData + ['wait_time' => $this->calculateWaitTime($ticket)]);
+        // Atualiza o `progress_date` quando o status muda para "in_progress"
+        if ($validatedData['status'] === 'in_progress' && !$ticket->progress_date) {
+            $ticket->progress_date = now();
+        }
 
-        $ticket->update($validatedData + ['resolution_time' => $this->calculateResolutionTime($ticket)]);
+        // Define `close_date` e `resolution_time` ao mudar para "closed"
+        if ($validatedData['status'] === 'closed' && !$ticket->close_date) {
+            $ticket->close_date = now();
+            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+            $ticket->save();
+        } elseif ($validatedData['status'] !== 'closed') {
+            // Atualiza o tempo de resolução em andamento
+            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+            $ticket->save();
+        }
+
+        // Atualiza outros campos do ticket e salva
+        $ticket->update($validatedData + [
+                'wait_time' => $this->calculateWaitTime($ticket),
+                'resolution_time' => $this->calculateResolutionTime($ticket),
+            ]);
 
         return redirect()->route('malfunctions.show', $ticket->malfunction_id);
     }

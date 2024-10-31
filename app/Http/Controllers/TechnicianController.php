@@ -9,11 +9,24 @@ use Illuminate\Http\Request;
 
 class TechnicianController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $technicians = Technician::with('user')->get();
+        $query = Technician::with('user');
+
+        // Verifica se há uma pesquisa a ser realizada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            })->orWhere('specialty', 'like', '%' . $search . '%');
+        }
+
+        $technicians = $query->get();
+
         return view('technicians.index', compact('technicians'));
     }
+
 
     public function create()
     {

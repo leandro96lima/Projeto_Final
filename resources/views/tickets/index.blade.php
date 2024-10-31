@@ -18,8 +18,13 @@
                 </form>
             </div>
         </div>
-        <div class="mt-4">
+
+        <div class="d-flex align-items-center">
             <a href="{{ route('tickets.create') }}" class="btn btn-success">Criar Novo Ticket</a>
+            <form action="{{ route('tickets.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
+                <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
+                <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
+            </form>
         </div>
     </x-slot>
 

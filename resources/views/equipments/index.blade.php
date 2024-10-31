@@ -1,13 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight me-3">
                 {{ __('Lista de Equipamentos') }}
             </h2>
-            <br>
-            <a href="{{ route('equipments.create') }}" class="btn btn-success">Criar Novo Equipamento</a>
+            <div class="d-flex align-items-center">
+                <a href="{{ route('equipments.create') }}" class="btn btn-success me-2">Criar Novo Equipamento</a>
+                <form action="{{ route('equipments.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
+                    <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
+                    <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
+                </form>
+            </div>
         </div>
     </x-slot>
+
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

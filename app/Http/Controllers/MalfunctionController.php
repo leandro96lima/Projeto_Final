@@ -15,12 +15,34 @@ class MalfunctionController extends Controller
     use CalculateWaitTime;
     use CalculateResolutionTime;
 
-    public function index()
+    public function index(Request $request)
     {
-        $malfunctions = Malfunction::with('equipment', 'technician', 'ticket')->get();
+        $query = Malfunction::with('equipment', 'technician', 'ticket');
+
+        // Verifica se há uma pesquisa a ser realizada
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->whereHas('equipment', function($q) use ($search) {
+                $q->where('type', 'like', '%' . $search . '%');
+            })->orWhereHas('technician.user', function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            })->orWhere('diagnosis', 'like', '%' . $search . '%');
+        }
+
+        $malfunctions = $query->get();
+
+        // Atualiza o resolution_time para malfunctions com ticket status 'in_progress'
+        foreach ($malfunctions as $malfunction) {
+            if ($malfunction->ticket && $malfunction->ticket->status === 'in_progress') {
+                $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
+                $malfunction->ticket->save();
+            }
+        }
 
         return view('malfunctions.index', compact('malfunctions'));
     }
+
+
 
     public function create()
     {
@@ -49,10 +71,18 @@ class MalfunctionController extends Controller
 
     public function show(Malfunction $malfunction)
     {
-        $malfunction->load('technician.user');
-        $malfunction->ticket->resolution_time = $this->calculateWaitTime($malfunction);
+        // Carregar relações necessárias
+        $malfunction->load('equipment', 'technician.user', 'ticket');
+
+        // Verificar e calcular o tempo de resolução se o status estiver 'in_progress'
+        if ($malfunction->ticket && $malfunction->ticket->status === 'in_progress') {
+            $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
+            $malfunction->ticket->save();
+        }
+
         return view('malfunctions.show', compact('malfunction'));
     }
+
 
     public function edit(Malfunction $malfunction, Request $request)
     {
@@ -106,17 +136,14 @@ class MalfunctionController extends Controller
         }
 
         if ($ticket && $ticket->status == 'in_progress') {
-            $ticket->progress_date = now();
+            $ticket->progress_date = $ticket->progress_date ?? now();
+            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
             $ticket->save();
-
-            $ticket->wait_time = $this->calculateWaitTime($ticket);
         }
 
         if ($ticket && $ticket->status == 'closed') {
-            $ticket->progress_date = now();
-            $ticket->save();
-
             $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+            $ticket->save();
         }
 
         return redirect()->route('malfunctions.show', $malfunction->id);

@@ -13,11 +13,26 @@ use Illuminate\Validation\Rule;
 
 class EquipmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $equipments = Equipment::all();
+        $query = Equipment::query();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('type', 'like', '%' . $search . '%')
+                    ->orWhere('manufacturer', 'like', '%' . $search . '%')
+                    ->orWhere('model', 'like', '%' . $search . '%')
+                    ->orWhere('serial_number', 'like', '%' . $search . '%')
+                    ->orWhere('room', 'like', '%' . $search . '%');
+            });
+        }
+
+        $equipments = $query->get();
+
         return view('equipments.index', compact('equipments'));
     }
+
 
     public function create()
     {
@@ -39,6 +54,8 @@ class EquipmentController extends Controller
             ? $validatedData['new_type']
             : $validatedData['type'];
 
+        $validatedData['type'] = ucwords(strtolower($validatedData['type']));
+
         // Verificação manual de duplicidade
         if (Equipment::where('type', $validatedData['type'])->where('serial_number', $validatedData['serial_number'])->exists()) {
             return redirect()->back()->withErrors([
@@ -59,6 +76,8 @@ class EquipmentController extends Controller
                 'user_id' => auth()->id(), // Usuário que criou o equipamento
                 'status' => 'pending',
             ]);
+
+            session()->put('from_equipment_controller', true);
 
 
             return view('tickets.create', [

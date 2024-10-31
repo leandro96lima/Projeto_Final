@@ -3,6 +3,13 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Lista de Técnicos') }}
         </h2>
+
+        <div class="d-flex align-items-center">
+            <form action="{{ route('technicians.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
+                <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
+                <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
+            </form>
+        </div>
     </x-slot>
 
     <div class="py-12">
