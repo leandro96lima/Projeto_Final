@@ -49,7 +49,7 @@
                             @if(isset($other_room))
                                 <input type="text" id="room" name="room" value="{{ $other_room }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
                             @else
-                                <input type="text" id="room" name="room" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                <input type="text" id="room" name="room" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" readonly>
                             @endif
                             @error('other_room')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
@@ -159,7 +159,11 @@
             updateSerialNumbers(); // Atualiza o dropdown de números de série
             togglePartialDisplay(); // Atualiza a exibição do conteúdo
         });
-        document.getElementById('serial_number').addEventListener('change', togglePartialDisplay); // Atualiza a exibição do conteúdo
+
+        document.getElementById('serial_number').addEventListener('change', () => {
+            updateRoomBasedOnSerial(); // Atualiza a sala com base no número de série
+            togglePartialDisplay(); // Atualiza a exibição do conteúdo
+        });
 
         // Chama a função para garantir que a exibição do partialContent seja atualizada na carga da página
         togglePartialDisplay();
