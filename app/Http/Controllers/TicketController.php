@@ -46,6 +46,7 @@ class TicketController extends Controller
             if ($ticket->malfunction) {
                 $ticket->wait_time = $this->calculateWaitTime($ticket);
                 $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+                $ticket->save();
             }
         }
 
