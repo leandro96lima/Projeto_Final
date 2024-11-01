@@ -16,12 +16,12 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('tickets.index')">
+                        {{ __('Tickets') }}
+                    </x-nav-link>
                     @if(in_array(Auth::user()->getType(), ['Admin', 'Technician']))
                     <x-nav-link :href="route('equipments.index')">
                         {{ __('Equipamentos') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('tickets.index')">
-                        {{ __('Tickets') }}
                     </x-nav-link>
                     <x-nav-link :href="route('technicians.index')">
                         {{ __('Técnicos') }}

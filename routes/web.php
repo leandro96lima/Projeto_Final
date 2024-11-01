@@ -31,13 +31,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/tickets/partials/user-create-equipment', function () {
         return view('user-create-equipment'); // Retorna a view do partial
     })->name('user.create.equipment');
+
+    Route::resources([
+        'tickets' => TicketController::class,
+    ]);
+
+
 });
+
 
 Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {
     Route::resources([
         'equipments' => EquipmentController::class,
         'malfunctions' => MalfunctionController::class,
-        'tickets' => TicketController::class,
         'technicians' => TechnicianController::class
     ]);
 });
