@@ -7,13 +7,13 @@ use App\Models\Equipment;
 use App\Models\Malfunction;
 use App\Models\Technician;
 use App\Traits\CalculateResolutionTime;
+use App\Traits\CalculateTime;
 use Illuminate\Http\Request;
 use App\Traits\CalculateWaitTime;
 
 class MalfunctionController extends Controller
 {
-    use CalculateWaitTime;
-    use CalculateResolutionTime;
+    use CalculateTime;
 
     public function index(Request $request)
     {
@@ -33,10 +33,7 @@ class MalfunctionController extends Controller
 
         // Atualiza o resolution_time para malfunctions com ticket status 'in_progress'
         foreach ($malfunctions as $malfunction) {
-            if ($malfunction->ticket && $malfunction->ticket->status === 'in_progress') {
-                $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
-                $malfunction->ticket->save();
-            }
+            $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
         }
 
         return view('malfunctions.index', compact('malfunctions'));
@@ -73,12 +70,8 @@ class MalfunctionController extends Controller
     {
         // Carregar relações necessárias
         $malfunction->load('equipment', 'technician.user', 'ticket');
+        $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
 
-        // Verificar e calcular o tempo de resolução se o status estiver 'in_progress'
-        if ($malfunction->ticket && $malfunction->ticket->status === 'in_progress') {
-            $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
-            $malfunction->ticket->save();
-        }
 
         return view('malfunctions.show', compact('malfunction'));
     }
@@ -143,6 +136,7 @@ class MalfunctionController extends Controller
 
         if ($ticket && $ticket->status == 'closed') {
             $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+            $ticket-> close_date = now();
             $ticket->save();
         }
 

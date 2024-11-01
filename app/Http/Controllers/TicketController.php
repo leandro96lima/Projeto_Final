@@ -7,6 +7,7 @@ use App\Models\EquipmentApprovalRequest;
 use App\Models\Ticket;
 use App\Models\Malfunction;
 use App\Traits\CalculateResolutionTime;
+use App\Traits\CalculateTime;
 use App\Traits\CalculateWaitTime;
 use App\Models\Technician;
 use App\Models\TicketApprovalRequest;
@@ -15,8 +16,7 @@ use App\Enums\EquipmentType;
 
 class TicketController extends Controller
 {
-    use CalculateWaitTime;
-    use CalculateResolutionTime;
+    use CalculateTime;
 
     public function index(Request $request)
     {
@@ -46,8 +46,6 @@ class TicketController extends Controller
         foreach ($tickets as $ticket) {
             if ($ticket->malfunction) {
                 $ticket->wait_time = $this->calculateWaitTime($ticket);
-                $ticket->resolution_time = $this->calculateResolutionTime($ticket);
-                $ticket->save();
             }
         }
 
@@ -134,43 +132,43 @@ class TicketController extends Controller
         return view('tickets.edit', compact('ticket', 'technicians', 'malfunctions'));
     }
 
-    public function update(Request $request, Ticket $ticket)
-    {
-        $validatedData = $request->validate([
-            'malfunction_id' => 'required|exists:malfunctions,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'cost' => 'nullable|numeric',
-            'resolution_time' => 'nullable|integer',
-            'diagnosis' => 'nullable|string',
-            'solution' => 'nullable|string',
-            'status' => 'nullable|string|in:open,in_progress,closed',
-        ]);
-
-        // Atualiza o `progress_date` quando o status muda para "in_progress"
-        if ($validatedData['status'] === 'in_progress' && !$ticket->progress_date) {
-            $ticket->progress_date = now();
-        }
-
-        // Define `close_date` e `resolution_time` ao mudar para "closed"
-        if ($validatedData['status'] === 'closed' && !$ticket->close_date) {
-            $ticket->close_date = now();
-            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
-            $ticket->save();
-        } elseif ($validatedData['status'] !== 'closed') {
-            // Atualiza o tempo de resolução em andamento
-            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
-            $ticket->save();
-        }
-
-        // Atualiza outros campos do ticket e salva
-        $ticket->update($validatedData + [
-                'wait_time' => $this->calculateWaitTime($ticket),
-                'resolution_time' => $this->calculateResolutionTime($ticket),
-            ]);
-
-        return redirect()->route('malfunctions.show', $ticket->malfunction_id);
-    }
+//    public function update(Request $request, Ticket $ticket)
+//    {
+//        $validatedData = $request->validate([
+//            'malfunction_id' => 'required|exists:malfunctions,id',
+//            'title' => 'required|string|max:255',
+//            'description' => 'required|string',
+//            'cost' => 'nullable|numeric',
+//            'resolution_time' => 'nullable|integer',
+//            'diagnosis' => 'nullable|string',
+//            'solution' => 'nullable|string',
+//            'status' => 'nullable|string|in:open,in_progress,closed',
+//        ]);
+//
+//        // Atualiza o `progress_date` quando o status muda para "in_progress"
+//        if ($validatedData['status'] === 'in_progress' && !$ticket->progress_date) {
+//            $ticket->progress_date = now();
+//        }
+//
+//        // Define `close_date` e `resolution_time` ao mudar para "closed"
+//        if ($validatedData['status'] === 'closed') {
+//            $ticket->close_date = now();
+//            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+//            $ticket->save();
+//        } elseif ($validatedData['status'] !== 'closed') {
+//            // Atualiza o tempo de resolução em andamento
+//            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
+//            $ticket->save();
+//        }
+//
+//        // Atualiza outros campos do ticket e salva
+//        $ticket->update($validatedData + [
+//                'wait_time' => $this->calculateWaitTime($ticket),
+//                'resolution_time' => $this->calculateResolutionTime($ticket),
+//            ]);
+//
+//        return redirect()->route('malfunctions.show', $ticket->malfunction_id);
+//    }
 
 
     public function destroy(Ticket $ticket)
