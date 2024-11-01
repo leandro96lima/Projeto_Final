@@ -9,7 +9,7 @@ class Equipment extends Model
     use HasFactory;
 
     protected $table = 'equipments';
-    protected $fillable = ['type', 'manufacturer', 'model', 'room', 'serial_number'];
+    protected $fillable = ['type', 'manufacturer', 'model', 'room', 'serial_number', 'is_approved'];
 
     public function malfunctions()
     {

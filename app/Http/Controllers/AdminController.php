@@ -128,6 +128,12 @@ class AdminController extends Controller
             $ticket->save();
         }
 
+        $equipment = Equipment::find($request->equipment_id);
+        if ($equipment) {
+            $equipment->is_approved = true;
+            $equipment->save();
+        }
+
         return redirect()->route('admin.requests')->with('success', 'Ticket request approved successfully.');
     }
 

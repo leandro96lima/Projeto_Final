@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('model')->nullable();
             $table->string('room')->nullable();
             $table->string('serial_number');
+            $table->boolean('is_approved')->default(true);
             $table->timestamps();
 
             $table->unique(['type', 'serial_number']);

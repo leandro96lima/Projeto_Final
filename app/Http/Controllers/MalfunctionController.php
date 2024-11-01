@@ -41,30 +41,30 @@ class MalfunctionController extends Controller
 
 
 
-    public function create()
-    {
-        $equipments = Equipment::all();
-        $technicians = Technician::all();
-
-        return view('malfunctions.create', compact('equipments', 'technicians'));
-    }
-
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'cost' => 'nullable|numeric',
-            'resolution_time' => 'nullable|integer',
-            'diagnosis' => 'nullable|string',
-            'solution' => 'nullable|string',
-            'technician_id' => 'required|exists:technicians,id',
-            'equipment_id' => 'required|exists:equipments,id',
-            'urgent' => 'required|boolean',
-        ]);
-
-        Malfunction::create($validatedData);
-
-        return redirect()->route('tickets.index')->with('success', 'Avaria criada com sucesso!');
-    }
+//    public function create()
+//    {
+//        $equipments = Equipment::all();
+//        $technicians = Technician::all();
+//
+//        return view('malfunctions.create', compact('equipments', 'technicians'));
+//    }
+//
+//    public function store(Request $request)
+//    {
+//        $validatedData = $request->validate([
+//            'cost' => 'nullable|numeric',
+//            'resolution_time' => 'nullable|integer',
+//            'diagnosis' => 'nullable|string',
+//            'solution' => 'nullable|string',
+//            'technician_id' => 'required|exists:technicians,id',
+//            'equipment_id' => 'required|exists:equipments,id',
+//            'urgent' => 'required|boolean',
+//        ]);
+//
+//        Malfunction::create($validatedData);
+//
+//        return redirect()->route('tickets.index')->with('success', 'Avaria criada com sucesso!');
+//    }
 
     public function show(Malfunction $malfunction)
     {
@@ -126,18 +126,6 @@ class MalfunctionController extends Controller
                     'urgent' => $validatedData['urgent']
                 ]);
             }
-        }
-
-        if ($ticket && $ticket->status == 'in_progress') {
-            $ticket->progress_date = $ticket->progress_date ?? now();
-            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
-            $ticket->save();
-        }
-
-        if ($ticket && $ticket->status == 'closed') {
-            $ticket->resolution_time = $this->calculateResolutionTime($ticket);
-            $ticket-> close_date = now();
-            $ticket->save();
         }
 
         return redirect()->route('malfunctions.show', $malfunction->id);

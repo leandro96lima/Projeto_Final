@@ -65,10 +65,13 @@ class EquipmentController extends Controller
 
         $equipment = Equipment::create($validatedData);
 
+
         // Se a rota parcial for 'user-create-equipment', envie a notificação ao admin
         if ($request->input('from_partial') === 'user-create-equipment') {
             // Enviar notificação para todos os admins
             NotifyAdminsOfEquipment::dispatch($equipment);
+            $equipment->is_approved = false;
+            $equipment->save();
 
             // Cria a solicitação de aprovação
             EquipmentApprovalRequest::create([

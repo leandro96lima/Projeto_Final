@@ -116,7 +116,7 @@
             serialNumberSelect.innerHTML = '<option value="">Selecione um Número de Série</option>';
 
             // Filtra os equipamentos com base no tipo selecionado e adiciona ao dropdown
-            const filteredEquipments = equipmentData.filter(equipment => equipment.type === selectedType);
+            const filteredEquipments = equipmentData.filter(equipment => (equipment.type === selectedType) && equipment.is_approved);
             if (filteredEquipments.length > 0) {
                 filteredEquipments.forEach(equipment => {
                     const option = document.createElement('option');

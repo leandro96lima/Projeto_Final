@@ -14,7 +14,6 @@
         </div>
     </x-slot>
 
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -27,6 +26,7 @@
                             <th class="px-4 py-2">{{ __('Modelo') }}</th>
                             <th class="px-4 py-2">{{ __('Serial Number') }}</th>
                             <th class="px-4 py-2">{{ __('Sala') }}</th>
+                            <th class="px-4 py-2">{{ __('Aprovado') }}</th> <!-- Nova coluna para is_approved -->
                             <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
                         </thead>
@@ -38,6 +38,9 @@
                                 <td class="border px-4 py-2">{{ $equipment->model ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $equipment->serial_number ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $equipment->room ?? 'N/A' }}</td>
+                                <td class="border px-4 py-2">
+                                    {{ $equipment->is_approved ? 'Sim' : 'Pendente' }} <!-- Exibe se está aprovado -->
+                                </td>
                                 <td class="border px-4 py-2 inline-flex items-center">
                                     <button type="button" class="btn btn-success mx-1" onclick="window.location.href='{{ route('equipments.show', $equipment->id) }}'">Detalhes</button>
                                     <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('equipments.edit', $equipment->id) }}'">Editar</button>
