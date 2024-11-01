@@ -33,4 +33,10 @@ class Ticket extends Model
     {
         return $this->belongsTo(Malfunction::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

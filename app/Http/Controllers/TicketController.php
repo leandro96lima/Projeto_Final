@@ -87,6 +87,7 @@ class TicketController extends Controller
         $ticket->description = $validatedData['description'];
         $ticket->open_date = now();
         $ticket->malfunction_id = $malfunction->id;
+        $ticket->user_id = auth()->id();
 
         // Verifica se a requisição veio do EquipmentController
         $comesFromEquipmentController = session('from_equipment_controller', false);

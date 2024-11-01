@@ -22,8 +22,14 @@ return new class extends Migration
             $table->integer('wait_time')->nullable();
             $table->dateTime('progress_date')->nullable();
             $table->integer('resolution_time')->nullable();
+
+            // First define the user_id column
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+
+            // Define other foreign keys
             $table->foreignId('technician_id')->nullable()->constrained('technicians')->onDelete('cascade');
             $table->foreignId('malfunction_id')->nullable()->constrained('malfunctions')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

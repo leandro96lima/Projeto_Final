@@ -7,15 +7,28 @@ use App\Models\User;
 
 class TicketPolicy
 {
-    public function viewAny(User $user)
+    const ADMIN = 'Admin';
+    const TECHNICIAN = 'Technician';
+
+    private function isAdminOrTechnician(User $user): bool
     {
-        // Verifica se o usuário é um admin ou technician
-        return $user->getType() === 'Admin' || $user->getType() === 'Technician';
+        return in_array($user->getType(), [self::ADMIN, self::TECHNICIAN]);
     }
 
+    /**
+     * Determine if the user can view any tickets.
+     */
+    public function viewAny(User $user)
+    {
+        return $this->isAdminOrTechnician($user);
+    }
+
+    /**
+     * Determine if the user can view a specific ticket.
+     */
     public function view(User $user, Ticket $ticket)
     {
-        // Usuários normais só podem ver seus próprios tickets
-        return $user->id === $ticket->user_id || $this->viewAny($user);
+        return $user->id === $ticket->user_id || $this->isAdminOrTechnician($user);
     }
 }
+
