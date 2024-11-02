@@ -45,24 +45,24 @@
                         </tr>
                         </thead>
                         <tbody>
-
-                            @foreach ($tickets as $ticket)
+                        @foreach ($tickets as $ticket)
+                            @can('view', $ticket)
                                 <tr>
                                     <td class="border px-4 py-2">{{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $ticket->title }}</td>
                                     <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
                                     <td class="border px-4 py-2">{{ $ticket->status ?? 'N/A' }}</td>
-                                    <td class="border px-4 py-2">{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s) </td>
+                                    <td class="border px-4 py-2">{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)</td>
                                     <td class="border px-4 py-2 inline-flex items-center">
                                         <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.show', [$ticket->id]) }}'">Detalhes</button>
-                                        @can('viewAny', App\Models\Ticket::class)
-                                            <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
-                                            <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Concluir Reparo</button>
+                                        @can('update', $ticket) <!-- Verifique se o usuário pode atualizar -->
+                                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
+                                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Concluir Reparo</button>
                                         @endcan
                                     </td>
                                 </tr>
-                            @endforeach
-                        </tbody>
+                            @endcan
+                        @endforeach                         </tbody>
                     </table>
                     <div class="mt-4">
                         {{ $tickets->links() }}

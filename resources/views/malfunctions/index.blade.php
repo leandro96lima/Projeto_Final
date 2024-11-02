@@ -28,6 +28,7 @@
                         </thead>
                         <tbody>
                         @foreach ($malfunctions as $malfunction)
+                            @can('view', $malfunction)
                             <tr>
                                 <td class="border px-4 py-2">{{ $malfunction->equipment->type ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
@@ -49,6 +50,7 @@
                                     </form>
                                 </td>
                             </tr>
+                            @endcan
                         @endforeach
                         </tbody>
                     </table>

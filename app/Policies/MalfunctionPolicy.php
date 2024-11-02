@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Malfunction;
 use App\Models\User;
 
 class MalfunctionPolicy extends RolePolicy
@@ -12,6 +13,11 @@ class MalfunctionPolicy extends RolePolicy
     public function viewAny(User $user)
     {
         return parent::canViewAny($user);
+    }
+
+    public function view(User $user, Malfunction $malfunction): bool
+    {
+        return $user->id === $malfunction->technician_id || $this->isAdminOrTechnician($user);
     }
 
     /**
