@@ -45,13 +45,18 @@ Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(f
     Route::resources([
         'malfunctions' => MalfunctionController::class,
         'technicians' => TechnicianController::class,
-        'equipments' => EquipmentController::class,
+
     ]);
 });
 
 
 
 Route::middleware(['auth', CheckUserType::class . ':Admin'])->group(function () {
+
+    Route::resources([
+        'equipments' => EquipmentController::class,
+    ]);
+
     Route::get('/admin/requests', [AdminController::class, 'requests'])->name('admin.requests');
     Route::post('/admin/requests/{request}/approve', [AdminController::class, 'approveTypeChangeRequest'])->name('admin.approve-type-change-request');
     Route::post('/admin/requests/{request}/reject', [AdminController::class, 'rejectTypeChangeRequest'])->name('admin.reject-type-change-request');

@@ -19,7 +19,7 @@ class CheckUserType
      * @return mixed
      */
 
-    public function handle(Request $request, Closure $next, string $types): mixed
+    public function handle(Request $request, Closure $next, string $types): Response
     {
         if (Auth::check()) {
             $user = Auth::user()->fresh(); // Recarrega o usuário autenticado

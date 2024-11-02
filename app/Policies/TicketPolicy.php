@@ -5,22 +5,14 @@ namespace App\Policies;
 use App\Models\Ticket;
 use App\Models\User;
 
-class TicketPolicy
+class TicketPolicy extends RolePolicy
 {
-    const ADMIN = 'Admin';
-    const TECHNICIAN = 'Technician';
-
-    private function isAdminOrTechnician(User $user): bool
-    {
-        return in_array($user->getType(), [self::ADMIN, self::TECHNICIAN]);
-    }
-
     /**
      * Determine if the user can view any tickets.
      */
     public function viewAny(User $user)
     {
-        return $this->isAdminOrTechnician($user);
+        return parent::canViewAny($user);
     }
 
     /**
@@ -31,4 +23,3 @@ class TicketPolicy
         return $user->id === $ticket->user_id || $this->isAdminOrTechnician($user);
     }
 }
-

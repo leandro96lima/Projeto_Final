@@ -6,13 +6,13 @@ use App\Models\Ticket;
 use App\Models\Equipment;
 use App\Models\Malfunction;
 use App\Models\Technician;
-use App\Traits\CalculateResolutionTime;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Traits\CalculateTime;
 use Illuminate\Http\Request;
-use App\Traits\CalculateWaitTime;
 
 class MalfunctionController extends Controller
 {
+    use AuthorizesRequests;
     use CalculateTime;
 
     public function index(Request $request)
@@ -78,7 +78,11 @@ class MalfunctionController extends Controller
 
 
     public function edit(Malfunction $malfunction, Request $request)
+
     {
+
+        $this->authorize('canViewAny', Malfunction::class);
+
         $malfunction->load('equipment', 'technician', 'ticket');
 
         $equipmentType = $malfunction->equipment->type;

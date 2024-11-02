@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Ticket;
+use App\Models\User;
+use App\Policies\RolePolicy;
 use App\Policies\TicketPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -12,12 +14,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-
-    protected $policies = [
-        Ticket::class => TicketPolicy::class,
-    ];
-
-    public function register(): void
+   public function register(): void
     {
         //
     }
@@ -27,6 +24,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerPolicies();
     }
 }
