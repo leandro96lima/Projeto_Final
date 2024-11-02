@@ -61,6 +61,7 @@ class CheckUserType
             'expected_types' => $types,
         ]);
 
-        return redirect('/dashboard')->with('error', 'Você não tem permissão para acessar esta área.');
+        return redirect()->to(url()->previous())->with('error', 'Você não tem permissão para acessar esta área.');
+
     }
 }
