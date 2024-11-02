@@ -90,6 +90,7 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::findOrFail($id);
+        $this->authorize('view', $ticket);
 
         $ticket->wait_time = $this->calculateWaitTime($ticket);
 

@@ -41,6 +41,8 @@ class MalfunctionController extends Controller
 
     public function show(Malfunction $malfunction)
     {
+        $this->authorize('viewAny', Malfunction::class);
+
         // Carregar relações necessárias
         $malfunction->load('equipment', 'technician.user', 'ticket');
         $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
