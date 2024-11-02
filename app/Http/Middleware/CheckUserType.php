@@ -24,20 +24,16 @@ class CheckUserType
         if (Auth::check()) {
             $user = Auth::user()->fresh(); // Recarrega o usuário autenticado
 
-            // Use o getter para acessar o tipo de usuário
+            // Verifica se a rota atual é a do 'store' do EquipmentController
+            if ($request->is('equipments') && $request->isMethod('post') && $request->input('from_partial') === 'user-create-equipment') {
+                // Permite que qualquer usuário que acesse esta rota continue
+                return $next($request);
+            }
+
+            // Se não for a rota de store, continua com a lógica original para tipos de usuários
             if ($user->getType()) {
-                Log::info('Tipo de usuário inicializado:', [
-                    'user_id' => $user->id,
-                    'user_type' => $user->getType(),
-                ]);
-
-                $userType = strtolower(trim($user->getType()));
+                $userType = strtolower(trim($user->getType())); // Defina o tipo de usuário
                 $expectedTypes = array_map('strtolower', array_map('trim', explode(',', $types))); // Suporte para múltiplos tipos
-
-                Log::info('Verificando tipo de usuário:', [
-                    'user_type' => $userType,
-                    'expected_types' => $expectedTypes,
-                ]);
 
                 // Verifica se o tipo de usuário está na lista de tipos permitidos
                 if (in_array($userType, $expectedTypes)) {
