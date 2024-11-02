@@ -17,6 +17,7 @@ class MalfunctionController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('canViewAny', Malfunction::class);
         $query = Malfunction::with('equipment', 'technician', 'ticket');
 
         // Verifica se há uma pesquisa a ser realizada
@@ -96,6 +97,8 @@ class MalfunctionController extends Controller
 
     public function update(Request $request, Malfunction $malfunction)
     {
+        $this->authorize('canViewAny', Malfunction::class);
+
         $validatedData = $request->validate([
             'status' => 'required|string|max:255',
             'cost' => 'nullable|numeric',
@@ -137,6 +140,7 @@ class MalfunctionController extends Controller
 
     public function destroy(Malfunction $malfunction)
     {
+        $this->authorize('canViewAny', Malfunction::class);
         $malfunction->delete();
 
         return redirect()->route('malfunctions.index')->with('success', 'Avaria removida com sucesso!');
