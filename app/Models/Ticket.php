@@ -25,13 +25,13 @@ class Ticket extends Model
 
 
     // Scope para filtrar por status
-    public function scopeWithStatus(Builder $query, $status)
+    public function scopeWithStatus($query, $status)
     {
         return $query->where('status', $status);
     }
 
     // Scope para filtrar por pesquisa
-    public function scopeSearch(Builder $query, $search)
+    public function scopeSearch($query, $search)
     {
         return $query->where(function($q) use ($search) {
             $q->whereHas('malfunction', function($q) use ($search) {

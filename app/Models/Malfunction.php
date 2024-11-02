@@ -11,6 +11,19 @@ class Malfunction extends Model
     protected $fillable = ['cost', 'diagnosis', 'solution', 'technician_id', 'equipment_id'];
 
 
+    public function scopeWithSearch($query, $search)
+    {
+        return $query->where(function ($q) use ($search) {
+            $q->whereHas('equipment', function ($q) use ($search) {
+                $q->where('type', 'like', '%' . $search . '%');
+            })
+                ->orWhereHas('technician.user', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhere('diagnosis', 'like', '%' . $search . '%');
+        });
+    }
+
     public function equipment()
     {
         return $this->belongsTo(Equipment::class);

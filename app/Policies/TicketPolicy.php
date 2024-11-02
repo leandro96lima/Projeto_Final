@@ -22,4 +22,9 @@ class TicketPolicy extends RolePolicy
     {
         return $user->id === $ticket->user_id || $this->isAdminOrTechnician($user);
     }
+
+    public function delete(User $user, Ticket $ticket)
+    {
+        return $user->id === $ticket->user_id || $this->isAdmin($user);
+    }
 }

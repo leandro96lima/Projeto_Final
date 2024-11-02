@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\TechnicianController;
+use App\Models\Equipment;
 use App\Models\Malfunction;
+use App\Models\Technician;
 use App\Models\Ticket;
 use App\Models\User;
+use App\Policies\MalfunctionPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\TicketPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -17,9 +21,12 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Malfunction::class => RolePolicy::class,
-        Ticket::class => TicketPolicy::class,
         User::class => RolePolicy::class,
+        Technician::class => RolePolicy::class,
+        Malfunction::class => MalfunctionPolicy::class,
+        Equipment::class => RolePolicy::class,
+        Ticket::class => TicketPolicy::class,
+
     ];
 
     /**

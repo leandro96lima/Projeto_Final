@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipment;
-use App\Models\EquipmentApprovalRequest;
 use App\Models\Ticket;
-use App\Models\Malfunction;
 use App\Repositories\TicketRepository;
 use App\Traits\CalculateTime;
-use App\Models\Technician;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Enums\EquipmentType;
 
 class TicketController extends Controller
 {
+    use AuthorizesRequests;
     use CalculateTime;
 
     protected $ticketRepository;
@@ -100,17 +99,19 @@ class TicketController extends Controller
 
     public function edit(Ticket $ticket)
     {
-        //Not implemented
+        //Not Implemented
     }
 
     public function update(Request $request, Ticket $ticket)
     {
-        //Not implemented
+        //Not Implemented
     }
 
 
     public function destroy(Ticket $ticket)
     {
+        $this->authorize('delete', $ticket);
+
         $ticket->delete();
         return redirect()->route('tickets.index');
     }
