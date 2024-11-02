@@ -55,7 +55,7 @@
                                     <td class="border px-4 py-2">{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)</td>
                                     <td class="border px-4 py-2 inline-flex items-center">
                                         <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.show', [$ticket->id]) }}'">Detalhes</button>
-                                        @can('update', $ticket) <!-- Verifique se o usuário pode atualizar -->
+                                        @can('view', $ticket) <!-- Verifique se o usuário pode atualizar -->
                                         <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
                                         <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Concluir Reparo</button>
                                         @endcan

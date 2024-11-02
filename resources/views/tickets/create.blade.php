@@ -9,6 +9,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div id="formContent" class="p-6">
+                    @if ($errors->has('ticket'))
+                        <div class="text-red-600 mb-4">
+                            <strong>{{ $errors->first('ticket') }}</strong>
+                        </div>
+                    @endif
+
                     <form action="{{ route('tickets.store') }}" method="POST">
                         @csrf
 
