@@ -67,7 +67,7 @@ class MalfunctionController extends Controller
 
     public function update(Request $request, Malfunction $malfunction)
     {
-        $this->authorize('update');
+        $this->authorize('update', $malfunction);
 
         $validatedData = $request->validate([
             'status' => 'required|string|max:255',

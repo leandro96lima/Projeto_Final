@@ -25,6 +25,6 @@ class MalfunctionPolicy extends RolePolicy
 
     public function update(User $user)
     {
-        return  $this->isAdmin($user);
+        return  $this->isAdminOrTechnician($user);
     }
 }
