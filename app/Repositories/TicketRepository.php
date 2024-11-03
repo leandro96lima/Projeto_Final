@@ -15,20 +15,31 @@ class TicketRepository extends BaseRepository
         parent::__construct($ticket);
     }
 
+    public function getTickets($status = null, $search = null)
+    {
+        $query = Ticket::with(['technician.user', 'malfunction']);
+
+        if ($status) {
+            $query->withStatus($status);
+        }
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query;
+    }
+
+    public function findTicket($id)
+    {
+        return Ticket::with(['technician.user', 'malfunction'])->findOrFail($id);
+    }
+
     public function findEquipment($type, $serialNumber)
     {
         return Equipment::where('type', $type)
             ->where('serial_number', $serialNumber)
             ->first();
-    }
-
-    public function createMalfunction($equipmentId): Malfunction
-    {
-        $malfunction = new Malfunction();
-        $malfunction->equipment_id = $equipmentId;
-        $malfunction->save();
-
-        return $malfunction;
     }
 
     public function createTicket($validatedData, $malfunctionId): Ticket
@@ -44,5 +55,23 @@ class TicketRepository extends BaseRepository
         ];
 
         return $this->create($ticketData);
+    }
+
+    public function updateTicketStatus(Ticket $ticket, array $validatedData)
+    {
+        $ticketData = [
+            'status' => $validatedData['status'],
+            'urgent' => $validatedData['urgent'],
+        ];
+
+        // Atualiza as datas com base no status
+        if ($validatedData['status'] === 'in_progress') {
+            $ticketData['progress_date'] = now();
+            $ticketData['close_date'] = null; // Limpa o close_date
+        } elseif ($validatedData['status'] === 'closed') {
+            $ticketData['close_date'] = now();
+        }
+
+        $ticket->update($ticketData);
     }
 }

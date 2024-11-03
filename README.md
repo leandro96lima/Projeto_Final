@@ -7,6 +7,21 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Configuração do PHPStorm
+
+Para configurar os Bookmarks no PHPStorm:
+
+1. **Baixe o arquivo de configuração** do diretório `config/phpstorm`.
+2. **No PHPStorm**, vá para **File** > **Manage IDE Settings** > **Import Settings**.
+3. Selecione o arquivo `.zip` que você baixou e clique em **OK**.
+4. Reinicie o PHPStorm para aplicar as configurações.
+
+OU
+
+Se quiser, execute o script:
+powershell -ExecutionPolicy Bypass -File scripts/setup_phpstorm.ps1
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

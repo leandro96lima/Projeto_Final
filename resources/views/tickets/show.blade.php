@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Detalhes do Ticket') }}
-        </h2>
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight"> {{ __('Detalhes do Ticket') }} </h2>
     </x-slot>
 
     <div class="py-12">
@@ -10,22 +8,21 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="mb-4">
-                        <p><strong>{{ __('Equipamento') }}</strong> {{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</p>
-                        <p><strong>{{ __('Serial Number:') }}</strong> {{ $ticket->malfunction ? $ticket->malfunction->equipment->serial_number : 'N/A' }}</p>
-                        <p><strong>{{ __('Sala:') }}</strong> {{ $ticket->malfunction->equipment->room ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Avaria:') }}</strong> {{ $ticket->title ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Descrição:') }}</strong> {{ $ticket->description ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Data de abertura:') }}</strong> {{ $ticket->open_date ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Status:') }}</strong> {{ $ticket->status ?? 'N/A' }}</p>
-                        <p><strong>Tempo de Espera:</strong>
-                            <span class="waitTime">
-                                @if($ticket->malfunction)
-                                    {{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)
-                                @else
-                                    Em espera para iniciar
-                                @endif
-                            </span>
-                        </p>
+                        @php
+                            $ticketDetails = [
+                                __('Equipamento') => optional($ticket->malfunction->equipment)->type ?: 'N/A',
+                                __('Serial Number:') => optional($ticket->malfunction->equipment)->serial_number ?: 'N/A',
+                                __('Sala:') => optional($ticket->malfunction->equipment)->room ?: 'N/A',
+                                __('Avaria:') => $ticket->title ?: 'N/A',
+                                __('Descrição:') => $ticket->description ?: 'N/A',
+                                __('Data de abertura:') => $ticket->open_date ?: 'N/A',
+                                __('Status:') => $ticket->status ?: 'N/A',
+                                __('Tempo de Espera:') => $ticket->malfunction ? ($ticket->wait_time !== null ? $ticket->wait_time . ' minuto(s)' : 'Em espera para iniciar') : 'Em espera para iniciar',
+                            ];
+                        @endphp
+                        @foreach ($ticketDetails as $label => $value)
+                            <p><strong>{{ $label }}</strong> {{ $value }}</p>
+                        @endforeach
                     </div>
                     <div class="mt-4">
                         <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>

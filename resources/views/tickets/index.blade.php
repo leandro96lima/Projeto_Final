@@ -1,30 +1,22 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ __('Lista de Tickets') }}
-                </h2>
-            </div>
-            <div class="ml-auto w-48">
-                <form method="GET" action="{{ route('tickets.index') }}">
-                    <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
-                    <select name="status" onchange="this.form.submit()" class="form-select">
-                        <option value="">{{ __('Todos os Tickets') }}</option>
-                        <option value="pending_approval" {{ request('status') == 'pending_approval' ? 'selected' : '' }}>{{ __('Pendentes') }}</option>
-                        <option value="open" {{ request('status') == 'open' ? 'selected' : '' }}>{{ __('Abertos') }}</option>
-                        <option value="in_progress" {{ request('status') == 'in_progress' ? 'selected' : '' }}>{{ __('Em Curso') }}</option>
-                        <option value="closed" {{ request('status') == 'closed' ? 'selected' : '' }}>{{ __('Fechados') }}</option>
-                    </select>
-                </form>
-            </div>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ __('Lista de Tickets') }}</h2>
+            <form method="GET" action="{{ route('tickets.index') }}" class="ml-auto w-48">
+                <label class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
+                <select name="status" onchange="this.form.submit()" class="form-select">
+                    <option value="">{{ __('Todos os Tickets') }}</option>
+                    @foreach(['pending_approval' => 'Pendentes', 'open' => 'Abertos', 'in_progress' => 'Em Curso', 'closed' => 'Fechados'] as $value => $label)
+                        <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
+                    @endforeach
+                </select>
+            </form>
         </div>
-
-        <div class="d-flex align-items-center">
+        <div class="flex justify-end space-x-2 mt-4">
             <a href="{{ route('tickets.create') }}" class="btn btn-success">Criar Novo Ticket</a>
-            <form action="{{ route('tickets.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
-                <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
-                <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
+            <form action="{{ route('tickets.index') }}" method="GET" class="flex">
+                <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" />
+                <button type="submit" class="btn btn-outline-primary">Pesquisar</button>
             </form>
         </div>
     </x-slot>
@@ -36,37 +28,33 @@
                     <table class="table-auto w-full text-left">
                         <thead>
                         <tr>
-                            <th class="px-4 py-2">{{ __('Equipamento') }}</th>
-                            <th class="px-4 py-2">{{ __('Avaria') }}</th>
-                            <th class="px-4 py-2">{{ __('Data de Abertura') }}</th>
-                            <th class="px-4 py-2">{{ __('Status') }}</th>
-                            <th class="px-4 py-2">{{ __('Tempo de Espera') }}</th>
-                            <th class="px-4 py-2">{{ __('Ações') }}</th>
+                            @foreach(['Equipamento', 'Avaria', 'Data de Abertura', 'Status', 'Tempo de Espera', 'Ações'] as $header)
+                                <th class="px-4 py-2">{{ __($header) }}</th>
+                            @endforeach
                         </tr>
                         </thead>
                         <tbody>
                         @foreach ($tickets as $ticket)
                             @can('view', $ticket)
                                 <tr>
-                                    <td class="border px-4 py-2">{{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</td>
+                                    <td class="border px-4 py-2">{{$ticket->malfunction->equipment->type ?? 'N/A' }}</td>
                                     <td class="border px-4 py-2">{{ $ticket->title }}</td>
                                     <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
                                     <td class="border px-4 py-2">{{ $ticket->status ?? 'N/A' }}</td>
-                                    <td class="border px-4 py-2">{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)</td>
-                                    <td class="border px-4 py-2 inline-flex items-center">
-                                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.show', [$ticket->id]) }}'">Detalhes</button>
-                                        @can('view', $ticket) <!-- Verifique se o usuário pode atualizar -->
-                                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
-                                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Concluir Reparo</button>
+                                    <td class="border px-4 py-2">{{ optional($ticket)->wait_time ?? 'Em espera para iniciar' }} minuto(s)</td>
+                                    <td class="border px-4 py-2 inline-flex items-center space-x-1">
+                                        <button type="button" class="btn btn-warning" onclick="location.href='{{ route('tickets.show', [$ticket->id]) }}'">Detalhes</button>
+                                        @can('viewAny', $ticket)
+                                            <button type="button" class="btn btn-warning" onclick="location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
+                                            <button type="button" class="btn btn-warning" onclick="location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Concluir Reparo</button>
                                         @endcan
                                     </td>
                                 </tr>
                             @endcan
-                        @endforeach                         </tbody>
+                        @endforeach
+                        </tbody>
                     </table>
-                    <div class="mt-4">
-                        {{ $tickets->links() }}
-                    </div>
+                    <div class="mt-4">{{ $tickets->links() }}</div>
                 </div>
             </div>
         </div>

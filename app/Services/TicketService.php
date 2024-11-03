@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Equipment;
 use App\Models\EquipmentApprovalRequest;
 use App\Models\Malfunction;
 use App\Models\Ticket;
-use App\Repositories\TicketRepository; // Importe o repositório
+use App\Repositories\MalfunctionRepository;
+use App\Repositories\TicketRepository;
 use App\Traits\CalculateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,52 +16,51 @@ class TicketService
     use CalculateTime;
 
     protected $ticketRepository;
+    protected $malfunctionRepository;
 
-    public function __construct(TicketRepository $ticketRepository)
+    public function __construct(TicketRepository $ticketRepository, MalfunctionRepository $malfunctionRepository)
     {
         $this->ticketRepository = $ticketRepository;
+        $this->malfunctionRepository = $malfunctionRepository;
     }
-
 
     public function getTickets(Request $request)
     {
-        $query = Ticket::with(['technician.user', 'malfunction']);
+        // Obtém a consulta dos tickets sem aplicar a paginação
+        $tickets = $this->ticketRepository->getTickets(
+            $request->input('status'),
+            $request->input('search')
+        );
 
-        // Filtra por status se estiver presente
-        if ($request->filled('status')) {
-            $query->withStatus($request->input('status'));
+        // Aplica a paginação
+        $paginatedTickets = $tickets->paginate(10);
+
+        // Lógica de negócios para calcular o tempo de espera
+        foreach ($paginatedTickets as $ticket) {
+            $ticket->wait_time = $this->calculateWaitTime($ticket);
         }
 
-        // Filtra por pesquisa se houver
-        if ($request->filled('search')) {
-            $query->search($request->input('search'));
-        }
+        return $paginatedTickets; // Retorna os tickets paginados
+    }
 
-        $tickets = $query->paginate(10);
+    public function showTicket($id)
+    {
+        $ticket = Ticket::findOrFail($id);
 
-        // Calcula o tempo de espera para cada ticket usando o método do trait
-        $tickets->each(function($ticket) {
-            if ($ticket->malfunction) {
-                $ticket->wait_time = $this->calculateWaitTime($ticket);
-            }
-        });
+        $ticket->wait_time = $this->calculateWaitTime($ticket);
 
-        return $tickets;
+        return $ticket;
     }
 
     public function createTicket(array $validatedData)
     {
-        // Encontre o equipamento
         $equipment = $this->ticketRepository->findEquipment($validatedData['type'], $validatedData['serial_number']);
 
         if (!$equipment) {
             throw new \Exception('Equipamento não encontrado.');
         }
 
-        // Crie uma nova falha
-        $malfunction = $this->ticketRepository->createMalfunction($equipment->id);
-
-        // Crie o ticket
+        $malfunction = $this->malfunctionRepository->createMalfunction($equipment->id);
         return $this->ticketRepository->createTicket($validatedData, $malfunction->id);
     }
 
@@ -71,7 +70,6 @@ class TicketService
             return;
         }
 
-        // Aqui a lógica de negócios para lidar com a requisição do controlador de equipamento
         $equipmentApprovalRequest = EquipmentApprovalRequest::where('equipment_id', $equipmentId)
             ->where('status', 'pending')
             ->first();
@@ -81,11 +79,13 @@ class TicketService
             $equipmentApprovalRequest->save();
         }
 
-        session()->forget('from_equipment_controller'); // Limpar a sessão
+        session()->forget('from_equipment_controller');
     }
 
     public function determineTicketStatus(): string
     {
         return session('from_equipment_controller', false) ? 'pending_approval' : 'open';
     }
+
+
 }

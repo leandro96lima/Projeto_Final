@@ -20,7 +20,10 @@ class Malfunction extends Model
                 ->orWhereHas('technician.user', function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%');
                 })
-                ->orWhere('diagnosis', 'like', '%' . $search . '%');
+                ->orWhere('diagnosis', 'like', '%' . $search . '%')
+                ->orWhereHas('ticket', function ($q) use ($search) {
+                    $q->where('status', 'like', '%' . $search . '%'); // Add this line to include ticket status in the search
+                });
         });
     }
 

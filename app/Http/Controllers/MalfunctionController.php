@@ -1,114 +1,71 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetMalfunctionsRequest;
+use App\Http\Requests\StoreMalfunctionRequest;
 use App\Models\Malfunction;
+use App\Services\MalfunctionService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Traits\CalculateTime;
 use Illuminate\Http\Request;
 
 class MalfunctionController extends Controller
 {
     use AuthorizesRequests;
-    use CalculateTime;
 
-    public function index(Request $request)
+    protected $malfunctionService;
+
+    public function __construct(MalfunctionService $malfunctionService)
     {
+        $this->malfunctionService = $malfunctionService;
+    }
 
-        $query = Malfunction::with('equipment', 'technician', 'ticket');
+    public function index(GetMalfunctionsRequest $request)
+    {
+        $validatedData = $request->validated(); // Validates the request
 
-        // Filtra por pesquisa
-        if ($request->filled('search')) {
-            $query->search($request->input('search'));
-        }
-
-        $malfunctions = $query->paginate(10);
-
-        // Atualiza o resolution_time
-        foreach ($malfunctions as $malfunction) {
-            $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
-        }
+        // Pass validated data to the service
+        $malfunctions = $this->malfunctionService->getMalfunctions($validatedData);
 
         return view('malfunctions.index', compact('malfunctions'));
     }
 
-
-
-    public function create()
-    {
-        //Not Implemented
-    }
-
-    public function show(Malfunction $malfunction)
+    public function show($id)
     {
         $this->authorize('viewAny', Malfunction::class);
-
-        // Carregar relações necessárias
-        $malfunction->load('equipment', 'technician.user', 'ticket');
-        $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
-
-
+        $malfunction = $this->malfunctionService->showMalfunction($id);
         return view('malfunctions.show', compact('malfunction'));
     }
+
+
+   //NOTA:
+   //Todas as avarias são criadas durante o processo de criação do ticket
+
 
 
     public function edit(Malfunction $malfunction, Request $request)
     {
         $this->authorize('viewAny', Malfunction::class);
-
-        // Carrega as relações necessárias
         $malfunction->load('equipment', 'technician', 'ticket');
 
         return view('malfunctions.edit', [
             'malfunction' => $malfunction,
             'action' => $request->query('action', ''),
-            'equipmentType' => $malfunction->equipment->type, // Acesso direto ao atributo
+            'equipmentType' => $malfunction->equipment->type,
             'ticketUrgent' => $malfunction->ticket->urgent,
         ]);
     }
 
-    public function update(Request $request, Malfunction $malfunction)
+    public function update(StoreMalfunctionRequest $request, Malfunction $malfunction)
     {
         $this->authorize('update', $malfunction);
-
-        $validatedData = $request->validate([
-            'status' => 'required|string|max:255',
-            'cost' => 'nullable|numeric',
-            'solution' => 'nullable|string',
-            'resolution_time' => 'nullable|integer',
-            'diagnosis' => 'nullable|string',
-            'urgent' => 'required|boolean',
-        ]);
-
-        $ticket = $malfunction->ticket;
-
-        // Atualiza o ticket com os dados de status e urgência
-        if ($ticket) {
-            $ticket->update([
-                'status' => $validatedData['status'],
-                'urgent' => $validatedData['urgent']
-            ]);
-        }
-
-        // Verifica a ação e atualiza os dados da malfunction
-        if ($request->input('action') === 'abrir') {
-            $malfunction->update(['diagnosis' => $validatedData['diagnosis']]);
-        } else {
-            $malfunction->update([
-                'solution' => $validatedData['solution'],
-                'cost' => $validatedData['cost'],
-            ]);
-        }
-
+        $this->malfunctionService->updateMalfunction($request, $malfunction);
         return redirect()->route('malfunctions.show', $malfunction->id);
     }
 
     public function destroy(Malfunction $malfunction)
     {
-        $this->authorize('delete');
-
+        $this->authorize('delete', $malfunction);
         $malfunction->delete();
-
         return redirect()->route('malfunctions.index')->with('success', 'Avaria removida com sucesso!');
     }
 }

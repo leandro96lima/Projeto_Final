@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('status')->default('open');
             $table->boolean('urgent')->default(false);
             $table->dateTime('open_date');
+            $table->dateTime('progress_date')->nullable();
             $table->dateTime('close_date')->nullable();
             $table->integer('wait_time')->nullable();
-            $table->dateTime('progress_date')->nullable();
             $table->integer('resolution_time')->nullable();
 
             // First define the user_id column

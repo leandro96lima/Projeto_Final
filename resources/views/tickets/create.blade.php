@@ -9,49 +9,64 @@
                         <div class="text-red-600 mb-4"><strong>{{ $errors->first('ticket') }}</strong></div>
                     @endif
 
-                    <form action="{{ route('tickets.store') }}" method="POST">
-                        @csrf
-                        @foreach (['type' => 'Tipo de Equipamento', 'serial_number' => 'Número de Série'] as $field => $label)
+                        <form action="{{ route('tickets.store') }}" method="POST">
+                            @csrf
+
                             <div class="mb-4">
-                                <label for="{{ $field }}" class="block text-sm font-medium text-gray-700">{{ __($label) }}</label>
-                                @if(isset(${'other_' . $field}))
-                                    <input type="text" id="{{ $field }}" name="{{ $field }}" value="{{ ${'other_' . $field} }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                <label for="type" class="block text-sm font-medium text-gray-700">{{ __('Tipo de Equipamento') }}</label>
+                                @if(isset($other_type))
+                                    <input type="text" id="type" name="type" value="{{ $other_type }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
                                 @else
-                                    <select id="{{ $field }}" name="{{ $field }}" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
-                                        <option value="">Selecione um {{ strtolower($label) }}</option>
-                                        @if($field === 'type')
-                                            @foreach($equipmentTypes as $equipmentType)
-                                                <option value="{{ $equipmentType->value }}" {{ old($field) === $equipmentType->value ? 'selected' : '' }}>{{ $equipmentType->name }}</option>
-                                            @endforeach
-                                            <option value="OTHER" {{ old($field) === 'OTHER' ? 'selected' : '' }}>OTHER</option>
-                                        @else
-                                            <option value="">Nenhum disponível</option>
-                                        @endif
+                                    <select id="type" name="type" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                        <option value="">Selecione um Tipo de Equipamento</option>
+                                        @foreach($equipmentTypes as $equipmentType)
+                                            <option value="{{ $equipmentType->value }}" {{ old('type') === $equipmentType->value ? 'selected' : '' }}>{{ $equipmentType->name }}</option>
+                                        @endforeach
+                                        <option value="OTHER" {{ old('type') === 'OTHER' ? 'selected' : '' }}>OTHER</option>
                                     </select>
                                 @endif
-                                @error($field) <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                @error('type') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
-                        @endforeach
 
-                        @foreach (['room' => 'Sala', 'title' => 'Título'] as $field => $label)
                             <div class="mb-4">
-                                <label for="{{ $field }}" class="block text-sm font-medium text-gray-700">{{ __($label) }}</label>
-                                <input type="text" id="{{ $field }}" name="{{ $field }}" value="{{ old($field) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" @if($field === 'room') readonly @endif>
-                                @error($field) <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                                <label for="serial_number" class="block text-sm font-medium text-gray-700">{{ __('Número de Série') }}</label>
+                                @if(isset($other_serial_number))
+                                    <input type="text" id="serial_number" name="serial_number" value="{{ $other_serial_number }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                @else
+                                    <select id="serial_number" name="serial_number" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                        <option value="">Selecione um Número de Série</option>
+                                    </select>
+                                @endif
+                                @error('serial_number') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                             </div>
-                        @endforeach
 
-                        <div class="mb-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Descrição') }}</label>
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">{{ old('description') }}</textarea>
-                            @error('description') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
-                        </div>
+                            <div class="mb-4">
+                                <label for="room" class="block text-sm font-medium text-gray-700">{{ __('Sala') }}</label>
+                                @if(isset($other_room))
+                                    <input type="text" id="room" name="room" value="{{ $other_room }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
+                                @else
+                                    <input type="text" id="room" name="room" value="{{ old('room') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" readonly>
+                                @endif
+                                @error('room') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                            </div>
 
-                        <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Criar Avaria') }}</button>
-                            <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
-                        </div>
-                    </form>
+                            <div class="mb-4">
+                                <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Título') }}</label>
+                                <input id="title" name="title" value="{{ old('title') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
+                                @error('title') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Descrição') }}</label>
+                                <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">{{ old('description') }}</textarea>
+                                @error('description') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <button type="submit" class="btn btn-primary">{{ __('Criar Avaria') }}</button>
+                                <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
+                            </div>
+                        </form>
                 </div>
 
                 <div id="partialContent" style="display: none;">
@@ -81,46 +96,60 @@
         };
 
         // Função: Atualizar Números de Série
-        const updateSerialNumbers = () => {
+        function updateSerialNumbers() {
             const typeSelect = document.getElementById('type');
             const serialNumberSelect = document.getElementById('serial_number');
             const selectedType = typeSelect.value;
 
+            // Limpa o dropdown de números de série
             serialNumberSelect.innerHTML = '<option value="">Selecione um Número de Série</option>';
-            const filteredEquipments = equipmentData.filter(e => e.type === selectedType && e.is_approved);
 
-            filteredEquipments.forEach(equipment => {
-                const option = new Option(equipment.serial_number, equipment.serial_number);
-                serialNumberSelect.add(option);
-            });
+            // Filtra os equipamentos com base no tipo selecionado e adiciona ao dropdown
+            const filteredEquipments = equipmentData.filter(equipment => (equipment.type === selectedType) && equipment.is_approved);
+            if (filteredEquipments.length > 0) {
+                filteredEquipments.forEach(equipment => {
+                    const option = document.createElement('option');
+                    option.value = equipment.serial_number;
+                    option.textContent = equipment.serial_number;
+                    serialNumberSelect.appendChild(option);
+                });
+            } else {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'Nenhum número de série disponível';
+                serialNumberSelect.appendChild(option);
+            }
 
-            const noOption = new Option(filteredEquipments.length > 0 ? 'Novo' : 'Nenhum número de série disponível', filteredEquipments.length > 0 ? 'NEW' : '');
-            serialNumberSelect.add(noOption);
-        };
+            const newOption = document.createElement('option');
+            newOption.value = 'NEW';
+            newOption.textContent = 'Novo';
+            serialNumberSelect.appendChild(newOption);
+        }
+
 
         // Função: Atualizar Sala com Base no Número de Série
-        const updateRoomBasedOnSerial = () => {
-            const serialNumberSelect = document.getElementById('serial_number');
-            const roomInput = document.getElementById('room');
-            const selectedEquipment = equipmentData.find(e => e.serial_number === serialNumberSelect.value);
+            const updateRoomBasedOnSerial = () => {
+                const serialNumberSelect = document.getElementById('serial_number');
+                const roomInput = document.getElementById('room');
+                const selectedEquipment = equipmentData.find(e => e.serial_number === serialNumberSelect.value);
 
-            roomInput.value = selectedEquipment?.room || '';
-            roomInput.readOnly = !!selectedEquipment?.room;
-        };
+                roomInput.value = selectedEquipment?.room || '';
+                roomInput.readOnly = !!selectedEquipment?.room;
+            };
 
-        // Adiciona eventos de mudança
-        document.getElementById('type').addEventListener('change', () => {
-            updateSerialNumbers();
-            togglePartialDisplay();
-        });
+            // Adiciona eventos de mudança
+            document.getElementById('type').addEventListener('change', () => {
+                updateSerialNumbers();
+                togglePartialDisplay();
+            });
 
-        document.getElementById('serial_number').addEventListener('change', () => {
-            updateRoomBasedOnSerial();
-            togglePartialDisplay();
-        });
+            document.getElementById('serial_number').addEventListener('change', () => {
+                updateRoomBasedOnSerial();
+                togglePartialDisplay();
+            });
 
-        // Chama as funções ao carregar a página
-        document.addEventListener('DOMContentLoaded', () => {
+            // Chama as funções ao carregar a página
+            document.addEventListener('DOMContentLoaded', () => {
             togglePartialDisplay();
             updateSerialNumbers();
         });

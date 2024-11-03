@@ -38,7 +38,7 @@
                                     @if ($malfunction->ticket->status === 'open')
                                         Em espera para iniciar reparo
                                     @else
-                                        {{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)
+                                        {{ $malfunction->ticket->resolution_time ?? 'N/A' }} minuto(s)
                                     @endif
                                 </td>
                                 <td>

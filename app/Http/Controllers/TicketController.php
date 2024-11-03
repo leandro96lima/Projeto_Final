@@ -14,7 +14,6 @@ use App\Enums\EquipmentType;
 class TicketController extends Controller
 {
     use AuthorizesRequests;
-    use CalculateTime;
 
     protected $ticketService;
 
@@ -59,15 +58,11 @@ class TicketController extends Controller
 
     public function show($id)
     {
-        $ticket = Ticket::findOrFail($id);
+        $ticket = $this->ticketService->showTicket($id);
         $this->authorize('view', $ticket);
-
-        $ticket->wait_time = $this->calculateWaitTime($ticket);
 
         return view('tickets.show', compact('ticket'));
     }
-
-
     public function edit(Ticket $ticket)
     {
         //Not Implemented
