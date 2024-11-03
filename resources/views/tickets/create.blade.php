@@ -26,9 +26,9 @@
                                 <select id="type" name="type" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
                                     <option value="">Selecione um Tipo de Equipamento</option>
                                     @foreach($equipmentTypes as $equipmentType)
-                                        <option value="{{ $equipmentType->value }}">{{ $equipmentType->name }}</option>
+                                        <option value="{{ $equipmentType->value }}" {{ old('type') === $equipmentType->value ? 'selected' : '' }}>{{ $equipmentType->name }}</option>
                                     @endforeach
-                                    <option value="OTHER">OTHER</option>
+                                    <option value="OTHER" {{ old('type') === 'OTHER' ? 'selected' : '' }}>OTHER</option>
                                 </select>
                             @endif
                             @error('type')
@@ -55,21 +55,27 @@
                             @if(isset($other_room))
                                 <input type="text" id="room" name="room" value="{{ $other_room }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">
                             @else
-                                <input type="text" id="room" name="room" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" readonly>
+                                <input type="text" id="room" name="room" value="{{ old('room') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" readonly>
                             @endif
-                            @error('other_room')
+                            @error('room')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="title" class="block text-sm font-medium text-gray-700">{{ __('Título') }}</label>
-                            <input id="title" name="title" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></input>
+                            <input id="title" name="title" value="{{ old('title') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></input>
+                            @error('title')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
                             <label for="description" class="block text-sm font-medium text-gray-700">{{ __('Descrição') }}</label>
-                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50"></textarea>
+                            <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50">{{ old('description') }}</textarea>
+                            @error('description')
+                            <span class="text-red-600 text-sm">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="flex items-center justify-between">
@@ -104,8 +110,6 @@
             // Atualiza o valor de 'selectedType' no campo da partial, se necessário
             if (shouldShowPartial) {
                 const typeInput = document.querySelector('#partialContent input[name="type"]');
-
-                // Verifica se o campo 'type' está vazio antes de definir o novo valor
                 if (!typeInput.value) {
                     typeInput.value = selectedType;
                 }
@@ -171,7 +175,10 @@
             togglePartialDisplay(); // Atualiza a exibição do conteúdo
         });
 
-        // Chama a função para garantir que a exibição do partialContent seja atualizada na carga da página
-        togglePartialDisplay();
+        // Chama as funções ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            togglePartialDisplay();
+            updateSerialNumbers(); // Atualiza os números de série com base no tipo selecionado
+        });
     </script>
 </x-app-layout>

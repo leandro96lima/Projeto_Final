@@ -53,7 +53,7 @@ class TicketController extends Controller
             return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
 
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['ticket' => $e->getMessage()])->withInput();
+            return redirect()->back()->withErrors(['ticket' => $e->getMessage()])->withInput($validatedData);
         }
     }
 
