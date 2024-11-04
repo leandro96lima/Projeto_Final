@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Http\Requests;
-
-use App\Enums\EquipmentType;
-use App\Rules\EquipmentTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreEquipmentRequest extends FormRequest
 {
@@ -24,9 +22,20 @@ class StoreEquipmentRequest extends FormRequest
     {
         $rules = $this->baseRules();
 
-//        if (!$this->isPrecognitive()) {
-//            $rules['type'][] = new EquipmentTypeRule();
-//        }
+        // Add unique validation for serial_number
+        $rules['serial_number'] = [
+            'required',
+            'string',
+            'max:255',
+            Rule::unique('equipments')->where(function ($query) {
+                return $query->where('type', $this->type);
+            }),
+        ];
+
+        // Uncomment if you want to apply EquipmentTypeRule
+        // if (!$this->isPrecognitive()) {
+        //     $rules['type'][] = new EquipmentTypeRule();
+        // }
 
         return $rules;
     }
