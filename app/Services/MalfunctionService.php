@@ -40,7 +40,7 @@ class MalfunctionService
 
         // Process resolution time for each malfunction
         $paginatedMalfunctions->each(function ($malfunction) {
-            $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction);
+            $malfunction->ticket->resolution_time = $this->calculateResolutionTime($malfunction->ticket);
         });
 
         return $paginatedMalfunctions; // Ensure you return the paginated instance
