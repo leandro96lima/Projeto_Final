@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEquipmentRequest;
 use App\Jobs\NotifyAdminsOfEquipment;
 use App\Models\Equipment;
 use App\Models\EquipmentApprovalRequest;
@@ -40,32 +41,19 @@ class EquipmentController extends Controller
         return view('equipments.create');
     }
 
-    public function store(Request $request)
+
+    public function store(StoreEquipmentRequest $request)
     {
-        $validatedData = $request->validate([
-            'type' => 'required|string|max:255',
-            'new_type' => 'nullable|string|max:255',
-            'manufacturer' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'room' => 'nullable|string|max:255',
-            'serial_number' => 'required|string|max:255',
-        ]);
-
-        $validatedData['type'] = in_array($validatedData['type'], ['OTHER', 'NEW']) && !empty($validatedData['new_type'])
-            ? $validatedData['new_type']
-            : $validatedData['type'];
-
-        $validatedData['type'] = ucwords(strtolower($validatedData['type']));
+        $validatedData = $request->validated();
 
         // Verificação manual de duplicidade
         if (Equipment::where('type', $validatedData['type'])->where('serial_number', $validatedData['serial_number'])->exists()) {
             return redirect()->back()->withErrors([
                 'serial_number' => 'Este número de série já existe para este tipo de equipamento.'
-            ])->withInput()->with('from_partial', 'user-create-equipment'); // Adicionando a variável para a partial
+            ])->withInput()->with('from_partial', 'user-create-equipment');
         }
 
         $equipment = Equipment::create($validatedData);
-
 
         // Se a rota parcial for 'user-create-equipment', envie a notificação ao admin
         if ($request->input('from_partial') === 'user-create-equipment') {

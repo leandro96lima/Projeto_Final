@@ -15,7 +15,7 @@ class TicketRepository extends BaseRepository
         parent::__construct($ticket);
     }
 
-    public function getTicketsFromDb($status = null, $search = null)
+    public function getTicketsFromDb($status = null, $search = null, $sort = null, $direction = "asc")
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
 
@@ -37,20 +37,23 @@ class TicketRepository extends BaseRepository
             ->where('serial_number', $serialNumber)
             ->first();
     }
-
     public function addTicketToDb($validatedData, $malfunctionId): Ticket
     {
-        $ticketData = [
-            'title' => $validatedData['title'],
-            'description' => $validatedData['description'],
-            'open_date' => now(),
-            'malfunction_id' => $malfunctionId,
-            'user_id' => auth()->id(),
-            'status' => 'open',
-            'wait_time' => null,
-        ];
+        $ticket = new Ticket();
+        $ticket->title = $validatedData['title'];
+        $ticket->description = $validatedData['description'];
+        $ticket->user_id = auth()->id();
+        $ticket->open_date = now();
+        $ticket->malfunction_id = $malfunctionId;
 
-        return $this->create($ticketData);
+        // Verifica se a requisição veio do EquipmentController
+        $ticket->status = session('from_equipment_controller', false) ? 'pending_approval' : 'open';
+        $ticket->wait_time = null; // Ou ajuste conforme necessário
+        $ticket->save();
+
+        return $ticket;
+
+
     }
 
     public function updateTicketStatus(Ticket $ticket, array $validatedData)

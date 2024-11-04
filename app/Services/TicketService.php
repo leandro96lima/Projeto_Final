@@ -63,7 +63,11 @@ class TicketService
         }
 
         $malfunction = $this->malfunctionRepository->addMalfunctiontoDb($equipment->id);
-        return $this->ticketRepository->addTicketToDb($validatedData, $malfunction->id);
+        $ticket = $this->ticketRepository->addTicketToDb($validatedData, $malfunction->id);
+
+        $this->handleEquipmentControllerRequest($ticket, $equipment->id);
+
+        return $ticket;
     }
 
     public function handleEquipmentControllerRequest(Ticket $ticket, $equipmentId): void
@@ -83,11 +87,5 @@ class TicketService
 
         session()->forget('from_equipment_controller');
     }
-
-    public function determineTicketStatus(): string
-    {
-        return session('from_equipment_controller', false) ? 'pending_approval' : 'open';
-    }
-
 
 }
