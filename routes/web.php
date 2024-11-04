@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 
 // Rota principal
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 // Rota do dashboard com middleware de autenticação
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/tickets', [TicketController::class , 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Grupo de rotas que requerem autenticação
 Route::middleware('auth')->group(function () {
@@ -29,15 +29,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/request-token', [ProfileController::class, 'requestTypeChangeToken'])->name('profile.request-token');
 
 
+    // Tickets resource with a different URI to avoid conflicts
+    Route::prefix('tickets/index')->group(function () {
+        Route::get('/', [TicketController::class, 'index'])->name('tickets.index'); // Tickets index
+        Route::get('/create', [TicketController::class, 'create'])->name('tickets.create'); // Create form
+        Route::post('/', [TicketController::class, 'store'])->name('tickets.store'); // Store new ticket
+        Route::get('/{ticket}', [TicketController::class, 'show'])->name('tickets.show'); // Show ticket
+        Route::get('/{ticket}/edit', [TicketController::class, 'edit'])->name('tickets.edit'); // Edit form
+        Route::patch('/{ticket}', [TicketController::class, 'update'])->name('tickets.update'); // Update ticket
+        Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy'); // Delete ticket
+    });
 
     Route::get('/tickets/partials/user-create-equipment', function () {
         return view('tickets.create'); // Retorna a view do partial
     })->name('user.create.equipment');
-
-    Route::resources([
-        'tickets' => TicketController::class,
-    ]);
-
 });
 
 

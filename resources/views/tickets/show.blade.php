@@ -25,7 +25,7 @@
                         @endforeach
                     </div>
                     <div class="mt-4">
-                        <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>
+                        <a href="{{ route('dashboard') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>
                     </div>
                 </div>
             </div>
