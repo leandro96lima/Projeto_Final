@@ -63,21 +63,11 @@ class MalfunctionService
             $this->ticketRepository->updateTicketStatus($ticket, $validatedData);
         }
 
-        $this->updateMalfunctionDetails($malfunction, $validatedData);
+        $this->malfunctionRepository->updateMalfunctionDetails($malfunction, $validatedData);
 
         return $malfunction;
     }
 
 
-    private function updateMalfunctionDetails(Malfunction $malfunction, array $validatedData)
-    {
-        if ($validatedData['status'] === 'in_progress') {
-            $malfunction->update(['diagnosis' => $validatedData['diagnosis']]);
-        } elseif ($validatedData['status'] === 'closed') {
-            $malfunction->update([
-                'solution' => $validatedData['solution'],
-                'cost' => $validatedData['cost']
-            ]);
-        }
-    }
+
 }

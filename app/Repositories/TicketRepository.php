@@ -19,13 +19,8 @@ class TicketRepository extends BaseRepository
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
 
-        if ($status) {
-            $query->withStatus($status);
-        }
-
-        if ($search) {
-            $query->search($search);
-        }
+        if ($status) $query->withStatus($status);
+        if ($search) $query->search($search);
 
         return $query;
     }
@@ -42,7 +37,7 @@ class TicketRepository extends BaseRepository
             ->first();
     }
 
-    public function createTicket($validatedData, $malfunctionId): Ticket
+    public function addTicketToDatabase($validatedData, $malfunctionId): Ticket
     {
         $ticketData = [
             'title' => $validatedData['title'],

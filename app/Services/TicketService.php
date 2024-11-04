@@ -60,8 +60,8 @@ class TicketService
             throw new \Exception('Equipamento não encontrado.');
         }
 
-        $malfunction = $this->malfunctionRepository->createMalfunction($equipment->id);
-        return $this->ticketRepository->createTicket($validatedData, $malfunction->id);
+        $malfunction = $this->malfunctionRepository->addMalfunctionToDatabase($equipment->id);
+        return $this->ticketRepository->addTicketToDatabase($validatedData, $malfunction->id);
     }
 
     public function handleEquipmentControllerRequest(Ticket $ticket, $equipmentId): void

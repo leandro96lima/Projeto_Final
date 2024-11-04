@@ -29,7 +29,7 @@ class MalfunctionRepository
     }
 
 
-    public function createMalfunction($equipmentId): Malfunction
+    public function addMalfunctionToDatabase($equipmentId): Malfunction
     {
         $malfunction = new Malfunction();
         $malfunction->equipment_id = $equipmentId;
@@ -38,17 +38,15 @@ class MalfunctionRepository
         return $malfunction;
     }
 
-    public function updateMalfunction(Malfunction $malfunction, array $data)
+    public function updateMalfunctionDetails(Malfunction $malfunction, array $validatedData)
     {
-        try {
-            return $malfunction->update($data);
-        } catch (\Exception $e) {
-            throw new \Exception("Erro ao atualizar a avaria: " . $e->getMessage());
+        if ($validatedData['status'] === 'in_progress') {
+            $malfunction->update(['diagnosis' => $validatedData['diagnosis']]);
+        } elseif ($validatedData['status'] === 'closed') {
+            $malfunction->update([
+                'solution' => $validatedData['solution'],
+                'cost' => $validatedData['cost']
+            ]);
         }
-    }
-
-    public function deleteMalfunction(Malfunction $malfunction)
-    {
-        return $malfunction->delete();
     }
 }

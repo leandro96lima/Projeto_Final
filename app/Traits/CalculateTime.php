@@ -15,7 +15,7 @@ trait CalculateTime
         $time = $progressDate->diffInMinutes($endDate);
 
         if ($ticket->status === 'closed') {
-            $ticket->resolution_time = $time; // Atualiza diretamente
+            $ticket->resolution_time = $time;
             $ticket->save();
         }
 
