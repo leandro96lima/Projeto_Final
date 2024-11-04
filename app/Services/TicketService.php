@@ -29,7 +29,9 @@ class TicketService
         // Obtém a consulta dos tickets sem aplicar a paginação
         $tickets = $this->ticketRepository->getTickets(
             $request->input('status'),
-            $request->input('search')
+            $request->input('search'),
+            $request->input('sort'),
+            $request->input('direction')
         );
 
         // Aplica a paginação

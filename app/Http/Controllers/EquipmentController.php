@@ -17,17 +17,18 @@ class EquipmentController extends Controller
     {
         $query = Equipment::query();
 
+        // Lógica de busca utilizando o scope
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where(function($q) use ($search) {
-                $q->where('type', 'like', '%' . $search . '%')
-                    ->orWhere('manufacturer', 'like', '%' . $search . '%')
-                    ->orWhere('model', 'like', '%' . $search . '%')
-                    ->orWhere('serial_number', 'like', '%' . $search . '%')
-                    ->orWhere('room', 'like', '%' . $search . '%');
-            });
+            $query->search($search);
         }
 
+        // Lógica de ordenação utilizando o scope
+        if ($request->filled('sort')) {
+            $query->sortBy($request->sort, $request->direction);
+        }
+
+        // Paginação
         $equipments = $query->paginate(10);
 
         return view('equipments.index', compact('equipments'));

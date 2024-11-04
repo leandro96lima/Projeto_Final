@@ -15,12 +15,13 @@ class TicketRepository extends BaseRepository
         parent::__construct($ticket);
     }
 
-    public function getTickets($status = null, $search = null)
+    public function getTickets($status = null, $search = null, $sort = null, $direction = 'asc')
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
 
         if ($status) $query->withStatus($status);
         if ($search) $query->search($search);
+        if ($sort) $query->sortBy($sort, $direction);
 
         return $query;
     }

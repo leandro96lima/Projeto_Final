@@ -16,6 +16,9 @@ class GetMalfunctionsRequest extends FormRequest
     {
         return [
             'search' => 'nullable|string',
+            'status' => 'string',
+            'sort' => 'nullable|string',
+            'direction' => 'nullable|string'
         ];
     }
 
@@ -23,7 +26,10 @@ class GetMalfunctionsRequest extends FormRequest
     {
         parent::validateResolved();
 
+        // Obter o status do input
+        $status = $this->input('status');
+
         // Aplicar a regra ao index de malfunctions
-        (new TicketStatusNotPendingApproval($this->input('search')))->passes('malfunction_index', null);
+        (new TicketStatusNotPendingApproval($this->input('search'), $status))->passes('malfunction_index', null);
     }
 }

@@ -12,17 +12,19 @@ class MalfunctionRepository
         $this->malfunction = $malfunction;
     }
 
-    public function getMalfunctions($search = null)
+    public function getMalfunctions($search = null, $sort = null, $direction = 'asc', $status = null)
     {
         $query = $this->malfunction::with('equipment', 'technician', 'ticket');
 
-        if ($search) {
-            $query->withSearch($search);
-        }
+        // Aplicar busca se fornecida
+        if ($search) $query->withSearch($search);
+        // Aplicar ordenação se fornecida
+        if ($sort) $query->sortBy($sort, $direction);
+        // Aplicar filtro de status se fornecido
+        if ($status) $query->withStatus($status);
 
         return $query;
     }
-
     public function findMalfunction($id)
     {
         return $this->malfunction::with('equipment', 'technician.user', 'ticket')->findOrFail($id);

@@ -43,6 +43,27 @@ class Ticket extends Model
         });
     }
 
+    public function scopeSortBy($query, $sort, $direction = 'asc')
+    {
+        // Adiciona joins necessários
+        $query->leftJoin('malfunctions', 'malfunctions.id', '=', 'tickets.malfunction_id')
+            ->leftJoin('equipments', 'equipments.id', '=', 'malfunctions.equipment_id')
+            ->select('tickets.*'); // Seleciona as colunas de tickets
+
+        // Mapeia os campos de ordenação
+        $orderFields = [
+            'equipment_type' => 'equipments.type',
+            'wait_time' => 'tickets.wait_time'
+        ];
+
+        // Se o campo de ordenação é válido, aplica a ordenação
+        if (isset($orderFields[$sort])) {
+            return $query->orderBy($orderFields[$sort], $direction);
+        }
+
+        // Para outros campos, aplica a ordenação padrão
+        return $query->orderBy($sort, $direction);
+    }
 
     public function technician()
     {

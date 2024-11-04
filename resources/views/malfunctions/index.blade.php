@@ -4,6 +4,18 @@
             {{ __('Relatório de Avarias') }}
         </h2>
 
+        <div class="ml-auto w-48">
+            <form method="GET" action="{{ route('malfunctions.index') }}">
+                <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
+                <select name="status" onchange="this.form.submit()" class="form-select">
+                    <option value="">{{ __('Todos os Tickets') }}</option>
+                    <option value="open" {{ request('status')}}>{{ __('Abertos') }}</option>
+                    <option value="in_progress" {{ request('status') }}>{{ __('Em Curso') }}</option>
+                    <option value="closed" {{ request('status') }}>{{ __('Fechados') }}</option>
+                </select>
+            </form>
+        </div>
+
         <div class="d-flex align-items-center">
             <form action="{{ route('malfunctions.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
                 <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
@@ -19,16 +31,71 @@
                     <table class="table-auto w-full text-left">
                         <thead>
                         <tr>
-                            <th class="px-4 py-2">{{ __('Equipamento') }}</th>
-                            <th class="px-4 py-2">{{ __('Status') }}</th>
-                            <th class="px-4 py-2">{{ __('Técnico') }}</th>
-                            <th class="px-4 py-2">{{ __('Diagnóstico') }}</th>
-                            <th class="px-4 py-2">{{ __('Tempo de Resolução') }}</th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('malfunctions.index', ['sort' => 'equipment_type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Equipamento') }}
+                                    @if(request('sort') == 'equipment_type')
+                                        @if(request('direction') == 'asc')
+                                            ↑
+                                        @else
+                                            ↓
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('malfunctions.index', ['sort' => 'status', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Status') }}
+                                    @if(request('sort') == 'status')
+                                        @if(request('direction') == 'asc')
+                                            ↑
+                                        @else
+                                            ↓
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('malfunctions.index', ['sort' => 'technician_name', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Técnico') }}
+                                    @if(request('sort') == 'technician_name')
+                                        @if(request('direction') == 'asc')
+                                            ↑
+                                        @else
+                                            ↓
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('malfunctions.index', ['sort' => 'diagnosis', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Diagnóstico') }}
+                                    @if(request('sort') == 'diagnosis')
+                                        @if(request('direction') == 'asc')
+                                            ↑
+                                        @else
+                                            ↓
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('malfunctions.index', ['sort' => 'resolution_time', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Tempo de Resolução') }}
+                                    @if(request('sort') == 'resolution_time')
+                                        @if(request('direction') == 'asc')
+                                            ↑
+                                        @else
+                                            ↓
+                                        @endif
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach ($malfunctions as $malfunction)
-                            @can('view', $malfunction)
                             <tr>
                                 <td class="border px-4 py-2">{{ $malfunction->equipment->type ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
@@ -38,7 +105,7 @@
                                     @if ($malfunction->ticket->status === 'open')
                                         Em espera para iniciar reparo
                                     @else
-                                        {{ $malfunction->ticket->resolution_time ?? 'N/A' }} minuto(s)
+                                        {{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)
                                     @endif
                                 </td>
                                 <td>
@@ -50,7 +117,6 @@
                                     </form>
                                 </td>
                             </tr>
-                            @endcan
                         @endforeach
                         </tbody>
                     </table>
