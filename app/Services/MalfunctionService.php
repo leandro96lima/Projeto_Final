@@ -26,11 +26,14 @@ class MalfunctionService
 
     public function getMalfunctions(array $validatedData)
     {
-        // Extract the search term from the validated data
+        // Extract the search term and status from the validated data
         $search = $validatedData['search'] ?? null;
+        $status = $validatedData['status'] ?? null ;
+        $sort = $validatedData['sort'] ?? null ;
+        $direction = $validatedData['direction'] ?? null ;
 
         // Build the query for malfunctions, excluding those with tickets in 'pending_approval'
-        $malfunctionsQuery = $this->malfunctionRepository->getMalfunctionsFromDb($search)
+        $malfunctionsQuery = $this->malfunctionRepository->getMalfunctions($search, $sort, $direction, $status)
             ->whereDoesntHave('ticket', function ($query) {
                 $query->where('status', 'pending_approval');
             });

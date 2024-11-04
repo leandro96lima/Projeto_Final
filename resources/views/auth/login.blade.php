@@ -75,12 +75,12 @@
             <div class="overlay">
                 <div class="overlay-panel overlay-left">
                     <h1>Welcome Back!</h1>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                    <br>
                     <button class="ghost" id="signIn">Sign In</button>
                 </div>
                 <div class="overlay-panel overlay-right">
                     <h1>Hello, Friend!</h1>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <br>
                     <button class="ghost" id="signUp">Sign Up</button>
                 </div>
             </div>

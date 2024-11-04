@@ -16,10 +16,14 @@ class TechnicianController extends Controller
         // Verifica se há uma pesquisa a ser realizada
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->whereHas('user', function($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
-            })->orWhere('specialty', 'like', '%' . $search . '%');
+            $query->search($search);
+        }
+
+        // Lógica de ordenação utilizando o scope
+        if ($request->filled('sort')) {
+            $sortField = $request->sort;
+            $sortDirection = $request->direction === 'desc' ? 'desc' : 'asc';
+            $query->sortBy($sortField, $sortDirection);
         }
 
         $technicians = $query->paginate(10);

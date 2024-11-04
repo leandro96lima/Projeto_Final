@@ -19,10 +19,38 @@
                     <table class="table-auto w-full text-left">
                         <thead>
                         <tr>
-                            <th class="px-4 py-2">{{ __('Nome do Técnico') }}</th>
-                            <th class="px-4 py-2">{{ __('Email') }}</th>
-                            <th class="px-4 py-2">{{ __('Especialidade') }}</th>
-                            <th class="px-4 py-2">{{ __('Total de Tickets') }}</th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('technicians.index', ['sort' => 'name', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Nome do Técnico') }}
+                                    @if (request('sort') === 'name')
+                                        {{ request('direction') === 'asc' ? '↑' : '↓' }}
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('technicians.index', ['sort' => 'email', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Email') }}
+                                    @if (request('sort') === 'email')
+                                        {{ request('direction') === 'asc' ? '↑' : '↓' }}
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('technicians.index', ['sort' => 'specialty', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Especialidade') }}
+                                    @if (request('sort') === 'specialty')
+                                        {{ request('direction') === 'asc' ? '↑' : '↓' }}
+                                    @endif
+                                </a>
+                            </th>
+                            <th class="px-4 py-2">
+                                <a href="{{ route('technicians.index', ['sort' => 'tickets_count', 'direction' => request('direction') === 'asc' ? 'desc' : 'asc']) }}">
+                                    {{ __('Total de Tickets') }}
+                                    @if (request('sort') === 'tickets_count')
+                                        {{ request('direction') === 'asc' ? '↑' : '↓' }}
+                                    @endif
+                                </a>
+                            </th>
                             <th class="px-4 py-2">{{ __('Ações') }}</th>
                         </tr>
                         </thead>

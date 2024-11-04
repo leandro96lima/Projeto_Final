@@ -21,6 +21,7 @@ class TicketRepository extends BaseRepository
 
         if ($status) $query->withStatus($status);
         if ($search) $query->search($search);
+        if ($sort) $query->sortBy($sort, $direction);
 
         return $query;
     }

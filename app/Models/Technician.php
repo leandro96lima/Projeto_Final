@@ -10,6 +10,29 @@ class Technician extends Model
     use HasFactory;
     protected $fillable = ['specialty', 'user_id'];
 
+    // Scope para busca
+    public function scopeSearch($query, $search)
+    {
+        return $query->whereHas('user', function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%');
+        })->orWhere('specialty', 'like', '%' . $search . '%');
+    }
+
+    // Scope para ordenação
+    public function scopeSortBy($query, $sortField, $sortDirection = 'asc')
+    {
+        if ($sortField === 'name' || $sortField === 'email') {
+            $query->join('users', 'technicians.user_id', '=', 'users.id')
+                ->select('technicians.*') // Para evitar ambiguidade
+                ->orderBy('users.' . $sortField, $sortDirection);
+        } elseif ($sortField === 'specialty') {
+            $query->orderBy('specialty', $sortDirection);
+        } elseif ($sortField === 'tickets_count') {
+            $query->withCount('tickets')->orderBy('tickets_count', $sortDirection);
+        }
+    }
+
 
     public function tickets()
     {

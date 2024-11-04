@@ -93,7 +93,7 @@
 
                         <div class="flex items-center justify-between">
                             <button type="submit" class="btn btn-primary">{{ __('Confirmar') }}</button>
-                            <a href="{{ route('tickets.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
+                            <a href="{{ route('dashboard') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
                         </div>
                     </form>
                 </div>
