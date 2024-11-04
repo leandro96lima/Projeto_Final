@@ -15,7 +15,7 @@ class TicketRepository extends BaseRepository
         parent::__construct($ticket);
     }
 
-    public function getTickets($status = null, $search = null)
+    public function getTicketsFromDb($status = null, $search = null)
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
 
@@ -37,7 +37,7 @@ class TicketRepository extends BaseRepository
             ->first();
     }
 
-    public function addTicketToDatabase($validatedData, $malfunctionId): Ticket
+    public function addTicketToDb($validatedData, $malfunctionId): Ticket
     {
         $ticketData = [
             'title' => $validatedData['title'],

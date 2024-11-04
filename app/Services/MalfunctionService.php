@@ -30,7 +30,7 @@ class MalfunctionService
         $search = $validatedData['search'] ?? null;
 
         // Build the query for malfunctions, excluding those with tickets in 'pending_approval'
-        $malfunctionsQuery = $this->malfunctionRepository->getMalfunctions($search)
+        $malfunctionsQuery = $this->malfunctionRepository->getMalfunctionsFromDb($search)
             ->whereDoesntHave('ticket', function ($query) {
                 $query->where('status', 'pending_approval');
             });

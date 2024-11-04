@@ -27,7 +27,7 @@ class TicketService
     public function getTickets(Request $request)
     {
         // Obtém a consulta dos tickets sem aplicar a paginação
-        $tickets = $this->ticketRepository->getTickets(
+        $tickets = $this->ticketRepository->getTicketsFromDb(
             $request->input('status'),
             $request->input('search')
         );
@@ -60,8 +60,8 @@ class TicketService
             throw new \Exception('Equipamento não encontrado.');
         }
 
-        $malfunction = $this->malfunctionRepository->addMalfunctionToDatabase($equipment->id);
-        return $this->ticketRepository->addTicketToDatabase($validatedData, $malfunction->id);
+        $malfunction = $this->malfunctionRepository->addMalfunctiontoDb($equipment->id);
+        return $this->ticketRepository->addTicketToDb($validatedData, $malfunction->id);
     }
 
     public function handleEquipmentControllerRequest(Ticket $ticket, $equipmentId): void

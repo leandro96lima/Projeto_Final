@@ -12,7 +12,7 @@ class MalfunctionRepository
         $this->malfunction = $malfunction;
     }
 
-    public function getMalfunctions($search = null)
+    public function getMalfunctionsFromDb($search = null)
     {
         $query = $this->malfunction::with('equipment', 'technician', 'ticket');
 
@@ -29,7 +29,7 @@ class MalfunctionRepository
     }
 
 
-    public function addMalfunctionToDatabase($equipmentId): Malfunction
+    public function addMalfunctiontoDb($equipmentId): Malfunction
     {
         $malfunction = new Malfunction();
         $malfunction->equipment_id = $equipmentId;
