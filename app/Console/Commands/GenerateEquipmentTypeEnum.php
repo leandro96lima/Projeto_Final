@@ -30,8 +30,18 @@ class GenerateEquipmentTypeEnum extends Command
 
     protected function generateEnumContent(array $types): string
     {
-        $cases = implode(",\n        ", array_map(fn($type) => "    case " . strtoupper(str_replace(' ', '_', $type)) . " = '$type';", $types));
+        // Remove tipos duplicados
+        $types = array_unique($types);
 
-        return "<?php\n\nnamespace App\Enums;\n\nenum EquipmentType: string\n{\n        $cases\n}\n";
+        // Função para normalizar o tipo
+        $normalizeType = fn($type) => strtoupper(str_replace([' ', 'ã'], ['_', 'A'], $type));
+
+        // Cria os casos do enum
+        $cases = array_map(fn($type) => "    case " . $normalizeType($type) . " = '$type';", $types);
+
+        // Usa implode sem vírgula final
+        $casesString = implode("\n", $cases);
+
+        return "<?php\n\nnamespace App\Enums;\n\nenum EquipmentType: string\n{\n$casesString\n}\n";
     }
 }
