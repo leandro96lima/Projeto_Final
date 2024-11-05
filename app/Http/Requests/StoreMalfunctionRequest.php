@@ -23,7 +23,7 @@ class StoreMalfunctionRequest extends FormRequest
                 'max:255',
                 new PreventRevertToOpen($malfunction), // Apply the custom rule
             ],
-            'cost' => 'nullable|numeric',
+            'cost' => 'nullable|numeric|min:0',
             'solution' => 'nullable|string',
             'resolution_time' => 'nullable|integer',
             'diagnosis' => 'nullable|string',

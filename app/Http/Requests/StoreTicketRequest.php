@@ -22,7 +22,7 @@ class StoreTicketRequest extends FormRequest
                 new CheckDuplicateTicket($this->title, $this->description, $this->serial_number),
             ],
             'type' => 'required|string|max:255',
-            'serial_number' => 'required|string|max:255',
+            'serial_number' => 'required|string|regex:/^[A-Z]{3}-\d{5}$/i|max:255',
             'description' => 'required|string',
         ];
     }
