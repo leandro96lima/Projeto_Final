@@ -58,6 +58,9 @@ class TicketRepository extends BaseRepository
 
     public function updateTicketStatus(Ticket $ticket, array $validatedData)
     {
+        // Se o ticket_id ainda não estiver atribuído, atribui o id do usuário autenticado
+        $ticket->technician_id = $ticket->technician_id ?? auth()->id();
+
         $ticketData = [
             'status' => $validatedData['status'],
             'urgent' => $validatedData['urgent'],

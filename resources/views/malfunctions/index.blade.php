@@ -98,14 +98,10 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $malfunction->equipment->type ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->technician->user->name ?? 'Sem técnico' }}</td>
+                                <td class="border px-4 py-2">{{ $malfunction->ticket->technician->user->name ?? 'Sem técnico' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->diagnosis ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">
-                                    @if ($malfunction->ticket->status === 'open')
-                                        Em espera para iniciar reparo
-                                    @else
                                         {{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)
-                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('malfunctions.show', $malfunction->id) }}">{{ __('Detalhes') }}</a>
