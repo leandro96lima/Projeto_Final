@@ -10,14 +10,15 @@ trait CalculateTime
         if (!$ticket || $ticket->status === 'open' || !$ticket->progress_date) return 0;
 
         $progressDate = Carbon::parse($ticket->progress_date);
-        $endDate = $ticket->close_date;
+        $endDate = $ticket->close_date ? Carbon::parse($ticket->close_date)
+            : now();
+
 
         $time = $progressDate->diffInMinutes($endDate);
 
-        if ($ticket->status === 'closed') {
             $ticket->resolution_time = $time;
             $ticket->save();
-        }
+
 
         return $time;
     }
@@ -33,11 +34,8 @@ trait CalculateTime
 
         $time = $openDate->diffInMinutes($waitDate); // Sempre calcula a diferença
 
-
-        if ($ticket->status === 'in_progress') {
             $ticket->wait_time = $time;
             $ticket->save();
-        }
 
         return $time; // Retorna o tempo calculado
     }

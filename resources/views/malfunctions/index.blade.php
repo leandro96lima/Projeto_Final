@@ -8,10 +8,10 @@
             <form method="GET" action="{{ route('malfunctions.index') }}">
                 <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
                 <select name="status" onchange="this.form.submit()" class="form-select">
-                    <option value="">{{ __('Todos os Tickets') }}</option>
-                    <option value="open" {{ request('status')}}>{{ __('Abertos') }}</option>
+                    <option value="">{{ __('Todas as Avarias') }}</option>
+                    <option value="open" {{ request('status')}}>{{ __('Abertas') }}</option>
                     <option value="in_progress" {{ request('status') }}>{{ __('Em Curso') }}</option>
-                    <option value="closed" {{ request('status') }}>{{ __('Fechados') }}</option>
+                    <option value="closed" {{ request('status') }}>{{ __('Fechadas') }}</option>
                 </select>
             </form>
         </div>

@@ -12,7 +12,7 @@ class MalfunctionRepository
         $this->malfunction = $malfunction;
     }
 
-    public function getMalfunctionsFromDb($search = null)
+    public function getMalfunctionsFromDb($search = null, $sort=null, $direction="asc", $status=null)
     {
         $query = $this->malfunction::with('equipment', 'technician', 'ticket');
 
