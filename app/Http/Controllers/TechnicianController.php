@@ -11,7 +11,7 @@ class TechnicianController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Technician::with('user');
+        $query = Technician::with(['user', 'tickets']); // Carregando tickets para contagem
 
         // Verifica se há uma pesquisa a ser realizada
         if ($request->filled('search')) {
@@ -26,10 +26,11 @@ class TechnicianController extends Controller
             $query->sortBy($sortField, $sortDirection);
         }
 
-        $technicians = $query->paginate(10);
+        $technicians = $query->withCount('tickets')->paginate(10); // Inclui contagem de tickets
 
         return view('technicians.index', compact('technicians'));
     }
+
 
 
     public function create()

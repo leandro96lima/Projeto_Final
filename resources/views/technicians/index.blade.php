@@ -60,7 +60,7 @@
                                 <td class="border px-4 py-2">{{ $technician->user->name ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $technician->user->email ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $technician->specialty ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $technician->tickets->count() }}</td>
+                                <td class="border px-4 py-2">{{ $technician->tickets_count }}</td>
                                 <td class="border px-4 py-2"><a href="{{ route('technicians.show', $technician->id) }}">{{ __('Perfil') }}</a></td>
                             </tr>
                         @endforeach

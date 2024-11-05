@@ -13,11 +13,15 @@ class Technician extends Model
     // Scope para busca
     public function scopeSearch($query, $search)
     {
-        return $query->whereHas('user', function($q) use ($search) {
+        return $query->whereHas('user', function ($q) use ($search) {
             $q->where('name', 'like', '%' . $search . '%')
                 ->orWhere('email', 'like', '%' . $search . '%');
-        })->orWhere('specialty', 'like', '%' . $search . '%');
+        })->orWhere('specialty', 'like', '%' . $search . '%')
+            ->orWhereHas('tickets', function ($q) use ($search) {
+                $q->where('status', 'like', '%' . $search . '%'); // Exemplo se quiser filtrar tickets por status
+            });
     }
+
 
     // Scope para ordenação
     public function scopeSortBy($query, $sortField, $sortDirection = 'asc')

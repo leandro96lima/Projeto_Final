@@ -78,7 +78,16 @@ class TicketController extends Controller
     {
         $this->authorize('delete', $ticket);
 
+        // Verifica se o ticket tem uma malfuncion associada
+        if ($ticket->malfunction) {
+            // Elimina a malfuncion associada
+            $ticket->malfunction->delete();
+        }
+
+        // Elimina o ticket
         $ticket->delete();
-        return redirect()->route('tickets.index');
+
+        return redirect()->route('tickets.index')->with('success', 'Ticket e malfuncion eliminados com sucesso.');
     }
+
 }
