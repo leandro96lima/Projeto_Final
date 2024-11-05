@@ -16,7 +16,7 @@ class GetMalfunctionsRequest extends FormRequest
     {
         return [
             'search' => 'nullable|string',
-            'status' => 'string',
+            'status' => 'nullable|string',
             'sort' => 'nullable|string',
             'direction' => 'nullable|string'
         ];

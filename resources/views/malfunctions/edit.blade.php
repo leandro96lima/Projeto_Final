@@ -26,10 +26,8 @@
                             <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Status') }}</label>
                             <select id="status" name="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
                                 @if ($action == 'abrir')
-                                    <option value="open" {{ old('status', $malfunction->ticket->status) == 'open' ? 'selected' : '' }}>{{ __('Aberto') }}</option>
                                     <option value="in_progress" {{ old('status', $malfunction->ticket->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
                                 @elseif ($action == 'fechar')
-                                    <option value="in_progress" {{ old('status', $malfunction->ticket->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
                                     <option value="closed" {{ old('status', $malfunction->ticket->status) == 'closed' ? 'selected' : '' }}>{{ __('Fechado') }}</option>
                                 @else
                                     <option value="open" {{ old('status', $malfunction->ticket->status) == 'open' ? 'selected' : '' }}>{{ __('Aberto') }}</option>

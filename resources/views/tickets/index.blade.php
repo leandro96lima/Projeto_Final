@@ -6,6 +6,7 @@
                     {{ __('Lista de Tickets') }}
                 </h2>
             </div>
+
             <div class="ml-auto w-48">
                 <form method="GET" action="{{ route('tickets.index') }}">
                     <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
