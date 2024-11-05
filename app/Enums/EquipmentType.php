@@ -14,8 +14,4 @@ enum EquipmentType: string
     case SCANNER = 'Scanner';
     case PROJETOR = 'Projetor';
     case MONITOR = 'Monitor';
-    case BUSSOLA = 'Bussola';
-    case TECLADO = 'Teclado';
-    case DILDO = 'Dildo';
-    case ASPIRADOR = 'Aspirador';
 }
