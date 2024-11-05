@@ -1,0 +1,520 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #99A3B9;
+}
+
+
+main {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 20px;
+    position: fixed;
+    width: 93.5%;
+    z-index: 1;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+
+}
+
+#sidebar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 0px 18px 18px 0px;
+    position: relative;
+    transition: all .5s;
+    min-width: 82px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+
+}
+
+#sidebar_content {
+    padding: 12px;
+}
+
+#user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+#user_avatar {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#user_infos {
+    display: flex;
+    flex-direction: column;
+}
+
+#user_infos span:last-child {
+    color: #6b6b6b;
+    font-size: 12px;
+}
+
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+
+}
+
+.side-item {
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    
+
+}
+
+.side-item.active {
+    background-color: #0077ff;
+}
+
+.side-item:hover:not(.active),
+#logout_btn:hover {
+    background-color: #e3e9f7;
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+}
+
+.side-item.active a {
+    color: #e3e9f7;
+}
+
+.side-item a i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+#logout {
+    border-top: 1px solid #e3e9f7;
+    padding: 12px;
+}
+
+#logout_btn {
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-radius: 8px;
+    text-align: start;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+#open_btn {
+    position: absolute;
+    top: 30px;
+    right: -10px;
+    background-color: #0077ff;
+    color: #e3e9f7;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#open_btn_icon {
+    transition: transform .3s ease;
+}
+
+.open-sidebar #open_btn_icon {
+    transform: rotate(180deg);
+}
+
+.item-description {
+    width: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    transition: width .6s;
+    height: 0px;
+}
+
+#sidebar.open-sidebar {
+    min-width: 15%;
+}
+
+#sidebar.open-sidebar .item-description {
+    display: flex;
+    flex-direction: row;
+    width: 75px;
+    height: auto;
+}
+
+#sidebar.open-sidebar .side-item a {
+    justify-content: flex-start;
+    gap: 14px;
+}
+
+/* -------------------CARDS--------------------------------- */
+
+.container {
+    display: flex;
+    /* Use Flexbox to center the carousel */
+    justify-content: flex-start;
+    /* Center horizontally */
+    align-items: flex-start;
+    /* Center vertically */
+    flex-direction: row;
+    /* Stack items vertically if needed */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin: 100px 20px 10px;
+    /* Simplified margin */
+    background-color: #ffffff;
+    border-radius: 18px;
+}
+
+
+.insidecontainer {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 20px;
+    /* Se necessário, mantenha, mas ajuste conforme necessário */
+}
+
+
+
+.botao {
+    width: 200px;
+    margin: 5px;
+    border-radius: 20px;
+    border: 1px solid #dc3545;
+    background-color: #dc3545;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+.botao:hover {
+    background-color: #dc3545;
+    /* Darken the background on hover */
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Enhance shadow on hover */
+
+
+}
+
+.botao:active {
+    transform: scale(0.95);
+}
+
+a {
+    outline: none;
+    /* Remove o contorno padrão */
+    text-decoration: none;
+    /* Remove o sublinhado, se desejado */
+    color: white;
+}
+
+a:focus {
+    outline: none;
+    /* Remove o contorno quando o link está em foco */
+}
+
+.botao2 {
+    width: 200px;
+    margin: 5px;
+    border-radius: 20px;
+    border: 1px solid #fd7e14;
+    background-color: #fd7e14;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+.botao2:hover {
+    background-color: #fd7e14;
+    /* Darken the background on hover */
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Enhance shadow on hover */
+
+
+}
+
+.botao2:active {
+    transform: scale(0.95);
+}
+
+a {
+    outline: none;
+    /* Remove o contorno padrão */
+    text-decoration: none;
+    /* Remove o sublinhado, se desejado */
+    color: white;
+}
+
+a:focus {
+    outline: none;
+    /* Remove o contorno quando o link está em foco */
+}
+
+
+input {
+    
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    border-radius: 30px;
+}
+
+select {
+    margin: 5px;
+    padding: 5px;
+    /* Padding for better appearance */
+    border: 1px solid #ccc;
+    /* Border styling */
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 16px;
+    /* Font size */
+    background-color: #f9f9f9;
+    /* Background color */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+select:focus {
+    outline: none;
+    /* Remove default focus outline */
+    border-color: #007bff;
+    /* Change border color on focus */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+th, td {
+    
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 14px;
+    
+    
+}
+
+th {
+    background-color: #99a3b9;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #99a3b9;
+    color: white;
+}
+
+
+
+
+
+.descricao {
+    text-align: left;
+    width: 30%;
+    /* Aumenta o espaço para Descrição e Diagnóstico */
+}
+
+
+#displaybotao {
+
+
+    display: flex;
+    justify-content: center;
+
+}
+
+
+.side-item .dropdown {
+    display: none;
+    list-style-type: none;
+
+    background-color: #0077ff;
+    /* or any other background color */
+    padding: 0;
+    margin: 10px;
+}
+
+
+
+
+
+.side-item .dropdown li {
+    margin: 0;
+    padding: 0;
+}
+
+.side-item .dropdown li a {
+    display: block;
+    font-size: small;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+    /* or any other text color */
+}
+
+.side-item .dropdown li a:hover {
+    color: white;
+    background-color: #0077ff;
+    /* optional for hover effect */
+}
+
+
+.Avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Centraliza horizontalmente */
+    justify-content: center;  /* Centraliza verticalmente */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#imagemavatar {
+    border: 2px solid black;
+    border-radius: 50%;  /* Torna a imagem circular */
+    margin-bottom: 8px;  /* Espaço entre a imagem e o texto */
+}
+
+
+
+
+/* SEARCH BAR */
+
+.search-box {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
+.input-search {
+    
+    width: 50px;
+    border-style: none;
+    padding: 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    outline: none;
+    border-radius: 25px;
+    transition: all .5s ease-in-out;
+
+    padding-right: 40px;
+    color: #000000;
+}
+
+.input-search::placeholder {
+    color: #000000;
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 80px;
+}
+
+.btn-search {
+    width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 0px;
+    color: #0077ff;
+    background-color: transparent;
+    pointer-events: painted;
+}
+
+.btn-search:focus~.input-search {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #99A3B9;
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.input-search:focus {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #0077ff;
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+
+.pesquisa-ordenar {
+    display: flex;
+    justify-content: space-between; /* Ensures space between search box and dropdown */
+    align-items: center; /* Aligns items vertically */
+    width: 100%; /* Ensures the full width is used */
+   
+}
+
+.dropdown2 {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
