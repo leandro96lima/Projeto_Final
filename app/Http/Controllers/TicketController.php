@@ -42,12 +42,11 @@ class TicketController extends Controller
 
     public function store(StoreTicketRequest $request)
     {
-        // A validação já foi realizada na StoreTicketRequest, então podemos usar o validated()
         $validatedData = $request->validated();
 
         try {
             // Use o TicketService para criar o ticket
-            $ticket = $this->ticketService->createTicket($validatedData);
+           $this->ticketService->createTicket($validatedData);
 
             return redirect()->route('tickets.index')->with('success', 'Ticket criado com sucesso!');
 
