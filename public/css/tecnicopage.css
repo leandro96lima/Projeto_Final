@@ -1,0 +1,427 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif
+    
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color:#99A3B9 ;
+   
+}
+
+
+
+main {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 20px;
+    position: fixed;
+    width: 92.5%;
+    z-index: 1;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+ 
+}
+
+#sidebar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 0px 18px 18px 0px;
+    position: relative;
+    transition: all .5s;
+    min-width: 82px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#sidebar_content {
+    padding: 12px;
+}
+
+.Avatar{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    
+}
+
+#imagemavatar{
+
+border: 2px solid black;
+border-radius: 80%;
+
+}
+
+#user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+#user_avatar {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#user_infos {
+    display: flex;
+    flex-direction: column;
+}
+
+#user_infos span:last-child {
+    color: #6b6b6b;
+    font-size: 12px;
+}
+
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    
+}
+
+.side-item {
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+    
+   
+}
+
+.side-item.active {
+    background-color: #0077ff;
+}
+
+.side-item:hover:not(.active),
+#logout_btn:hover {
+    background-color: #e3e9f7;
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+}
+
+.side-item.active a {
+    color: #e3e9f7;
+}
+
+.side-item a i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+#logout {
+    border-top: 1px solid #e3e9f7;
+    padding: 12px;
+}
+
+#logout_btn {
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-radius: 8px;
+    text-align: start;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+#open_btn {
+    position: absolute;
+    top: 30px;
+    right: -10px;
+    background-color: #0077ff;
+    color: #e3e9f7;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#open_btn_icon {
+    transition: transform .3s ease;
+}
+
+.open-sidebar #open_btn_icon {
+    transform: rotate(180deg);
+}
+
+.item-description {
+    width: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    transition: width .6s;
+    height: 0px;
+}
+
+#sidebar.open-sidebar {
+    min-width: 15%;
+}
+
+#sidebar.open-sidebar .item-description {
+    display: flex;
+    flex-direction: row;
+    width: 75px;
+    height: auto;
+}
+
+#sidebar.open-sidebar .side-item a {
+    justify-content: flex-start;
+    gap: 14px;
+}
+
+/* -------------------CARDS--------------------------------- */
+
+.container {
+    display: flex; /* Use Flexbox to center the carousel */
+    justify-content: flex-start;
+    align-items: flex-start; /* Center vertically */
+    flex-direction: row; /* Align items in a row */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin: 100px 20px 10px; /* Simplified margin */
+    background-color: #ffffff;
+    border-radius: 18px;
+}
+
+.wrapper {
+    display: flex; /* Align inner containers horizontally */
+    flex-direction: row; /* Align items in a row */
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+}
+
+.insidecontainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 20px; /* Add some margin to separate from the new div */
+}
+
+
+
+.insidecontainer2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 20px; /* Add some margin to separate from the wrapper */
+    
+}
+
+.card {
+    margin: 20px;
+    width: 100%;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+ }
+  
+
+ .card2{
+    margin: 10px;
+    width: 100%;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+
+
+
+ }
+
+ .card3{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+
+
+ }
+
+ .dropdown {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding for better appearance */
+    
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    background-color: #f9f9f9; /* Background color */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.dropdown:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #007bff; /* Change border color on focus */
+}
+ 
+
+ .cardtoken{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+
+ }
+
+ .botao {
+    width: 350px;
+    height: px;
+    margin: 10px;
+	border-radius: 20px;
+	border: 1px solid #0077ff;
+	background-color: #0077ff;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+.botao:hover{
+    background-color: #0077ff; /* Darken the background on hover */
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
+
+}
+
+.botao:active {
+	transform: scale(0.95);
+}
+
+a {
+    outline: none; /* Remove o contorno padrão */
+    text-decoration: none; /* Remove o sublinhado, se desejado */
+    color: white;
+}
+
+a:focus {
+    outline: none; /* Remove o contorno quando o link está em foco */
+}
+  
+
+input {
+	background-color: #eee;
+	border: 1px solid black;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+    border-radius: 30px;
+}
+
+.input2 {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px;
+	width: 100%;
+    border-radius: 30px;
+}
+
+#tokenrequest{
+    display: flex;
+    width: 400px; /* Set the width */
+    height: 150px; /* Set the height */
+    padding: 10px; /* Optional: Add padding for better appearance */
+    border: 2px solid #ccc; /* Optional: Add border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+
+
+
+}
+
+.botoesdiv{
+
+
+    display: flex;
+    justify-content: center;
+
+
+}
+
+.side-item .dropdown {
+    display: none;
+    list-style-type: none;
+    
+    background-color: #0077ff; /* or any other background color */
+    padding: 0;
+    margin: 10px;
+ }
+    
+
+
+
+
+.side-item .dropdown li {
+    margin: 0;
+    padding: 0;
+}
+
+.side-item .dropdown li a {
+    display: block;
+    font-size: small;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black; /* or any other text color */
+}
+
+.side-item .dropdown li a:hover {
+    color: white;
+    background-color: #0077ff; /* optional for hover effect */
+}
+
+
+
+
+

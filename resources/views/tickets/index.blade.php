@@ -1,17 +1,56 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                    {{ __('Lista de Tickets') }}
-                </h2>
-            </div>
+<!DOCTYPE html>
+<html lang="pt-pt">
 
-            <div class="ml-auto w-48">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/usertickets.css">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+    <title>QuickFix</title>
+</head>
+
+<body>
+<nav id="sidebar">
+    <div id="sidebar_content">
+        <div class="Avatar">
+            <img src="{{ asset('hacker.png') }}" width="60" id="imagemavatar" alt="Avatar">
+            <span class="item-description">
+                    <br>
+                    @Utilizador
+                </span>
+        </div>
+        <ul id="side_items">
+            <li class="side-item"><a href="userpage.html"><i class="fa-solid fa-user"></i> <span class="item-description">Perfil</span></a></li>
+            <li class="side-item"><a href="ticket.html"><i class="fa-solid fa-receipt"></i> <span class="item-description">Registar Tickets</span></a></li>
+            <li class="side-item"><a href="usertickets.html"><i class="fa-solid fa-list"></i> <span class="item-description">Tickets</span></a></li>
+        </ul>
+        <button id="open_btn"><i id="open_btn_icon" class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div id="logout">
+        <a href="login2.html"><button id="logout_btn"><i class="fa-solid fa-right-from-bracket"></i> <span class="item-description">Logout</span></button></a>
+    </div>
+</nav>
+
+<header>
+    <main>
+        <h1>Lista de Tickets</h1>
+    </main>
+</header>
+<section class="container">
+    <div class="insidecontainer">
+        <div class="pesquisa-ordenar">
+            <div class="search-box">
+                <form action="{{ route('tickets.index') }}" method="GET">
+                    <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                    <input type="search" name="search" class="input-search" placeholder="Pesquisar" aria-label="Search">
+                </form>
+            </div>
+            <div>
                 <form method="GET" action="{{ route('tickets.index') }}">
-                    <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
-                    <select name="status" onchange="this.form.submit()" class="form-select">
-                        @foreach(['' => 'Todos os tickets', 'pending_approval' => 'Pendentes', 'open' => 'Abertos', 'in_progress' => 'Em Curso', 'closed' => 'Fechados'] as $value => $label)
+                    <select name="status" class="dropdown2" onchange="this.form.submit()">
+                        <option value="" disabled selected hidden>Filtrar por Status:</option>
+                        @foreach(['pending_approval' => 'Pendentes', 'open' => 'Abertos', 'in_progress' => 'Em Curso', 'closed' => 'Fechados'] as $value => $label)
                             <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
                         @endforeach
                     </select>
@@ -19,112 +58,121 @@
             </div>
         </div>
 
-        <div class="d-flex align-items-center">
-            <a href="{{ route('tickets.create') }}" class="btn btn-success">Criar Novo Ticket</a>
-            <form action="{{ route('tickets.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
-                <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
-                <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
-            </form>
-        </div>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table class="table-auto w-full text-left">
-                        <thead>
-                        <tr>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('tickets.index', ['sort' => 'equipment_type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Equipamento') }}
-                                    @if (request('sort') === 'equipment_type')
-                                        @if (request('direction') === 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('tickets.index', ['sort' => 'title', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Avaria') }}
-                                    @if (request('sort') === 'title')
-                                        @if (request('direction') === 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('tickets.index', ['sort' => 'open_date', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Data de Abertura') }}
-                                    @if (request('sort') === 'open_date')
-                                        @if (request('direction') === 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('tickets.index', ['sort' => 'status', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Status') }}
-                                    @if (request('sort') === 'status')
-                                        @if (request('direction') === 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('tickets.index', ['sort' => 'wait_time', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Tempo de Espera') }}
-                                    @if (request('sort') === 'wait_time')
-                                        @if (request('direction') === 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">{{ __('Ações') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($tickets as $ticket)
-                            <tr>
-                                <td class="border px-4 py-2">{{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->title }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->open_date }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->status ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s) </td>
-                                <td class="border px-4 py-2 inline-flex items-center">
-                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('tickets.show', [$ticket->id]) }}'">Detalhes</button>
-                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}'">Iniciar Reparo</button>
-                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}'">Concluir Reparo</button>
-                                    <form action="{{ route('tickets.destroy', $ticket->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Tem certeza que deseja eliminar este ticket?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mx-1">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <div class="mt-4">
-                        {{ $tickets->links() }}
-                    </div>
-                </div>
+        <div class="insidecontainer1">
+            <table>
+                <thead>
+                <tr>
+                    <th><button class="order">Equipamento</button></th>
+                    <th><button class="order">Avaria</button></th>
+                    <th><button class="order">Data de Abertura</button></th>
+                    <th><button class="order">Status</button></th>
+                    <th><button class="order">Tempo de Espera</button></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($tickets as $ticket)
+                    <tr>
+                        <td>{{ $ticket->malfunction ? $ticket->malfunction->equipment->type : 'N/A' }}</td>
+                        <td>{{ $ticket->title }}</td>
+                        <td>{{ $ticket->open_date }}</td>
+                        <td>{{ $ticket->status ?? 'N/A' }}</td>
+                        <td>{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            <div class="mt-4">
+                {{ $tickets->links() }}
             </div>
         </div>
     </div>
-</x-app-layout>
+</section>
+
+<script>
+    document.getElementById('open_btn').addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        const dropdowns = document.querySelectorAll('.dropdown');
+        const arrowIcon = document.getElementById('arrow-icon');
+
+        // Toggle sidebar visibility
+        sidebar.classList.toggle('open-sidebar');
+
+        // Close all dropdowns
+        dropdowns.forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+
+        // Reset arrow icon if sidebar is closing
+        if (!sidebar.classList.contains('open-sidebar')) {
+            arrowIcon.style.transform = 'rotate(0deg)';
+        }
+    });
+
+    // --------------------------------------------
+
+    const sideItems = document.querySelectorAll('.side-item');
+
+    sideItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove 'active' class from all side items
+            sideItems.forEach(sideItem => {
+                sideItem.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked item
+            item.classList.add('active');
+        });
+    });
+
+    // ----------------------------------------------
+
+    document.getElementById('menu-toggle').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default action of the link
+        const dropdown = this.nextElementSibling.querySelector('.dropdown');
+        const arrowIcon = document.getElementById('arrow-icon');
+
+        // Toggle dropdown visibility
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+
+        // Rotate the arrow icon
+        if (dropdown.style.display === 'block') {
+            arrowIcon.style.transform = 'rotate(180deg)';
+        } else {
+            arrowIcon.style.transform = 'rotate(0deg)';
+        }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('#side_items a');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.6 // Adjusts when the section is considered in view
+        };
+
+        const observerCallback = (entries) => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                const navLink = document.querySelector(`#side_items a[href="#${id}"]`);
+
+                if (entry.isIntersecting) {
+                    navLink.classList.add('active');
+                } else {
+                    navLink.classList.remove('active');
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    });
+
+</script>
+</body>
+</html>

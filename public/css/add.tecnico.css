@@ -1,0 +1,373 @@
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif
+    
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #99A3B9;
+    
+}
+
+
+main {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 20px;
+    position: fixed;
+    width: 92.5%;
+    z-index: 1;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+ 
+}
+
+#sidebar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 0px 18px 18px 0px;
+    position: relative;
+    transition: all .5s;
+    min-width: 82px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#sidebar_content {
+    padding: 12px;
+}
+
+.Avatar{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    
+}
+
+#imagemavatar{
+
+border: 2px solid black;
+border-radius: 80%;
+
+}
+
+#user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+#user_avatar {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+#user_infos {
+    display: flex;
+    flex-direction: column;
+}
+
+#user_infos span:last-child {
+    color: #6b6b6b;
+    font-size: 12px;
+}
+
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    
+}
+
+.side-item {
+    border-radius: 8px;
+    padding: 14px;
+    cursor: pointer;
+   
+   
+}
+
+.side-item.active {
+    background-color: #0077ff;
+}
+
+.side-item:hover:not(.active),
+#logout_btn:hover {
+    background-color: #e3e9f7;
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0a0a0a;
+}
+
+.side-item.active a {
+    color: #e3e9f7;
+}
+
+.side-item a i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+}
+
+#logout {
+    border-top: 1px solid #e3e9f7;
+    padding: 12px;
+}
+
+#logout_btn {
+    border: none;
+    padding: 12px;
+    font-size: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-radius: 8px;
+    text-align: start;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+#open_btn {
+    position: absolute;
+    top: 30px;
+    right: -10px;
+    background-color: #0077ff;
+    color: #e3e9f7;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+#open_btn_icon {
+    transition: transform .3s ease;
+}
+
+.open-sidebar #open_btn_icon {
+    transform: rotate(180deg);
+}
+
+.item-description {
+    width: 0px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    transition: width .6s;
+    height: 0px;
+}
+
+#sidebar.open-sidebar {
+    min-width: 15%;
+}
+
+#sidebar.open-sidebar .item-description {
+    display: flex;
+    flex-direction: row;
+    width: 100px;
+    height: auto;
+}
+
+#sidebar.open-sidebar .side-item a {
+    justify-content: flex-start;
+    gap: 14px;
+}
+
+/* -------------------CARDS--------------------------------- */
+
+.container {
+    display: flex; /* Use Flexbox to center the carousel */
+    justify-content: flex-start; 
+    
+    align-items: flex-start; 
+    flex-direction: column; /* Stack items vertically if needed */
+    width: 100%;
+    margin: 100px 20px 10px; /* Simplified margin */
+    background-color: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+.insidecontainer {
+    display: flex;
+    
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 20px;
+  }
+  
+
+
+.card {
+    
+    width: 100%;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    margin: 10px;
+ }
+  
+
+ #areadiagnostico{
+
+    font-size: 16px; /* Adjusts the font size of the input text */
+    
+    width:600px ;
+    height: 200px;
+    
+    line-height: 1.2; /* Adjusts line height for better alignment */
+    box-sizing: border-box; /* Ensures padding is included in total width/height */
+    padding: 10px; /* Add some padding */
+    vertical-align: top; /* Align text to the top */
+    text-align: left; /* Ensure text is left-aligned */
+    resize: none;
+
+
+
+
+ }
+
+ .dropdown {
+    width: 50%; /* Full width */
+    padding: 10px; /* Padding for better appearance */
+    border: 1px solid #ccc; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    background-color: #f9f9f9; /* Background color */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.dropdown:focus {
+    outline: none; /* Remove default focus outline */
+    border-color: #007bff; /* Change border color on focus */
+}
+
+.botao {
+    width: 150px;
+    height: 65px;
+    margin: 5px;
+	border-radius: 20px;
+	border: 1px solid #0077ff;
+	background-color: #0077ff;
+	color: #FFFFFF;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 12px ;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+.botao:hover{
+    background-color: #0077ff; /* Darken the background on hover */
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
+
+}
+
+.botao:active {
+	transform: scale(0.95);
+}
+.botao2 {
+    width: 150px;
+    height: 65px;
+    margin: 5px;
+	border-radius: 20px;
+	border: 1px solid #dc3545;
+	background-color: #dc3545;
+	color: #FFFFFF;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 12px ;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+.botao2:hover{
+    background-color: #dc3545; /* Darken the background on hover */
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
+
+}
+
+.botao2:active {
+	transform: scale(0.95);
+}
+
+a {
+    outline: none; /* Remove o contorno padrão */
+    text-decoration: none; /* Remove o sublinhado, se desejado */
+    color: white;
+}
+
+.cardinterior{
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+
+
+}
+
+
+
+
+#custo{
+    font-size: 16px; /* Adjusts the font size of the input text */
+    line-height: 1.2; /* Adjusts line height for better alignment */
+    width: 20%;
+    
+
+
+
+
+  }
+
+
+  input {
+
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+    border-radius: 30px;
+}
+
+
