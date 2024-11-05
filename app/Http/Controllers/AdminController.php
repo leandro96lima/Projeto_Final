@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Repositories\TypeChangeRequestRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -115,28 +116,37 @@ class AdminController extends Controller
     }
 
     public function approveNewEquipmentRequest(EquipmentApprovalRequest $request)
+
     {
-        $request->update([
-            'status' => 'approved',
-            'approved_by_admin_id' => auth()->id(), // Salva o ID do admin que aprovou
-        ]);
+    $request->update([
+        'status' => 'approved',
+        'approved_by_admin_id' => auth()->id(),
+    ]);
 
-        // Atualiza o status do ticket para 'open'
-        $ticket = Ticket::find($request->ticket_id); // Certifique-se de que o ticket_id está presente
-        if ($ticket) {
-            $ticket->status = 'open';
-            $ticket->save();
-        }
-
-        $equipment = Equipment::find($request->equipment_id);
-        if ($equipment) {
-            $equipment->is_approved = true;
-            $equipment->save();
-        }
-
-        return redirect()->route('admin.requests')->with('success', 'Ticket request approved successfully.');
+    // Atualiza o status do ticket para 'open'
+    $ticket = Ticket::find($request->ticket_id);
+    if ($ticket) {
+        $ticket->status = 'open';
+        $ticket->save();
     }
 
+    $equipment = Equipment::find($request->equipment_id);
+    if ($equipment) {
+        $equipment->is_approved = true;
+        $equipment->save();
+
+        // Verifica se o tipo já existe no enum (normalizando a string)
+        $existingTypes = array_map('strtolower', array_column(\App\Enums\EquipmentType::cases(), 'value'));
+        $normalizedType = strtolower(trim($equipment->type));
+
+        if (!in_array($normalizedType, $existingTypes)) {
+            // Chama o comando para atualizar o enum após a aprovação do equipamento, se for um novo tipo
+            Artisan::call('generate:equipment-type-enum');
+        }
+    }
+
+    return redirect()->route('admin.requests')->with('success', 'Ticket request approved successfully.');
+}
     // Rejeita uma solicitação de ticket
     public function rejectNewEquipmentRequest(EquipmentApprovalRequest $request)
     {

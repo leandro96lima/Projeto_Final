@@ -10,4 +10,6 @@ class Kernel extends HttpKernel
         // outros middlewares
         'check_user_type' => \App\Http\Middleware\CheckUserType::class,
     ];
+
+
 }
