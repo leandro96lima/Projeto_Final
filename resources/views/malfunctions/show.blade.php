@@ -28,7 +28,7 @@
             <ul><b>Equipamento Avariado:</b> {{ $malfunction->equipment->type ?? 'N/A' }}</ul>
         </div>
         <div class="card">
-            <ul><b>Descrição da Avaria:</b> {{ $malfunction->description ?? 'N/A' }}</ul>
+            <ul><b>Descrição da Avaria:</b> {{ $malfunction->ticket->description ?? 'N/A' }}</ul>
         </div>
         <div class="card">
             <ul><b>Status Atual:</b> {{ $malfunction->ticket->status ?? 'N/A' }}</ul>

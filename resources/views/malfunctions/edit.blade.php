@@ -1,100 +1,141 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Avaria') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/editarAvaria.css">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+    <title>QuickFix</title>
+</head>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('malfunctions.update', $malfunction->id) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
+<body>
+@include('layouts.quick-fix-nav')
 
-                        <input type="hidden" name="action" value="{{ $action }}">
+<header>
+    <main>
+        <h1>{{ __('Editar Avaria') }}</h1>
+    </main>
+</header>
 
-                        <!-- Tipo de Equipamento (editável se action não for abrir ou fechar) -->
-                        <div class="mb-4">
-                            <label for="equipment_type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo de Equipamento') }}</label>
-                            <input type="text" id="equipment_type" name="equipment_type" value="{{ $malfunction->equipment->type }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" {{ $action ? 'readonly' : '' }}>
-                        </div>
+<section class="container">
+    <div class="insidecontainer">
+        <form action="{{ route('malfunctions.update', $malfunction->id) }}" method="post">
+            @csrf
+            @method('PATCH')
 
-                        <!-- Status -->
-                        <div class="mb-4">
-                            <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Status') }}</label>
-                            <select id="status" name="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                                @if ($action == 'abrir')
-                                    <option value="in_progress" {{ old('status', $malfunction->ticket->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
-                                @elseif ($action == 'fechar')
-                                    <option value="closed" {{ old('status', $malfunction->ticket->status) == 'closed' ? 'selected' : '' }}>{{ __('Fechado') }}</option>
-                                @else
-                                    <option value="open" {{ old('status', $malfunction->ticket->status) == 'open' ? 'selected' : '' }}>{{ __('Aberto') }}</option>
-                                    <option value="in_progress" {{ old('status', $malfunction->ticket->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
-                                    <option value="closed" {{ old('status', $malfunction->ticket->status) == 'closed' ? 'selected' : '' }}>{{ __('Fechado') }}</option>
-                                @endif
-                            </select>
-                            @error('status')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+            <input type="hidden" name="action" value="{{ $action }}">
 
-                        <!-- Urgência -->
-                        <div class="mb-4">
-                            <label for="urgent" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Urgência') }}</label>
-                            <select id="urgent" name="urgent" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                                <option value="0" {{ old('urgent', $malfunction->ticket->urgent ?? 0) == 0 ? 'selected' : '' }}>{{ __('Não') }}</option>
-                                <option value="1" {{ old('urgent',  $malfunction->ticket->urgent ?? 0) == 1 ? 'selected' : '' }}>{{ __('Sim') }}</option>
-                            </select>
-                            @error('urgent')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Diagnóstico -->
-                        <div class="mb-4">
-                            <label for="diagnosis" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Diagnóstico') }}</label>
-                            <input type="text" id="diagnosis" name="diagnosis" value="{{ old('diagnosis', $malfunction->diagnosis ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                            @error('diagnosis')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="technician" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Técnico') }}</label>
-                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->ticket->technician->user->name ?? 'N/A') }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                            @error('technician')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <!-- Solução e Custo (aparecem apenas na action fechar ou sem action) -->
-                        @if (!$action || $action == 'fechar')
-                            <div class="mb-4">
-                                <label for="solution" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Solução') }}</label>
-                                <input type="text" id="solution" name="solution" value="{{ old('solution', $malfunction->solution ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                                @error('solution')
-                                <span class="text-red-600 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="mb-4">
-                                <label for="cost" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Custo') }}</label>
-                                <input type="text" id="cost" name="cost" value="{{ old('cost', $malfunction->cost ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                                @error('cost')
-                                <span class="text-red-600 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        @endif
-
-                        <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Confirmar') }}</button>
-                            <a href="{{ route('dashboard') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="card">
+            <ul><b>ID ticket da Avaria:</b>
+                {{ $malfunction->ticket->id }}
+            </ul>
         </div>
+
+        @if($action === 'fechar' || $action === 'abrir' || $action === '')
+        <div class="card">
+            <ul><b>Equipamento Avariado:</b>
+                <br>
+                <input type="text" name="Equipamento Avariado" @if($action === 'fechar' || $action === 'abrir') readonly @endif value="{{ $malfunction->equipment->type }}" required>
+            </ul>
+        </div>
+        @endif
+
+        @if($action === 'fechar' || $action === 'abrir' || $action === '')
+        <div class="card">
+            <ul><b>Descrição da Avaria:</b>
+                <br><br>
+                <textarea name="Descrição" id="areadescricao" @if($action === 'fechar' || $action === 'abrir') readonly @endif>{{ $malfunction->ticket->description }}</textarea>
+            </ul>
+        </div>
+        @endif
+
+            @if($action === 'abrir')
+            <div class="card">
+                <ul><b>Status Atual:</b></ul>
+                <br>
+                <select id="funcaodrop" class="dropdown2" name="status" required>
+                    <option value="in_progress" {{ old('status', $malfunction->ticket->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
+                </select>
+            </div>
+            @endif
+
+            @if($action === 'fechar')
+                <div class="card">
+                    <ul><b>Status Atual:</b></ul>
+                    <br>
+                    <select id="funcaodrop" class="dropdown2" name="status" required>
+                        <option value="closed" {{ old('status', $malfunction->ticket->status) == 'closed' ? 'selected' : '' }}>{{ __('Fechado') }}</option>
+                    </select>
+                </div>
+            @endif
+
+            @if($action === '')
+                <div class="card">
+                    <ul><b>Status Atual:</b></ul>
+                    <br>
+                    <select id="funcaodrop" class="dropdown2" name="status" required>
+                        <option value="open" {{ old('status', $malfunction->ticket->status) == 'open' ? 'selected' : '' }}>{{ __('Aberto') }}</option>
+                        <option value="in_progress" {{ old('status', $malfunction->ticket->status) == 'in_progress' ? 'selected' : '' }}>{{ __('Em Progresso') }}</option>
+                        <option value="closed" {{ old('status', $malfunction->ticket->status) == 'closed' ? 'selected' : '' }}>{{ __('Fechado') }}</option>
+                    </select>
+                </div>
+            @endif
+
+            @if($action === 'fechar' || $action === 'abrir' || $action === '')
+            <div class="card">
+                <ul><b>Urgência:</b></ul>
+                <br>
+                <select id="funcaodrop" class="dropdown2" name="urgent" required
+                         >
+                    <option value="0" {{ old('urgent', $malfunction->ticket->urgent ?? 0) == 0 ? 'selected' : '' }}>{{ __('Não') }}</option>
+                    <option value="1" {{ old('urgent', $malfunction->ticket->urgent ?? 0) == 1 ? 'selected' : '' }}>{{ __('Sim') }}</option>
+                </select>
+            </div>
+            @endif
+
+            @if($action === 'fechar' || $action === 'abrir' || $action === '')
+            <div class="card">
+                <ul><b>Diagnóstico:</b>
+                    <br><br>
+                    <textarea name="diagnosis" id="areadiagnostico" required>{{ old('diagnosis', $malfunction->diagnosis ?? '') }}</textarea>
+                </ul>
+            </div>
+            @endif
+
+            @if($action === 'fechar' || $action === '')
+                <div class="card">
+                    <ul><b>Custo:</b>
+                        <input type="number" name="cost" value="{{ old('cost', $malfunction->cost ?? '') }}" required>
+                    </ul>
+                </div>
+            @endif
+
+            @if($action === 'fechar' || $action === '')
+            <div class="card">
+                <section class="cardinterior">
+                    <div>
+                        <ul><b>Solução da Avaria:</b></ul>
+                        <br>
+                        <textarea name="solution" id="areadiagnostico" required>{{ old('solution', $malfunction->solution ?? '') }}</textarea>
+                    </div>
+                </section>
+            </div>
+            @endif
+
+
+            <div class="botaospace">
+                <input class="botao" type="submit" value="Gravar">
+            </div>
+
+            <div class="botaospace">
+                <a href="{{ route('dashboard') }}">
+                    <input class="botao2" type="button" value="Cancelar">
+                </a>
+            </div>
+        </form>
     </div>
-</x-app-layout>
+</section>
+
+</body>
+</html>

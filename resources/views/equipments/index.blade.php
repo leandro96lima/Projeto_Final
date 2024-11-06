@@ -35,16 +35,86 @@
             <table>
                 <thead>
                 <tr>
-                    <th><a href="{{ route('equipments.index')}}" class="order">{{ __('ID') }}</a></th>
-                    <th><a href="{{ route('equipments.index', ['sort' => 'type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Tipo') }}</a></th>
-                    <th><a href="{{ route('equipments.index', ['sort' => 'manufacturer', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Fabricante') }}</a></th>
-                    <th><a href="{{ route('equipments.index', ['sort' => 'model', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Modelo') }}</a></th>
-                    <th><a href="{{ route('equipments.index', ['sort' => 'serial_number', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Serial Number') }}</a></th>
-                    <th><a href="{{ route('equipments.index', ['sort' => 'room', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Sala') }}</a></th>
+                    <th>
+                        <button class="order">
+                            <a href="{{ route('equipments.index') }}">
+                                {{ __('ID') }}
+                            </a>
+                        </button>
+                    </th>
+                    <th>
+                        <button class="order">
+                            <a href="{{ route('equipments.index', ['sort' => 'type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                {{ __('Tipo') }}
+                                @if (request('sort') === 'type')
+                                    @if (request('direction') === 'asc')
+                                        ↑
+                                    @else
+                                        ↓
+                                    @endif
+                                @endif
+                            </a>
+                        </button>
+                    </th>
+                    <th>
+                        <button class="order">
+                            <a href="{{ route('equipments.index', ['sort' => 'manufacturer', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                {{ __('Fabricante') }}
+                                @if (request('sort') === 'manufacturer')
+                                    @if (request('direction') === 'asc')
+                                        ↑
+                                    @else
+                                        ↓
+                                    @endif
+                                @endif
+                            </a>
+                        </button>
+                    </th>
+                    <th>
+                        <button class="order">
+                            <a href="{{ route('equipments.index', ['sort' => 'model', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                {{ __('Modelo') }}
+                                @if (request('sort') === 'model')
+                                    @if (request('direction') === 'asc')
+                                        ↑
+                                    @else
+                                        ↓
+                                    @endif
+                                @endif
+                            </a>
+                        </button>
+                    </th>
+                    <th>
+                        <button class="order">
+                            <a href="{{ route('equipments.index', ['sort' => 'serial_number', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                {{ __('Serial Number') }}
+                                @if (request('sort') === 'serial_number')
+                                    @if (request('direction') === 'asc')
+                                        ↑
+                                    @else
+                                        ↓
+                                    @endif
+                                @endif
+                            </a>
+                        </button>
+                    </th>
+                    <th>
+                        <button class="order">
+                            <a href="{{ route('equipments.index', ['sort' => 'room', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                                {{ __('Sala') }}
+                                @if (request('sort') === 'room')
+                                    @if (request('direction') === 'asc')
+                                        ↑
+                                    @else
+                                        ↓
+                                    @endif
+                                @endif
+                            </a>
+                        </button>
+                    </th>
                     <th></th>
                 </tr>
                 </thead>
-
                 <tbody>
                 @foreach ($equipments as $equipment)
                     <tr>
