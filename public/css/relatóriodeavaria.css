@@ -9,14 +9,42 @@ body {
     display: flex;
     min-height: 100vh;
     background-color: #99A3B9;
-    
+
+}
+
+.botao2 {
+    width: 350px;
+    margin: 10px;
+    border-radius: 20px;
+    border: 1px solid #fd7e14 ;
+    background-color: #fd7e14 ;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+.botao2:hover {
+    background-color: #fd7e14 ;
+    /* Darken the background on hover */
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Enhance shadow on hover */
+
+
+}
+
+.botao2:active {
+    transform: scale(0.95);
 }
 
 
-
-
 #sidebar {
-    
+
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
@@ -105,7 +133,7 @@ main {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
-    
+
 
 }
 
@@ -295,12 +323,12 @@ main {
 .botao {
     width: 200px;
     height: 65px;
-    margin: 5px;
+    margin: 10px;
     border-radius: 20px;
     border: 1px solid #0077ff;
     background-color: #0077ff;
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: bold;
     padding: 12px;
     letter-spacing: 1px;
@@ -324,14 +352,14 @@ main {
 }
 
 .botao2 {
-    width: 150px;
+    width: 200px;
     height: 65px;
-    margin: 5px;
+    margin: 10px;
     border-radius: 20px;
-    border: 1px solid #c90505;
-    background-color: #c90505;
+    border: 1px solid #fd7e14 ;
+    background-color: #fd7e14 ;
     color: #FFFFFF;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: bold;
     padding: 12px;
     letter-spacing: 1px;
@@ -341,7 +369,7 @@ main {
 }
 
 .botao2:hover {
-    background-color: #c90505;
+    background-color: #fd7e14 ;
     /* Darken the background on hover */
 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -375,7 +403,7 @@ a {
 
     display: flex;
     justify-content: center;
-    
+
 
 
 }

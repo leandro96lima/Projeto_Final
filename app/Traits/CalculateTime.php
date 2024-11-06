@@ -14,7 +14,7 @@ trait CalculateTime
             : now();
 
 
-        $time = $progressDate->diffInMinutes($endDate);
+        (int)$time = $progressDate->diffInMinutes($endDate);
 
             $ticket->resolution_time = $time;
             $ticket->save();
@@ -32,7 +32,7 @@ trait CalculateTime
         $waitDate = $ticket->progress_date ? Carbon::parse($ticket->progress_date)
             : now();
 
-        $time = $openDate->diffInMinutes($waitDate); // Sempre calcula a diferença
+        (int)$time = $openDate->diffInMinutes($waitDate); // Sempre calcula a diferença
 
             $ticket->wait_time = $time;
             $ticket->save();
