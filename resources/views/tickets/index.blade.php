@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/usertickets.css">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link rel="stylesheet" href="/resources/css/login2.css">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>QuickFix</title>
 </head>
 
@@ -81,12 +90,17 @@
                 @endforeach
                 </tbody>
             </table>
-            <div class="mt-4">
-                {{ $tickets->links() }}
-            </div>
         </div>
+        <div>
+            {{ $tickets->links() }}
+        </div>
+
     </div>
 </section>
+
+<div>
+
+</div>
 
 <script>
     document.getElementById('open_btn').addEventListener('click', function () {

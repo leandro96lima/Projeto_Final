@@ -46,7 +46,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', CheckUserType::class . ':Admin,Technician'])->group(function () {
+Route::middleware(['auth', CheckUserType::class . ':AdminTechnician'])->group(function () {
     Route::resources([
         'malfunctions' => MalfunctionController::class,
         'technicians' => TechnicianController::class,

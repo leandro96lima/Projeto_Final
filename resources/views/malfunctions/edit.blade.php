@@ -61,10 +61,9 @@
                             @enderror
                         </div>
 
-                        <!-- Técnico (editável se action não for abrir ou fechar) -->
                         <div class="mb-4">
                             <label for="technician" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Técnico') }}</label>
-                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->technician->user->name ?? 'N/A') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" {{ $action ? 'readonly' : '' }}>
+                            <input type="text" id="technician" name="technician" value="{{ old('technician', $malfunction->ticket->technician->user->name ?? 'N/A') }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
                             @error('technician')
                             <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
