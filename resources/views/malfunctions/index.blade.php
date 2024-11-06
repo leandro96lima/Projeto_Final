@@ -1,125 +1,93 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Relatório de Avarias') }}
-        </h2>
+<!DOCTYPE html>
+<html lang="pt-pt">
 
-        <div class="ml-auto w-48">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/listarelatoriosAdmin.css">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+
+    <!-- Scripts -->
+    {{--    @vite(['resources/css/app.css', 'resources/js/app.js'])--}}
+    <title>QuickFix</title>
+</head>
+
+<body>
+@include('layouts.quick-fix-nav')
+
+<header>
+    <main>
+        <h1>{{ __('Relatório de Avarias') }}</h1>
+    </main>
+</header>
+
+<section class="container">
+    <div class="insidecontainer">
+        <div class="pesquisa-ordenar">
+            <div class="search-box">
+                <form action="{{ route('malfunctions.index') }}" method="GET">
+                    <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                    <input type="search" name="search" class="input-search" placeholder="Pesquisar" aria-label="Search" />
+                </form>
+            </div>
+
+            <div>
             <form method="GET" action="{{ route('malfunctions.index') }}">
-                <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
                 <select name="status" onchange="this.form.submit()" class="form-select">
+                    <option value="" disabled selected hidden>Filtrar por Status: </option>
                     @foreach(['' => 'Todas as Avarias', 'open' => 'Abertas', 'in_progress' => 'Em Curso', 'closed' => 'Fechadas'] as $value => $label)
                         <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
                     @endforeach
                 </select>
             </form>
+            </div>
         </div>
 
-        <div class="d-flex align-items-center">
-            <form action="{{ route('malfunctions.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
-                <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
-                <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
-            </form>
-        </div>
-    </x-slot>
+        <div class="insidecontainer1">
+            <table>
+                <thead>
+                <tr>
+                    <th><button class="order">{{ __('Equipamento') }}</button></th>
+                    <th><button class="order">{{ __('Status') }}</button></th>
+                    <th><button class="order">{{ __('Técnico') }}</button></th>
+                    <th><button class="order">{{ __('Diagnóstico') }}</button></th>
+                    <th><button class="order">{{ __('Tempo de Resolução') }}</button></th>
+                    <th><button class="order"></button></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($malfunctions as $malfunction)
+                    <tr>
+                        <td>{{ $malfunction->equipment->type ?? 'N/A' }}</td>
+                        <td>{{ $malfunction->ticket->status ?? 'N/A' }}</td>
+                        <td>{{ $malfunction->ticket->technician->user->name ?? 'Sem técnico' }}</td>
+                        <td>{{ $malfunction->diagnosis ?? 'N/A' }}</td>
+                        <td>{{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)</td>
+                        <td id="displaybotao">
+                            <div>
+                                <a href="{{ route('malfunctions.show', $malfunction->id) }}">
+                                    <input class="botao4" type="button" value="Mostrar Relatório">
+                                </a>
+                            </div>
+                            <form action="{{ route('malfunctions.destroy', $malfunction->id) }}" method="POST" class="inline-block mx-1" onsubmit="return confirm('Tem certeza que deseja eliminar esta avaria?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="botao">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table class="table-auto w-full text-left">
-                        <thead>
-                        <tr>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('malfunctions.index', ['sort' => 'equipment_type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Equipamento') }}
-                                    @if(request('sort') == 'equipment_type')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('malfunctions.index', ['sort' => 'status', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Status') }}
-                                    @if(request('sort') == 'status')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('malfunctions.index', ['sort' => 'technician_name', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Técnico') }}
-                                    @if(request('sort') == 'technician_name')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('malfunctions.index', ['sort' => 'diagnosis', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Diagnóstico') }}
-                                    @if(request('sort') == 'diagnosis')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('malfunctions.index', ['sort' => 'resolution_time', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Tempo de Resolução') }}
-                                    @if(request('sort') == 'resolution_time')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">{{ __('Ações') }}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($malfunctions as $malfunction)
-                            <tr>
-                                <td class="border px-4 py-2">{{ $malfunction->equipment->type ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->ticket->technician->user->name ?? 'Sem técnico' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->diagnosis ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">
-                                        {{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)
-                                </td>
-                                <td>
-                                    <a href="{{ route('malfunctions.show', $malfunction->id) }}">{{ __('Detalhes') }}</a>
-                                    <form action="{{ route('malfunctions.destroy', $malfunction->id) }}" method="POST" class="inline-block mx-1" onsubmit="return confirm('Tem certeza que deseja eliminar esta avaria?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <div class="mt-4">
-                        {{ $malfunctions->links() }}
-                    </div>
-                </div>
+            <!-- Paginação -->
+            <div class="mt-4">
+                {{ $malfunctions->links() }}
             </div>
         </div>
     </div>
-</x-app-layout>
+</section>
+
+</body>
+</html>
