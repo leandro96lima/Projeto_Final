@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="/css/usertickets.css">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link rel="stylesheet" href="/resources/css/login2.css">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
 
     <!-- Scripts -->
 {{--    @vite(['resources/css/app.css', 'resources/js/app.js'])--}}
@@ -15,11 +20,30 @@
 </head>
 
 <body>
-@include('layouts.quick-fix-nav')
+<nav id="sidebar">
+    <div id="sidebar_content">
+        <div class="Avatar">
+            <img src="{{ asset('hacker.png') }}" width="60" id="imagemavatar" alt="Avatar">
+            <span class="item-description">
+                    <br>
+                    @Utilizador
+                </span>
+        </div>
+        <ul id="side_items">
+            <li class="side-item"><a href="userpage.html"><i class="fa-solid fa-user"></i> <span class="item-description">Perfil</span></a></li>
+            <li class="side-item"><a href="ticket.html"><i class="fa-solid fa-receipt"></i> <span class="item-description">Registar Tickets</span></a></li>
+            <li class="side-item"><a href="usertickets.html"><i class="fa-solid fa-list"></i> <span class="item-description">Tickets</span></a></li>
+        </ul>
+        <button id="open_btn"><i id="open_btn_icon" class="fa-solid fa-chevron-right"></i></button>
+    </div>
+    <div id="logout">
+        <a href="login2.html"><button id="logout_btn"><i class="fa-solid fa-right-from-bracket"></i> <span class="item-description">Logout</span></button></a>
+    </div>
+</nav>
 
 <header>
     <main>
-        <h1>{{__('Lista de Tickets')}}</h1>
+        <h1>Lista de Tickets</h1>
     </main>
 </header>
 <section class="container">
@@ -47,11 +71,71 @@
             <table>
                 <thead>
                 <tr>
-                    <th><button class="order">Equipamento</button></th>
-                    <th><button class="order">Avaria</button></th>
-                    <th><button class="order">Data de Abertura</button></th>
-                    <th><button class="order">Status</button></th>
-                    <th><button class="order">Tempo de Espera</button></th>
+                    <th> <button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'equipment_type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Equipamento') }}
+                            @if (request('sort') === 'equipment_type')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'title', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Avaria') }}
+                            @if (request('sort') === 'title')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'open_date', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Data de Abertura') }}
+                            @if (request('sort') === 'open_date')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'status', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Status') }}
+                            @if (request('sort') === 'status')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'wait_time', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Tempo de Espera') }}
+                            @if (request('sort') === 'wait_time')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
