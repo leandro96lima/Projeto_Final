@@ -15,42 +15,14 @@
                     <span class="item-description">Relatórios</span></a></li>
             <li class="side-item"><a href="{{ route('technicians.index') }}"><i class="fa-solid fa-users"></i>
                     <span class="item-description">Técnicos</span></a></li>
-
-
-            <li class="side-item">
-                <a href="">
-                    <i class="fa-solid fa-desktop"></i>
-                    <span class="item-description">Equipamentos</span>
-                </a>
-            </li>
-
-            <li class="side-item">
-                <a href="">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="item-description">Requests</span>
-                </a>
-            </li>
-
-            <li class="side-item">
-                <a href="#" id="menu-toggle">
-                    <i class="fa-solid fa-list"></i>
-                    <span class="item-description">Tickets <i class="fa-solid fa-caret-down" id="arrow-icon"></i></span>
-                </a>
-            </li>
-
-            <li class="side-item">
-                <a href="">
-                    <i class="fa-solid fa-receipt"></i>
-                    <span class="item-description">Registar Tickets</span>
-                </a>
-            </li>
-
-            <li class="side-item">
-                <a href="">
-                    <i class="fa-solid fa-folder-tree"></i>
-                    <span class="item-description">Lista Status</span>
-                </a>
-            </li>
+            <li class="side-item"><a href="{{ route('equipments.index') }}"><i class="fa-solid fa-desktop"></i>
+                    <span class="item-description">Equipamentos</span></a></li>
+            <li class="side-item"><a href="{{ route('admin.requests') }}"> <i class="fa-solid fa-bell"></i>
+                    <span class="item-description">Requests</span></a></li>
+            <li class="side-item"><a href="{{ route('tickets.create') }}"><i class="fa-solid fa-receipt"></i>
+                    <span class="item-description">Registar Tickets</span></a></li>
+            <li class="side-item"><a href="{{ route('tickets.index') }}"><i class="fa-solid fa-list"></i>
+                    <span class="item-description">Tickets</span></a></li>
         </ul>
 
         <button id="open_btn">
@@ -58,14 +30,13 @@
         </button>
     </div>
 
-    <div id="logout">
-        <a href="">
-            <button id="logout_btn">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span class="item-description">Logout</span>
-            </button>
-        </a>
-    </div>
+    <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit" id="logout_btn">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="item-description">Logout</span>
+        </button>
+    </form>
 </nav>
 <script src="{{ asset('Javascript/script.js') }}"></script>
 
