@@ -373,8 +373,37 @@ input {
     border: 2px solid #ccc;
     border-radius: 5px;
 
+#botao2 {
+    width: 150px;
+    height: 65px;
+    margin: 10px;
+	border-radius: 20px;
+	border: 1px solid #dc3545;
+	background-color: #dc3545;
+	color: #FFFFFF;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 12px ;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+
+#botao2:hover{
+    background-color: #dc3545; /* Darken the background on hover */
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
 
 }
+
+
+#botao2:active {
+	transform: scale(0.95);
+}
+
 .botoesdiv{
 
 

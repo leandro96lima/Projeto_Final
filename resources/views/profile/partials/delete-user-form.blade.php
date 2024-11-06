@@ -1,55 +1,80 @@
-<section class="space-y-6">
+<section style="margin-bottom: 24px;">
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Delete Account') }}
+        <h2 style="font-size: 1.25rem; font-weight: 500; color: #1f2937;">
+            Delete Account
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
+        <p style="margin-top: 4px; font-size: 0.875rem; color: #4b5563;">
+            Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
         </p>
     </header>
+<br>
+    <button
+        onclick="openModal('confirm-user-deletion')"
+        style="    width: 350px;
+    margin: 10px;
+	border-radius: 20px;
+	border: 1px solid #dc3545;
+	background-color: #dc3545;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;"
+    >
+        Delete Account
+    </button>
 
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
-
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
-            @csrf
-            @method('delete')
-
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('Are you sure you want to delete your account?') }}
+    <div id="confirm-user-deletion" style="display: none; background: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 24px; border-radius: 8px; width: 400px;">
+            <h2 style="font-size: 1.25rem; font-weight: 500; color: #1f2937;">
+                Are you sure you want to delete your account?
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+            <p style="margin-top: 4px; font-size: 0.875rem; color: #4b5563;">
+                Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
             </p>
 
-            <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
-
-                <x-text-input
+            <div style="margin-top: 24px;">
+                <label for="password" style="display: none;">Password</label>
+                <input
                     id="password"
                     name="password"
                     type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
+                    style="margin-top: 4px; width: 75%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"
+                    placeholder="Password"
                 />
-
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                <div style="color: red; margin-top: 8px;" id="password-error"></div>
             </div>
 
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
+            <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
+                <button
+                    onclick="closeModal()"
+                    style="background-color: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+                >
+                    Cancel
+                </button>
 
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
+                <button
+                    type="submit"
+                    style="background-color: #e3342f; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-left: 12px;"
+                >
+                    Delete Account
+                </button>
             </div>
-        </form>
-    </x-modal>
+        </div>
+    </div>
 </section>
+
+<script>
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('confirm-user-deletion').style.display = 'none';
+    }
+</script>
