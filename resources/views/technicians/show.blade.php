@@ -1,63 +1,50 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Perfil') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pt-pt">
 
-    <div class="py-12">
-        <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-9xl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/tecnicopage.css">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+    <title>QuickFix - Perfil do Técnico</title>
+</head>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                        <div>
-                            <header>
-                                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    {{ __('Informações de Perfil do Técnico') }}
-                                </h2>
-                            </header>
+<body>
+@include('layouts.quick-fix-nav')
 
-                            <div class="mt-6 space-y-6">
-                                <!-- Nome -->
-                                <div>
-                                    <x-input-label for="name" :value="__('Nome')" />
-                                    <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $technician->user->name }}</p>
-                                </div>
+<header>
+    <main>
+        <h1>{{ __('Perfil do Técnico') }}</h1>
+    </main>
+</header>
 
-                                <!-- Email -->
-                                <div>
-                                    <x-input-label for="email" :value="__('Email')" />
-                                    <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $technician->user->email }}</p>
-                                </div>
-
-                                <!-- Especialidade -->
-                                <div>
-                                    <x-input-label for="specialty" :value="__('Especialidade')" />
-                                    <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $technician->specialty }}</p>
-                                </div>
-
-                                <!-- Botões de editar e eliminar -->
-                                <div class="mt-6 flex space-x-4">
-                                    <!-- Botão de editar -->
-                                    <a href="{{ route('technicians.edit', $technician->id) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                        {{ __('Editar') }}
-                                    </a>
-
-                                    <!-- Botão de eliminar -->
-                                    <form action="{{ route('technicians.destroy', $technician->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja eliminar este técnico?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                            {{ __('Eliminar') }}
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<section class="container">
+    <div class="insidecontainer">
+        <div class="card">
+            <ul><b>ID Técnico: </b> {{ $technician->id }}</ul>
         </div>
+        <div class="card">
+            <ul><b>Nome do Técnico: </b> {{ $technician->user->name }}</ul>
+        </div>
+        <div class="card">
+            <ul><b>Especialidade: </b> {{ $technician->specialty }}</ul>
+        </div>
+
+        <section class="cardinterior">
+            <div class="botaospace">
+            <a href="{{ route('technicians.edit', $technician->id) }}">
+                <button class="botao2" type="button">Editar</button>
+            </a>
+            </div>
+
+            <div class="botaospace">
+                <a href="{{ route('technicians.index') }}">
+                    <input class="botao" type="button" value="Voltar">
+                </a>
+            </div>
+        </section>
     </div>
-</x-app-layout>
+</section>
+</body>
+</html>

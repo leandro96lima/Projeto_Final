@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-pt">
 
@@ -12,122 +11,82 @@
     <title>QuickFix</title>
 </head>
 
+<body>
+@include('layouts.quick-fix-nav')
 
+<header class="titulo">
+    <main>
+        <h1>{{ __('Lista de Equipamentos') }}</h1>
+    </main>
+</header>
 
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight me-3">
-                {{ __('Lista de Equipamentos') }}
-            </h2>
-            <div class="d-flex align-items-center">
-                <a href="{{ route('equipments.create') }}" class="btn btn-success me-2">Criar Novo Equipamento</a>
-                <form action="{{ route('equipments.index') }}" method="GET" class="input-group" style="display: flex; justify-content: flex-end;">
-                    <input type="search" name="search" class="form-control rounded" placeholder="Pesquisar" aria-label="Search" aria-describedby="search-addon" />
-                    <button type="submit" class="btn btn-outline-primary" data-mdb-ripple-init>Pesquisar</button>
-                </form>
+<section class="container">
+    <div class="insidecontainer">
+        <div class="pesquisa-ordenar">
+            <div class="search-box">
+            <form action="{{ route('equipments.index') }}" method="GET" class="input-group">
+                <input type="text" name="search" class="input-search" placeholder="Type to Search..." aria-label="Search" aria-describedby="search-addon" value="{{ request('search') }}" />
+                <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+            </form>
             </div>
         </div>
-    </x-slot>
 
+        <div class="insidecontainer1">
+            <table>
+                <thead>
+                <tr>
+                    <th><a href="{{ route('equipments.index')}}" class="order">{{ __('ID') }}</a></th>
+                    <th><a href="{{ route('equipments.index', ['sort' => 'type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Tipo') }}</a></th>
+                    <th><a href="{{ route('equipments.index', ['sort' => 'manufacturer', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Fabricante') }}</a></th>
+                    <th><a href="{{ route('equipments.index', ['sort' => 'model', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Modelo') }}</a></th>
+                    <th><a href="{{ route('equipments.index', ['sort' => 'serial_number', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Serial Number') }}</a></th>
+                    <th><a href="{{ route('equipments.index', ['sort' => 'room', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}" class="order">{{ __('Sala') }}</a></th>
+                    <th></th>
+                </tr>
+                </thead>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <table class="table-auto w-full text-left">
-                        <thead>
-                        <tr>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('equipments.index', ['sort' => 'type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Tipo') }}
-                                    @if(request('sort') == 'type')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
+                <tbody>
+                @foreach ($equipments as $equipment)
+                    <tr>
+                        <td>{{ $equipment->id }}</td>
+                        <td>{{ $equipment->type ?? 'N/A' }}</td>
+                        <td>{{ $equipment->manufacturer ?? 'N/A' }}</td>
+                        <td>{{ $equipment->model ?? 'N/A' }}</td>
+                        <td>{{ $equipment->serial_number ?? 'N/A' }}</td>
+                        <td>{{ $equipment->room ?? 'N/A' }}</td>
+                        <td id="displaybotao">
+                            <div>
+                                <a href="{{ route('equipments.show', $equipment->id) }}">
+                                    <input class="botao4" type="button" value="Mostrar Equipamento">
                                 </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('equipments.index', ['sort' => 'manufacturer', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Fabricante') }}
-                                    @if(request('sort') == 'manufacturer')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('equipments.index', ['sort' => 'model', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Modelo') }}
-                                    @if(request('sort') == 'model')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('equipments.index', ['sort' => 'serial_number', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Serial Number') }}
-                                    @if(request('sort') == 'serial_number')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">
-                                <a href="{{ route('equipments.index', ['sort' => 'room', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
-                                    {{ __('Sala') }}
-                                    @if(request('sort') == 'room')
-                                        @if(request('direction') == 'asc')
-                                            ↑
-                                        @else
-                                            ↓
-                                        @endif
-                                    @endif
-                                </a>
-                            </th>
-                            <th class="px-4 py-2">{{ __('Ações') }}</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        @foreach ($equipments as $equipment)
-                            <tr>
-                                <td class="border px-4 py-2">{{ $equipment->type ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $equipment->manufacturer ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $equipment->model ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $equipment->serial_number ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $equipment->room ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2 inline-flex items-center">
-                                    <button type="button" class="btn btn-success mx-1" onclick="window.location.href='{{ route('equipments.show', $equipment->id) }}'">Detalhes</button>
-                                    <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('equipments.edit', $equipment->id) }}'">Editar</button>
-                                    <form action="{{ route('equipments.destroy', $equipment->id) }}" method="POST" class="inline-block mx-1" onsubmit="return confirm('Tem certeza que deseja eliminar este equipamento?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <div class="mt-4">
-                        {{ $equipments->links() }}
-                    </div>
-                </div>
+                            </div>
+                            <a href="{{ route('equipments.edit', $equipment->id) }}">
+                                <input class="botao" type="button" value="Editar Equipamento">
+                            </a>
+                            <div>
+                                <form action="{{ route('equipments.destroy', $equipment->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja eliminar este equipamento?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input class="botao2" type="submit" value="Eliminar Equipamento">
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            <div class="mt-4">
+                {{ $equipments->links() }}
             </div>
+        </div>
+        <div class="add">
+            <a href="{{ route('equipments.create') }}">
+                <button class="botao3">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </a>
         </div>
     </div>
-</x-app-layout>
+</section>
+</body>
+</html>

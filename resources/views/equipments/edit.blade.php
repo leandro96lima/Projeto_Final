@@ -1,66 +1,96 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Editar Equipamento') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pt-pt">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('equipments.update', $equipment->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/Editar_equipamento.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <title>QuickFix - Editar Equipamento</title>
+</head>
 
-                        <div class="mb-4">
-                            <label for="type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo') }}</label>
-                            <input type="text" id="type" name="type" value="{{ old('type', $equipment->type) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                            @error('type')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+<body>
 
-                        <div class="mb-4">
-                            <label for="manufacturer" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Fabricante') }}</label>
-                            <input type="text" id="manufacturer" name="manufacturer" value="{{ old('manufacturer', $equipment->manufacturer) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                            @error('manufacturer')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+@include('layouts.quick-fix-nav')
 
-                        <div class="mb-4">
-                            <label for="model" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Modelo') }}</label>
-                            <input type="text" id="model" name="model" value="{{ old('model', $equipment->model) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                            @error('model')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+<header class="titulo">
+    <main>
+        <h1>{{ __('Editar Equipamento') }}</h1>
+    </main>
+</header>
 
-                        <div class="mb-4">
-                            <label for="serial_number" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Número de Série') }}</label>
-                            <input type="text" id="serial_number" name="serial_number" value="{{ old('serial_number', $equipment->serial_number) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                            @error('serial_number')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="room" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Sala') }}</label>
-                            <input type="text" id="room" name="room" value="{{ old('room', $equipment->room) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                            @error('room')
-                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Atualizar Equipamento') }}</button>
-                            <a href="{{ route('equipments.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<section class="container">
+    <div class="insidecontainer">
+        <div class="card">
+            <ul><b>IDEquipamento:</b> {{ $equipment->id ?? 'N/A' }}</ul>
         </div>
-    </div>
-</x-app-layout>
+        <form action="{{ route('equipments.update', $equipment->id) }}" method="POST">
+            @csrf
+            @method('PUT')
 
+            <div class="card">
+                <ul><b>Tipo:</b>
+                    <input type="text" name="type" id="type" value="{{ old('type', $equipment->type) }}" required>
+                    @error('type')
+                    <span class="erro">{{ $message }}</span>
+                    @enderror
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Fabricante:</b>
+                    <input type="text" name="manufacturer" id="manufacturer" value="{{ old('manufacturer', $equipment->manufacturer) }}" required>
+                    @error('manufacturer')
+                    <span class="erro">{{ $message }}</span>
+                    @enderror
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Modelo:</b>
+                    <input type="text" name="model" id="model" value="{{ old('model', $equipment->model) }}" required>
+                    @error('model')
+                    <span class="erro">{{ $message }}</span>
+                    @enderror
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Serial Number:</b>
+                    <input type="text" name="serial_number" id="serial_number" value="{{ old('serial_number', $equipment->serial_number) }}" required>
+                    @error('serial_number')
+                    <span class="erro">{{ $message }}</span>
+                    @enderror
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Sala:</b>
+                    <input type="text" name="room" id="room" value="{{ old('room', $equipment->room) }}">
+                    @error('room')
+                    <span class="erro">{{ $message }}</span>
+                    @enderror
+                </ul>
+            </div>
+
+            <div class="card">
+                <section class="cardinterior">
+                    <div class="botaospace">
+                        <button class="botao" type="submit">{{ __('Gravar') }}</button>
+                    </div>
+                    <div class="botaospace">
+                        <a href="{{ route('equipments.index') }}">
+                            <input class="botao2" type="button" value="Cancelar">
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</section>
+
+</body>
+</html>

@@ -104,6 +104,19 @@ main {
 
 }
 
+#type{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+
+
+
+}
+
 .side-item.active {
     background-color: #0077ff;
 }
@@ -376,7 +389,7 @@ a {
     line-height: 1.2;
     /* Adjusts line height for better alignment */
     width: 20%;
-    
+
 
 
 
@@ -387,7 +400,7 @@ input {
 
     background-color: #eee;
     border: 1px solid black;
-    
+
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;

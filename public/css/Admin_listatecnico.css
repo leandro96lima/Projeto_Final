@@ -39,7 +39,7 @@ main {
     min-width: 82px;
     z-index: 2;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-   
+
 }
 
 #sidebar_content {
@@ -82,7 +82,7 @@ main {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
-    
+
 
 }
 
@@ -395,7 +395,7 @@ a:focus {
 
 
 input {
-   
+
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
@@ -437,11 +437,11 @@ table {
 }
 
 th, td {
-    
+
     padding: 12px 15px;
-    text-align: left;
+    text-align: center;
     font-size: 14px;
-    
+
     font-weight: normal; /* Ensure text weight consistency */
 }
 
@@ -497,7 +497,7 @@ margin-top: 15px;
     text-align: center;
     justify-content: center;
     margin-bottom: 20px;
-    
+
 }
 
 #imagemavatar{
@@ -517,7 +517,7 @@ border-radius: 80%;
 }
 
 .input-search {
-    
+
     width: 50px;
     border-style: none;
     padding: 10px;
@@ -575,7 +575,7 @@ border-radius: 80%;
     justify-content: space-between; /* Ensures space between search box and dropdown */
     align-items: center; /* Aligns items vertically */
     width: 100%; /* Ensures the full width is used */
-    
+
 }
 
 .dropdown2 {
@@ -585,14 +585,14 @@ border-radius: 80%;
     background-color: #ffffff;
 }
 
-.order{ 
-    
-    background: none; 
-    border: none; 
-    color: inherit; 
-    cursor: pointer; 
+.order{
+
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
     font: inherit;
-    padding: 0; 
+    padding: 0;
     margin: 0;
     font-size: larger;
 

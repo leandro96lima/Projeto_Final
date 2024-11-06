@@ -1,45 +1,83 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Editar Técnico') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pt-pt">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form action="{{ route('technicians.update', $technician->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/Editar_equipamento.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <title>QuickFix</title>
+</head>
 
-                        <div class="mb-4">
-                            <label for="name" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Nome') }}</label>
-                            <input type="text" id="name" name="name" value="{{ old('name', $technician->user->name) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" readonly>
-                        </div>
+<body>
 
-                        <div class="mb-4">
-                            <label for="email" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Email') }}</label>
-                            <input type="email" id="email" name="email" value="{{ old('email', $technician->user->email) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" readonly>
-                        </div>
+@include('layouts.quick-fix-nav')
 
-                        <div class="mb-4">
-                            <label for="specialty" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Especialidade') }}</label>
-                            <select id="specialty" name="specialty" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                                <option value="Electrical" {{ old('specialty', $technician->specialty) == 'Electrical' ? 'selected' : '' }}>{{ __('Electrical') }}</option>
-                                <option value="Mechanical" {{ old('specialty', $technician->specialty) == 'Mechanical' ? 'selected' : '' }}>{{ __('Mechanical') }}</option>
-                                <option value="Software" {{ old('specialty', $technician->specialty) == 'Software' ? 'selected' : '' }}>{{ __('Software') }}</option>
-                            </select>
-                        </div>
+<header class="titulo">
+    <main>
+        <h1>{{ __('Editar Técnico') }}</h1>
+    </main>
+</header>
 
-                        <div class="flex items-center justify-between">
-                            <button type="submit" class="btn btn-primary">{{ __('Atualizar Técnico') }}</button>
-                            <a href="{{ route('technicians.index') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<section class="container">
+    <div class="insidecontainer">
+        <div class="card">
+            <ul><b>ID Técnico:</b>
+                {{ $technician->id }} <!-- Exibindo o ID do Técnico -->
+            </ul>
         </div>
-    </div>
-</x-app-layout>
 
+        <!-- Formulário de Edição de Técnico -->
+        <form action="{{ route('technicians.update', $technician->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="card">
+                <ul><b>Nome:</b>
+                    <input type="text" name="name" id="Nometécnico" value="{{ old('name', $technician->user->name) }}" required readonly>
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Email:</b>
+                    <input type="email" name="email" id="Email-técnico" value="{{ old('email', $technician->user->email) }}" required readonly>
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Total de tickets:</b>
+                    {{ count($technician->tickets) }} <!-- Exibindo o total de tickets do técnico -->
+                </ul>
+            </div>
+
+            <div class="card">
+                <ul><b>Especialidade:</b></ul>
+                <select id="funcaodrop" class="dropdown" name="specialty" required>
+                    <option value="Electrical" {{ old('specialty', $technician->specialty) == 'Electrical' ? 'selected' : '' }}>Electrical</option>
+                    <option value="Mechanical" {{ old('specialty', $technician->specialty) == 'Mechanical' ? 'selected' : '' }}>Mechanical</option>
+                    <option value="Software" {{ old('specialty', $technician->specialty) == 'Software' ? 'selected' : '' }}>Software</option>
+                </select>
+            </div>
+
+            <div class="card">
+                <section class="cardinterior">
+                    <div class="botaospace">
+                        <button type="submit" class="botao">Gravar</button>
+                    </div>
+
+                    <div class="botaospace">
+                        <a href="{{ route('technicians.index') }}">
+                            <input class="botao2" type="button" value="Cancelar">
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</section>
+
+</body>
+</html>
