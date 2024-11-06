@@ -11,30 +11,11 @@
 </head>
 
 <body>
-<nav id="sidebar">
-    <div id="sidebar_content">
-        <div class="Avatar">
-            <img src="{{ asset('hacker.png') }}" width="60" id="imagemavatar" alt="Avatar">
-            <span class="item-description">
-                    <br>
-                    @Utilizador
-                </span>
-        </div>
-        <ul id="side_items">
-            <li class="side-item"><a href="userpage.html"><i class="fa-solid fa-user"></i> <span class="item-description">Perfil</span></a></li>
-            <li class="side-item"><a href="ticket.html"><i class="fa-solid fa-receipt"></i> <span class="item-description">Registar Tickets</span></a></li>
-            <li class="side-item"><a href="usertickets.html"><i class="fa-solid fa-list"></i> <span class="item-description">Tickets</span></a></li>
-        </ul>
-        <button id="open_btn"><i id="open_btn_icon" class="fa-solid fa-chevron-right"></i></button>
-    </div>
-    <div id="logout">
-        <a href="login2.html"><button id="logout_btn"><i class="fa-solid fa-right-from-bracket"></i> <span class="item-description">Logout</span></button></a>
-    </div>
-</nav>
+@include('layouts.quick-fix-nav')
 
 <header>
     <main>
-        <h1>Lista de Tickets</h1>
+        <h1>{{__('Lista de Tickets')}}</h1>
     </main>
 </header>
 <section class="container">

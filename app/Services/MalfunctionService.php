@@ -39,7 +39,7 @@ class MalfunctionService
             });
 
         // Paginate the results
-        $paginatedMalfunctions = $malfunctionsQuery->paginate(10);
+        $paginatedMalfunctions = $malfunctionsQuery->paginate(20);
 
         // Process resolution time for each malfunction
         $paginatedMalfunctions->each(function ($malfunction) {

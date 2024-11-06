@@ -3,7 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif
-    
+
 }
 
 body {
@@ -24,7 +24,7 @@ main {
     background-color: #ffffff;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
- 
+
 }
 
 #sidebar {
@@ -75,15 +75,15 @@ main {
     flex-direction: column;
     gap: 8px;
     list-style: none;
-    
+
 }
 
 .side-item {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
-    
-   
+
+
 }
 
 .side-item.active {
@@ -198,11 +198,11 @@ main {
     flex-direction: column;
     height: 100%;
     width: 100%;
-    
-    
-   
+
+
+
   }
-  
+
   .card1 {
     margin-left: 20px;
     margin-top: 10px;
@@ -227,17 +227,22 @@ main {
 
 
 
-  
+
   .card img {
     width: 100%;
     height: 500px;
     object-fit: cover;
     border-radius: 10px;
   }
-  
+
   .slider-nav {
     display: none;
   }
+
+.erro {
+    color: red;
+    
+}
 
   h2{
 display: flex;
@@ -245,7 +250,7 @@ justify-content: center;
 
 
   }
-  
+
   .ICtitulo{
     font-size: 28px;
     display: flex;
@@ -259,7 +264,7 @@ justify-content: center;
     font-size: 16px; /* Adjusts the font size of the input text */
     line-height: 1.2; /* Adjusts line height for better alignment */
     width: 20%;
-    
+
 
 
 
@@ -275,7 +280,7 @@ justify-content: center;
     text-align: center;
     justify-content: center;
     margin-bottom: 20px;
-    
+
 }
 
 #imagemavatar{
@@ -285,9 +290,9 @@ border-radius: 80%;
 
 }
 
-#detalhes {
+#description {
     font-size: 16px; /* Adjusts the font size of the input text */
-    
+
     width:100% ;
     height: 300px; /* Sets a specific height for the input */
     line-height: 1.2; /* Adjusts line height for better alignment */
@@ -298,13 +303,13 @@ border-radius: 80%;
     resize: none; /* Prevent resizing if it's a textarea */
 }
 
-#detalhes::placeholder {
+#description::placeholder {
     font-size: 16px; /* Adjusts the font size of the placeholder text */
-    
-    
+
+
 }
 
-#botao {
+#botao_gravar {
     background-color: #0077ff; /* Change the background color */
     color: white; /* Change the text color */
     border: none; /* Remove the default border */
@@ -328,7 +333,7 @@ border-radius: 80%;
 
 
 
-#serialnumber{
+#serial_number{
     width: 20%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -350,13 +355,13 @@ border-radius: 80%;
 	margin: 8px 0;
 	width: 30%;
     border-radius: 30px
-   
-    
+
+
 
   }
 
 
-#Tipoequipamento{
+#type{
     width: 20%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -366,23 +371,23 @@ border-radius: 80%;
     cursor: pointer;
 
 
-    
+
   }
 
 
-  #Problema{
+  #title{
     background-color: #eee;
 	border: none;
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 30%;
     border-radius: 30px
-   
-    
+
+
 
   }
 
-  #sala{
+  #room{
     background-color: #eee;
 	border: none;
 	padding: 12px 15px;
@@ -390,6 +395,257 @@ border-radius: 80%;
 	width: 15%;
     border-radius: 30px
 
-    
+
 
   }
+
+.container_p {
+
+    display: flex; /* Use Flexbox to center the carousel */
+    justify-content: flex-start; /* Center horizontally */
+    align-items: flex-start; /* Center vertically */
+    flex-direction: column; /* Stack items vertically if needed */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin: 100px 20px 10px; /* Simplified margin */
+    background-color: #ffffff;
+    border-radius: 18px;
+}
+
+
+.insidecontainer_p {
+ 
+    display: absolute;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .card1_p {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    box-sizing: border-box;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+
+  }
+
+  .card2_p {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-right: 20px;
+    box-sizing: border-box;
+    background-color: white;
+    border: 15px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+
+  
+  .card_p img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+  .slider-nav_p {
+    display: none;
+  }
+
+  h2_p{
+display: flex;
+justify-content: center;
+
+
+  }
+  
+  .ICtitulo_p{
+    font-size: 28px;
+    display: flex;
+    padding-top: 10px;
+    padding-left: 20px;
+
+
+  }
+
+  #nomeavaria{
+    font-size: 16px; /* Adjusts the font size of the input text */
+    line-height: 1.2; /* Adjusts line height for better alignment */
+    width: 20%;
+    
+
+
+
+
+  }
+
+
+
+#detalhes {
+    font-size: 16px; /* Adjusts the font size of the input text */
+    
+    width:100% ;
+    height: 300px; /* Sets a specific height for the input */
+    line-height: 1.2; /* Adjusts line height for better alignment */
+    box-sizing: border-box; /* Ensures padding is included in total width/height */
+    padding: 10px; /* Add some padding */
+    vertical-align: top; /* Align text to the top */
+    text-align: left; /* Ensure text is left-aligned */
+    resize: none; /* Prevent resizing if it's a textarea */
+}
+
+#detalhes::placeholder {
+    font-size: 16px; /* Adjusts the font size of the placeholder text */
+    
+    
+}
+
+
+
+
+#serialnumber{
+    background-color: #eee;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 30%;
+    border-radius: 30px;
+
+
+
+  }
+
+
+#nomeequipamento{
+    font-size: 16px; /* Adjusts the font size of the input text */
+    line-height: 1.2; /* Adjusts line height for better alignment */
+    width: 20%;
+    
+
+
+
+
+  }
+
+
+#Tipoequipamento{
+    background-color: #eee;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 30%;
+    border-radius: 30px;
+
+
+  }
+
+
+#Modelo{
+    background-color: #eee;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 30%;
+    border-radius: 30px;
+
+
+
+  }
+
+
+#Fabricante{
+    background-color: #eee;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 30%;
+    border-radius: 30px;
+
+
+
+  }
+
+#sala{
+    background-color: #eee;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 30%;
+    border-radius: 30px;
+
+  }
+
+.botoes_p{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+
+#botao_p {
+    width: 150px;
+    height: 65px;
+    margin: 10px;
+	border-radius: 20px;
+	border: 1px solid #0077ff;
+	background-color: #0077ff;
+	color: #FFFFFF;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 12px ;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+#botao_p:hover{
+    background-color: #0077ff; /* Darken the background on hover */
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
+
+}
+
+#botao_p:active {
+	transform: scale(0.95);
+}
+
+
+#botao2_p {
+    width: 150px;
+    height: 65px;
+    margin: 10px;
+	border-radius: 20px;
+	border: 1px solid #dc3545;
+	background-color: #dc3545;
+	color: #FFFFFF;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 12px ;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    text-align: center;
+}
+
+
+#botao2_p:hover{
+    background-color: #dc3545; /* Darken the background on hover */
+   
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
+
+}
+
+
+#botao2_p:active {
+	transform: scale(0.95);
+}
+
+a {
+    outline: none; /* Remove o contorno padrão */
+    text-decoration: none; /* Remove o sublinhado, se desejado */
+    color: white;
+}
