@@ -36,7 +36,7 @@ class MalfunctionService
         $malfunctionsQuery = $this->malfunctionRepository->getMalfunctionsFromDb($search, $sort, $direction, $status);
 
         // Paginate the results
-        $paginatedMalfunctions = $malfunctionsQuery->paginate(10);
+        $paginatedMalfunctions = $malfunctionsQuery->paginate(20);
 
         // Process resolution time for each malfunction
         $paginatedMalfunctions->each(function ($malfunction) {

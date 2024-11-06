@@ -116,6 +116,11 @@ main {
     height: 20px;
 }
 
+.erro {
+    color: red;
+   
+}
+
 #logout {
     border-top: 1px solid #e3e9f7;
     padding: 12px;

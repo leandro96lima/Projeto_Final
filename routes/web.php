@@ -16,10 +16,12 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Rota do dashboard com middleware de autenticação
-Route::get('/tickets', [TicketController::class , 'index'])
+Route::get('/dashboard', function() {
+    return redirect()->route('tickets.index');
+})
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
 
 // Grupo de rotas que requerem autenticação
 Route::middleware('auth')->group(function () {

@@ -1,67 +1,225 @@
-<div class="py-12">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900 dark:text-gray-100">
-                <form id="equipment-form" action="{{ route('equipments.store') }}" method="POST">
-                    @csrf
 
-                    <!-- Campo oculto para indicar a origem do request -->
-                    <input type="hidden" name="from_partial" value="user-create-equipment">
+    <div class="insidecontainer">
+        <form id="equipment-form" action="{{ route('equipments.store')}}">
+            @csrf
+            <input type="hidden" name="from_partial" value="user-create-equipment">
 
-                    <div class="mb-4">
-                        <label for="type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Tipo') }}</label>
-                        <input type="text" id="type" name="type" value="{{ old('type', $other_type ?? '') }}" readonly class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                        @error('type')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4" id="newTypeContainer">
-                        <label for="new_type" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Novo Tipo de Equipamento') }}</label>
-                        <input type="text" id="new_type" name="new_type" value="{{ old('new_type', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="manufacturer" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Fabricante') }}</label>
-                        <input type="text" id="manufacturer" name="manufacturer" value="{{ old('manufacturer', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                        @error('manufacturer')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="model" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Modelo') }}</label>
-                        <input type="text" id="model" name="model" value="{{ old('model', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                        @error('model')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="serial_number" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Número de Série') }}</label>
-                        <input type="text" id="serial_number" name="serial_number" value="{{ old('serial_number', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
-                        @error('serial_number')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="room" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Sala') }}</label>
-                        <input type="text" id="room" name="room" value="{{ old('room', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black">
-                        @error('room')
-                        <span class="text-red-600 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <button type="submit" class="btn btn-primary">{{ __('Criar Equipamento') }}</button>
-                        <a href="{{ route('tickets.create') }}" class="btn btn-secondary">{{ __('Cancelar') }}</a>
-                    </div>
-                </form>
+            <br>
+            <div class="ICtitulo">
+                <label for="nomeavaria">{{__('Detalhes da Avaria:')}}</label>
             </div>
-        </div>
+            <br>
+            <div class="card1">
+                <h4>{{__('Tipo de Equipamento:')}}</h4>
+                <br>
+                Other
+            </div>
+            <div class="card1">
+                <h4>Novo Tipo de Equipamento:</h4>
+                <br>
+                <input type="text" name="Tipoequipamento" id="Tipoequipamento" placeholder="Tipo de Equipamento"
+                       required>
+            </div>
+            <div class="card1">
+                <h4>Fabricante:</h4>
+                <br>
+                <input type="text" name="Fabricante" id="Fabricante" placeholder="Nome do Fabricante" required>
+            </div>
+
+            <div class="card1">
+                <h4>Modelo:</h4>
+                <br>
+                <input type="text" name="Modelo" id="Modelo" placeholder="Modelo do Equipamento" required>
+            </div>
+
+
+            <div class="card1">
+                <h4>Serial Number:</h4>
+                <br>
+                <input type="text" id="serialnumber" name="serialnumber" placeholder="Serial Number" required>
+            </div>
+
+            <div class="card1">
+                <h4>Sala:</h4>
+                <br>
+                <input type="text" id="sala" name="sala" placeholder="Sala" required>
+            </div>
+
+            <div class="botoes">
+                <br>
+                <a href="">
+                    <input type="submit" id="botao_p" value="Gravar">
+                </a>
+                <a href="ticket.html">
+                    <input type="button" id="botao2" value="Cancelar">
+                </a>
+            </div>
+        </form>
     </div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+
+
+
+
+
+    }
+
+
+    #detalhes {
+        font-size: 16px; /* Adjusts the font size of the input text */
+
+        width:100% ;
+        height: 300px; /* Sets a specific height for the input */
+        line-height: 1.2; /* Adjusts line height for better alignment */
+        box-sizing: border-box; /* Ensures padding is included in total width/height */
+        padding: 10px; /* Add some padding */
+        vertical-align: top; /* Align text to the top */
+        text-align: left; /* Ensure text is left-aligned */
+        resize: none; /* Prevent resizing if it's a textarea */
+    }
+
+    #detalhes::placeholder {
+        font-size: 16px; /* Adjusts the font size of the placeholder text */
+
+
+    }
+
+
+
+
+    #serialnumber{
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 30%;
+        border-radius: 30px;
+
+
+
+    }
+
+
+    #nomeequipamento{
+        font-size: 16px; /* Adjusts the font size of the input text */
+        line-height: 1.2; /* Adjusts line height for better alignment */
+        width: 20%;
+
+
+
+
+
+    }
+
+
+    #Tipoequipamento{
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 30%;
+        border-radius: 30px;
+
+
+    }
+
+
+    #Modelo{
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 30%;
+        border-radius: 30px;
+
+
+
+    }
+
+
+    #Fabricante{
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 30%;
+        border-radius: 30px;
+
+
+
+    }
+
+    #sala{
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 30%;
+        border-radius: 30px;
+
+    }
+
+    .botoes{
+        display: flex;
+        flex-direction: row;
+        margin: 10px;
+    }
+
+
+    #botao2 {
+        width: 150px;
+        height: 65px;
+        margin: 10px;
+        border-radius: 20px;
+        border: 1px solid #dc3545;
+        background-color: #dc3545;
+        color: #FFFFFF;
+        font-size: 15px;
+        font-weight: bold;
+        padding: 12px ;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: transform 80ms ease-in;
+        text-align: center;
+    }
+
+
+    #botao2:hover{
+        background-color: #dc3545; /* Darken the background on hover */
+
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+
+
+    }
+
+
+    #botao2:active {
+        transform: scale(0.95);
+    }
+
+    a {
+        outline: none; /* Remove o contorno padrão */
+        text-decoration: none; /* Remove o sublinhado, se desejado */
+        color: white;
+    }
+
+
+
+
+
+</style>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Captura o campo de tipo e o campo novo tipo

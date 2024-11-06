@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/css/usertickets.css">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link rel="stylesheet" href="/resources/css/login2.css">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
 
     <!-- Scripts -->
