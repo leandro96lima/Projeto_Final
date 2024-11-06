@@ -83,7 +83,7 @@ main {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
-    
+
 
 }
 
@@ -118,7 +118,7 @@ main {
 
 .erro {
     color: red;
-   
+
 }
 
 #logout {
@@ -230,9 +230,9 @@ main {
     width: 200px;
     margin: 5px;
     border-radius: 20px;
-    border: 1px solid #777777;
-    background-color: #777777;
-    color: #FFFFFF;
+    border: 1px solid #006d1b;
+    background-color: #006d1b;
+    color: #ffffff;
     font-size: 12px;
     font-weight: bold;
     padding: 12px;
@@ -243,7 +243,7 @@ main {
 }
 
 .botao:hover {
-    background-color: #777777;
+    background-color: #006d1b;
     /* Darken the background on hover */
 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -273,12 +273,11 @@ a:focus {
     width: 200px;
     margin: 5px;
     border-radius: 20px;
-    border: 1px solid #c90505;
-    background-color: #c90505;
+    border: 1px solid #fd7e14;
+    background-color: #fd7e14;
     color: #FFFFFF;
     font-size: 12px;
     font-weight: bold;
-    padding: 12px;
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: transform 80ms ease-in;
@@ -286,13 +285,17 @@ a:focus {
 }
 
 .botao2:hover {
-    background-color: #c90505;
+    background-color: #fd7e14;
     /* Darken the background on hover */
 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     /* Enhance shadow on hover */
 
 
+}
+
+.botao2:active {
+    transform: scale(0.95);
 }
 
 .botao:active {
@@ -313,7 +316,35 @@ a:focus {
 }
 
 
+.botao4 {
+    width: 200px;
+    margin: 5px;
+    border-radius: 20px;
+    border: 1px solid #dc3545;
+    background-color: #dc3545;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+    text-align: center;
+}
 
+.botao4:hover {
+    background-color: #dc3545;
+    /* Darken the background on hover */
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Enhance shadow on hover */
+
+
+}
+
+.botao4:active {
+    transform: scale(0.95);
+}
 
 
 .botao3 {
@@ -371,7 +402,7 @@ a:focus {
 
 
 input {
-   
+
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
@@ -414,11 +445,11 @@ table {
 }
 
 th, td {
-    
+
     padding: 12px 15px;
     text-align: left;
     font-size: 14px;
-    
+
     font-weight: normal; /* Ensure text weight consistency */
 }
 
@@ -475,7 +506,7 @@ margin-top: 15px;
     text-align: center;
     justify-content: center;
     margin-bottom: 20px;
-    
+
 }
 
 #imagemavatar{
@@ -495,7 +526,7 @@ border-radius: 80%;
 }
 
 .input-search {
-    
+
     width: 50px;
     border-style: none;
     padding: 10px;
@@ -553,7 +584,7 @@ border-radius: 80%;
     justify-content: space-between; /* Ensures space between search box and dropdown */
     align-items: center; /* Aligns items vertically */
     width: 100%; /* Ensures the full width is used */
-   
+
 }
 
 .dropdown2 {
@@ -563,14 +594,14 @@ border-radius: 80%;
     background-color: #ffffff;
 }
 
-.order{ 
-    
-    background: none; 
-    border: none; 
-    color: inherit; 
-    cursor: pointer; 
+.order{
+
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
     font: inherit;
-    padding: 0; 
+    padding: 0;
     margin: 0;
     font-size: larger;
 

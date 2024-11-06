@@ -111,6 +111,7 @@
                         </a>
                         </button>
                     </th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -121,6 +122,30 @@
                         <td>{{ $ticket->open_date }}</td>
                         <td>{{ $ticket->status ?? 'N/A' }}</td>
                         <td>{{ $ticket->wait_time !== null ? $ticket->wait_time : 'Em espera para iniciar' }} minuto(s)</td>
+                        <td id="displaybotao">
+                            <Div>
+                                <a href="{{ route('tickets.show', [$ticket->id]) }}">
+                                    <input class="botao2" type="button" value="Mostrar Avaria">
+                                </a>
+                            </Div>
+
+                            @if ($ticket->status == 'in_progress')
+                                <!-- Mostrar o botão "Fechar Avaria" quando o status for "in_progress" -->
+                                <div>
+                                    <a href="{{ route('malfunctions.edit', [$ticket->id, 'action' => 'fechar']) }}">
+                                        <input class="botao4" type="button" value="Fechar Avaria">
+                                    </a>
+                                </div>
+                            @elseif ($ticket->status == 'open')
+                                <!-- Mostrar o botão "Abrir Avaria" quando o status for "open" -->
+                                <div>
+                                    <a href="{{ route('malfunctions.edit', [$ticket->id, 'action' => 'abrir']) }}">
+                                        <input class="botao" type="button" value="Abrir Avaria">
+                                    </a>
+                                </div>
+                            @endif
+
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
