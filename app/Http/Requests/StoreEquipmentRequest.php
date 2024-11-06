@@ -14,7 +14,7 @@ class StoreEquipmentRequest extends FormRequest
             'manufacturer' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'room' => 'nullable|string|max:255',
-            'serial_number' => 'required|string|max:255',
+            'serial_number' => 'required|string|regex:/^[A-Z]{3}-\d{5}$/i|max:255',
         ];
     }
 

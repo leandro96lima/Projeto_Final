@@ -10,14 +10,17 @@
                     <div class="mb-4">
                         @php
                             $ticketDetails = [
+                                __('Data de abertura:') => $ticket->open_date ?: 'N/A',
                                 __('Equipamento') => optional($ticket->malfunction->equipment)->type ?: 'N/A',
                                 __('Serial Number:') => optional($ticket->malfunction->equipment)->serial_number ?: 'N/A',
                                 __('Sala:') => optional($ticket->malfunction->equipment)->room ?: 'N/A',
+                                __('Tempo de Espera:') => $ticket->malfunction ? ($ticket->wait_time !== null ? $ticket->wait_time . ' minuto(s)' : 'Em espera para iniciar') : 'Em espera para iniciar',
+                                __('Status:') => $ticket->status ?: 'N/A',
                                 __('Avaria:') => $ticket->title ?: 'N/A',
                                 __('Descrição:') => $ticket->description ?: 'N/A',
-                                __('Data de abertura:') => $ticket->open_date ?: 'N/A',
-                                __('Status:') => $ticket->status ?: 'N/A',
-                                __('Tempo de Espera:') => $ticket->malfunction ? ($ticket->wait_time !== null ? $ticket->wait_time . ' minuto(s)' : 'Em espera para iniciar') : 'Em espera para iniciar',
+                                __('Diagnóstico:') => $ticket->malfunction->diagnosis ?: 'N/A',
+                                __('Solução:') => $ticket->malfunction->solution ?: 'N/A',
+                                __('Custo:') => $ticket->malfunction->cost ?: 'N/A',
                             ];
                         @endphp
                         @foreach ($ticketDetails as $label => $value)

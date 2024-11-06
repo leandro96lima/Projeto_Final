@@ -11,7 +11,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="mb-4">
                         <p><strong>{{ __('Equipamento') }}</strong> {{ $malfunction->equipment->type ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Técnico') }}</strong> {{ $malfunction->technician->user->name ?? 'N/A' }}</p>
+                        <p><strong>{{ __('Técnico') }}</strong> {{ $malfunction->ticket->technician->user->name ?? 'N/A' }}</p>
                         <p><strong>{{ __('Status:') }}</strong> {{ $malfunction->ticket->status ?? 'N/A' }}</p>
                         <p><strong>{{ __('Urgente:') }}</strong> {{ $malfunction->ticket->urgent ? 'Sim' : 'Não' }}</p>
                         <p><strong>{{ __('Diagnóstico:') }}</strong> {{ $malfunction->diagnosis ?? 'N/A' }}</p>

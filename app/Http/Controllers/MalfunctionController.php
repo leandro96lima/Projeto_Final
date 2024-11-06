@@ -59,7 +59,7 @@ class MalfunctionController extends Controller
     {
         $this->authorize('update', $malfunction);
         $this->malfunctionService->updateMalfunction($request, $malfunction);
-        return redirect()->route('malfunctions.show', $malfunction->id);
+        return redirect()->route('tickets.show', $malfunction->id);
     }
 
     public function destroy(Malfunction $malfunction)

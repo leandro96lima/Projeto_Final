@@ -8,10 +8,9 @@
             <form method="GET" action="{{ route('malfunctions.index') }}">
                 <label for="status" class="block text-sm font-medium text-white bg-gray-800 p-1 rounded">{{ __('Filtrar por Status') }}</label>
                 <select name="status" onchange="this.form.submit()" class="form-select">
-                    <option value="">{{ __('Todas as Avarias') }}</option>
-                    <option value="open" {{ request('status')}}>{{ __('Abertas') }}</option>
-                    <option value="in_progress" {{ request('status') }}>{{ __('Em Curso') }}</option>
-                    <option value="closed" {{ request('status') }}>{{ __('Fechadas') }}</option>
+                    @foreach(['' => 'Todas as Avarias', 'open' => 'Abertas', 'in_progress' => 'Em Curso', 'closed' => 'Fechadas'] as $value => $label)
+                        <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
+                    @endforeach
                 </select>
             </form>
         </div>
@@ -99,14 +98,10 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $malfunction->equipment->type ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->ticket->status ?? 'N/A' }}</td>
-                                <td class="border px-4 py-2">{{ $malfunction->technician->user->name ?? 'Sem técnico' }}</td>
+                                <td class="border px-4 py-2">{{ $malfunction->ticket->technician->user->name ?? 'Sem técnico' }}</td>
                                 <td class="border px-4 py-2">{{ $malfunction->diagnosis ?? 'N/A' }}</td>
                                 <td class="border px-4 py-2">
-                                    @if ($malfunction->ticket->status === 'open')
-                                        Em espera para iniciar reparo
-                                    @else
                                         {{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)
-                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('malfunctions.show', $malfunction->id) }}">{{ __('Detalhes') }}</a>
