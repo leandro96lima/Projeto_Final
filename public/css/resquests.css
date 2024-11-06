@@ -83,7 +83,7 @@ main {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
-    
+
 
 }
 
@@ -299,9 +299,9 @@ a:focus {
 
 
 .botao3 {
-    width: 50px;
+    width: 200px;
     margin: 5px;
-    border-radius: 10px;
+    border-radius: 20px;
     border: 1px solid #0077ff;
     background-color: #0077ff;
     color: #FFFFFF;
@@ -353,7 +353,7 @@ a:focus {
 
 
 input {
-   
+
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
@@ -457,7 +457,7 @@ margin-top: 15px;
     text-align: center;
     justify-content: center;
     margin-bottom: 20px;
-    
+
 }
 
 #imagemavatar{
@@ -477,7 +477,7 @@ border-radius: 80%;
 }
 
 .input-search {
-    
+
     width: 50px;
     border-style: none;
     padding: 10px;
@@ -530,14 +530,14 @@ border-radius: 80%;
     transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
 }
 
-.order{ 
-    
-    background: none; 
-    border: none; 
-    color: inherit; 
-    cursor: pointer; 
+.order{
+
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
     font: inherit;
-    padding: 0; 
+    padding: 0;
     margin: 0;
     font-size: larger;
 
