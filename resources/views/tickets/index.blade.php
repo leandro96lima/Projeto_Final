@@ -8,14 +8,10 @@
     <link rel="stylesheet" href="/css/usertickets.css">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link rel="stylesheet" href="/resources/css/login2.css">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+{{--    @vite(['resources/css/app.css', 'resources/js/app.js'])--}}
     <title>QuickFix</title>
 </head>
 
@@ -71,11 +67,71 @@
             <table>
                 <thead>
                 <tr>
-                    <th><button class="order">Equipamento</button></th>
-                    <th><button class="order">Avaria</button></th>
-                    <th><button class="order">Data de Abertura</button></th>
-                    <th><button class="order">Status</button></th>
-                    <th><button class="order">Tempo de Espera</button></th>
+                    <th> <button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'equipment_type', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Equipamento') }}
+                            @if (request('sort') === 'equipment_type')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'title', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Avaria') }}
+                            @if (request('sort') === 'title')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'open_date', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Data de Abertura') }}
+                            @if (request('sort') === 'open_date')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'status', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Status') }}
+                            @if (request('sort') === 'status')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
+                    <th><button class="order">
+                        <a href="{{ route('tickets.index', ['sort' => 'wait_time', 'direction' => request('direction') == 'asc' ? 'desc' : 'asc']) }}">
+                            {{ __('Tempo de Espera') }}
+                            @if (request('sort') === 'wait_time')
+                                @if (request('direction') === 'asc')
+                                    ↑
+                                @else
+                                    ↓
+                                @endif
+                            @endif
+                        </a>
+                        </button>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
