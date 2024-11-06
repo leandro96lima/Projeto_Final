@@ -52,12 +52,10 @@ Route::middleware(['auth', CheckUserType::class . ':AdminTechnician'])->group(fu
     Route::resources([
         'malfunctions' => MalfunctionController::class,
         'technicians' => TechnicianController::class,
+        'equipments' => EquipmentController::class,
 
     ]);
 });
-
-
-
 Route::middleware(['auth', CheckUserType::class . ':Admin'])->group(function () {
 
     Route::resources([
