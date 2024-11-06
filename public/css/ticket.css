@@ -518,6 +518,8 @@ justify-content: center;
 
 
 
+
+
   }
 
 
@@ -533,7 +535,17 @@ justify-content: center;
   }
 
 
-#Tipoequipamento{
+#type{
+    background-color: #eee;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 30%;
+    border-radius: 30px;
+
+
+  }
+
+#new_type{
     background-color: #eee;
 	padding: 12px 15px;
 	margin: 8px 0;

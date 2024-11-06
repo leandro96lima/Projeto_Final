@@ -12,35 +12,41 @@
             <div class="card1">
                 <h4>{{__('Tipo de Equipamento:')}}</h4>
                 <br>
-                Other
+                <input type="text" id="type" name="type" value="{{ old('type', $other_type ?? '') }}" readonly>
+                @error('type')
+                <span class="text-red-600 text-sm">{{ $message }}</span>
+                @enderror
             </div>
             <div class="card1">
-                <h4>Novo Tipo de Equipamento:</h4>
+                <h4>{{__('Novo Tipo de Equipamento:')}}</h4>
+                <input type="text" id="new_type" name="new_type" value="{{ old('new_type', '') }}">
                 <br>
-                <input type="text" name="Tipoequipamento" id="Tipoequipamento" placeholder="Tipo de Equipamento"
-                       required>
+
             </div>
             <div class="card1">
-                <h4>Fabricante:</h4>
+                <h4>{{__('Fabricante:')}}</h4>
                 <br>
-                <input type="text" name="Fabricante" id="Fabricante" placeholder="Nome do Fabricante" required>
-            </div>
+                <input type="text" id="manufacturer" name="manufacturer" value="{{ old('manufacturer', '') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 text-black" required>
+                @error('manufacturer')
+                <span class="text-red-600 text-sm">{{ $message }}</span>
+                @enderror </div>
+
 
             <div class="card1">
-                <h4>Modelo:</h4>
+                <h4>{{__('Modelo:')}}</h4>
                 <br>
                 <input type="text" name="Modelo" id="Modelo" placeholder="Modelo do Equipamento" required>
             </div>
 
 
             <div class="card1">
-                <h4>Serial Number:</h4>
+                <h4>{{__('Serial Number:')}}</h4>
                 <br>
                 <input type="text" id="serialnumber" name="serialnumber" placeholder="Serial Number" required>
             </div>
 
             <div class="card1">
-                <h4>Sala:</h4>
+                <h4>{{__('Sala:')}}</h4>
                 <br>
                 <input type="text" id="sala" name="sala" placeholder="Sala" required>
             </div>
