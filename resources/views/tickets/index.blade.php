@@ -33,7 +33,7 @@
             <div>
                 <form method="GET" action="{{ route('tickets.index') }}">
                     <select name="status" class="dropdown2" onchange="this.form.submit()">
-                        <option value="" disabled selected hidden>Filtrar por Status:</option>
+                        <option value="" disabled selected hidden>Filtrar por Status: </option>
                         @foreach(['' => 'Todos os Tickets', 'pending_approval' => 'Pendentes', 'open' => 'Abertos', 'in_progress' => 'Em Curso', 'closed' => 'Fechados'] as $value => $label)
                             <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
                         @endforeach
