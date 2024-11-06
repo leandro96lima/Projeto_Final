@@ -9,60 +9,8 @@ body {
     display: flex;
     min-height: 100vh;
     background-color: #99A3B9;
-
 }
 
-.botao2 {
-    width: 350px;
-    margin: 10px;
-    border-radius: 20px;
-    border: 1px solid #fd7e14 ;
-    background-color: #fd7e14 ;
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in;
-    text-align: center;
-}
-
-.botao2:hover {
-    background-color: #fd7e14 ;
-    /* Darken the background on hover */
-
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* Enhance shadow on hover */
-
-
-}
-
-.botao2:active {
-    transform: scale(0.95);
-}
-
-
-#sidebar {
-
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #ffffff;
-    border-radius: 0px 18px 18px 0px;
-    position: sticky; /* Change from relative to sticky */
-    top: 10px; /* Adjust the top position if needed */
-    transition: all .5s;
-    min-width: 82px;
-    z-index: 2;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-#sidebar_content {
-    padding: 12px;
-}
 
 main {
     display: flex;
@@ -77,6 +25,25 @@ main {
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 
+}
+
+#sidebar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 0px 18px 18px 0px;
+    position: relative;
+    transition: all .5s;
+    min-width: 82px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#sidebar_content {
+    padding: 12px;
 }
 
 .Avatar {
@@ -277,7 +244,31 @@ main {
     /* Adjusts the font size of the input text */
 
     width: 600px;
-    height: 200px;
+    height: 150px;
+
+    line-height: 1.2;
+    /* Adjusts line height for better alignment */
+    box-sizing: border-box;
+    /* Ensures padding is included in total width/height */
+    padding: 10px;
+    /* Add some padding */
+    vertical-align: top;
+    /* Align text to the top */
+    text-align: left;
+    /* Ensure text is left-aligned */
+    resize: none;
+
+
+
+
+}
+#areadescricao {
+
+    font-size: 16px;
+    /* Adjusts the font size of the input text */
+
+    width: 600px;
+    height: 50px;
 
     line-height: 1.2;
     /* Adjusts line height for better alignment */
@@ -297,12 +288,8 @@ main {
 }
 
 .dropdown {
-    width: 50%;
-    /* Full width */
-    padding: 10px;
-    /* Padding for better appearance */
-    border: 1px solid #ccc;
-    /* Border styling */
+
+
     border-radius: 5px;
     /* Rounded corners */
     font-size: 16px;
@@ -320,15 +307,39 @@ main {
     /* Change border color on focus */
 }
 
+
+.dropdown2 {
+    width: 50%;
+    /* Full width */
+    padding: 10px;
+    /* Padding for better appearance */
+
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 16px;
+    /* Font size */
+    background-color: #f9f9f9;
+    /* Background color */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+.dropdown2:focus {
+    outline: none;
+    /* Remove default focus outline */
+    border-color: #007bff;
+    /* Change border color on focus */
+}
+
 .botao {
-    width: 200px;
+    width: 150px;
     height: 65px;
-    margin: 10px;
+    margin: 5px;
     border-radius: 20px;
     border: 1px solid #0077ff;
     background-color: #0077ff;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: bold;
     padding: 12px;
     letter-spacing: 1px;
@@ -352,14 +363,14 @@ main {
 }
 
 .botao2 {
-    width: 200px;
+    width: 150px;
     height: 65px;
-    margin: 10px;
+    margin: 5px;
     border-radius: 20px;
-    border: 1px solid #fd7e14 ;
-    background-color: #fd7e14 ;
+    border: 1px solid #dc3545;
+    background-color: #dc3545;
     color: #FFFFFF;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: bold;
     padding: 12px;
     letter-spacing: 1px;
@@ -369,7 +380,7 @@ main {
 }
 
 .botao2:hover {
-    background-color: #fd7e14 ;
+    background-color: #dc3545;
     /* Darken the background on hover */
 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -401,26 +412,75 @@ a {
 
 .botaospace {
 
+    margin-left: 20px;
+
+
+}
+
+
+
+
+
+input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 50%;
+    border-radius: 30px
+}
+
+
+
+.side-item .dropdown {
+    display: none;
+    list-style-type: none;
+
+    background-color: #0077ff;
+    /* or any other background color */
+    padding: 0;
+    margin: 10px;
+}
+
+
+
+
+
+.side-item .dropdown li {
+    margin: 0;
+    padding: 0;
+}
+
+.side-item .dropdown li a {
+    display: block;
+    font-size: small;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+    /* or any other text color */
+}
+
+.side-item .dropdown li a:hover {
+    color: white;
+    background-color: #0077ff;
+    /* optional for hover effect */
+}
+
+
+.Avatar {
+
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     justify-content: center;
-
-
-
-}
-
-
-#custo {
-    font-size: 16px;
-    /* Adjusts the font size of the input text */
-    line-height: 1.2;
-    /* Adjusts line height for better alignment */
-    width: 20%;
-
-
-
-
+    margin-bottom: 20px;
 
 }
 
+#imagemavatar {
 
+    border: 2px solid black;
+    border-radius: 80%;
 
+}

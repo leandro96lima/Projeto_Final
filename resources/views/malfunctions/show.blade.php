@@ -1,40 +1,86 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Detalhes da Avaria') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pt-pt">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="mb-4">
-                        <p><strong>{{ __('Equipamento') }}</strong> {{ $malfunction->equipment->type ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Técnico') }}</strong> {{ $malfunction->ticket->technician->user->name ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Status:') }}</strong> {{ $malfunction->ticket->status ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Urgente:') }}</strong> {{ $malfunction->ticket->urgent ? 'Sim' : 'Não' }}</p>
-                        <p><strong>{{ __('Diagnóstico:') }}</strong> {{ $malfunction->diagnosis ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Solução:') }}</strong> {{ $malfunction->solution ?? 'N/A' }}</p>
-                        <p><strong>{{ __('Custo:') }}</strong> {{ $malfunction->cost ?? 'N/A' }}</p>
-                        <p><strong>Tempo de Resolução:</strong>
-                            <span class="resolutionTime">
-                                @if($malfunction->ticket)
-                                    {{ $malfunction->ticket->resolution_time !== null ? $malfunction->ticket->resolution_time : 'Em espera para terminar' }} minuto(s)
-                                @else
-                                    Em espera para terminar
-                                @endif
-                            </span>
-                        </p>
-                    </div>
-                    <div class="mt-4">
-                        <a href="{{ route('malfunctions.index') }}" class="btn btn-secondary">{{ __('Voltar à Lista') }}</a>
-                    </div>
-                    <div class="border px-4 py-2 inline-flex items-center">
-                        <button type="button" class="btn btn-warning mx-1" onclick="window.location.href='{{ route('malfunctions.edit', [$malfunction->id]) }}'">Editar Avaria</button>
-                    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/relatóriodeavaria.css">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/png">
+    <title>QuickFix</title>
+</head>
+
+<body>
+@include('layouts.quick-fix-nav')
+
+<header>
+    <main>
+        <h1>{{ __('Detalhes da Avaria') }}</h1>
+    </main>
+</header>
+
+<section class="container">
+    <div class="insidecontainer">
+        <div class="card">
+            <ul><b>ID ticket da Avaria:</b> {{ $malfunction->ticket->id ?? 'N/A' }}</ul>
+        </div>
+        <div class="card">
+            <ul><b>Equipamento Avariado:</b> {{ $malfunction->equipment->type ?? 'N/A' }}</ul>
+        </div>
+        <div class="card">
+            <ul><b>Descrição da Avaria:</b> {{ $malfunction->ticket->description ?? 'N/A' }}</ul>
+        </div>
+        <div class="card">
+            <ul><b>Status Atual:</b> {{ $malfunction->ticket->status ?? 'N/A' }}</ul>
+        </div>
+
+        <div class="card">
+            <ul><b>Urgência:</b> {{ $malfunction->ticket->urgent ? 'Sim' : 'Não' }}</ul>
+        </div>
+
+        <div class="card">
+            <ul><b>Tempo de Resolução:</b>
+                <span class="resolutionTime">
+                    @if($malfunction->ticket->resolution_time)
+                        {{ $malfunction->ticket->resolution_time }} minuto(s)
+                    @else
+                        Em espera para terminar
+                    @endif
+                </span>
+            </ul>
+        </div>
+
+        <div class="card">
+            <ul><b>Custo:</b> {{ $malfunction->cost ?? 'N/A' }}</ul>
+        </div>
+
+        <div class="card">
+            <section class="cardinterior">
+                <div>
+                    <ul><b>Diagnóstico:</b></ul>
+                    <br>
+                    {{ $malfunction->diagnosis ?? 'N/A' }}
                 </div>
-            </div>
+            </section>
+        </div>
+
+        <div class="card">
+            <section class="cardinterior">
+                <div>
+                    <ul><b>Solução da Avaria:</b></ul>
+                    <br>
+                    {{ $malfunction->solution ?? 'N/A' }}
+                </div>
+            </section>
+        </div>
+        <div class="botaospace">
+            <button type="button" class="botao2" onclick="window.location.href='{{ route('malfunctions.edit', [$malfunction->id]) }}'">Editar Avaria</button>
+        </div>
+        <div class="botaospace">
+            <button type="button" class="botao" onclick="window.location.href='{{ route('malfunctions.index', [$malfunction->id]) }}'">Voltar à Lista</button>
         </div>
     </div>
-</x-app-layout>
+</section>
+
+</body>
+</html>
