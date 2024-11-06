@@ -1,18 +1,15 @@
-
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif
-    
+
 }
 
 body {
     display: flex;
     min-height: 100vh;
-    background-color: #99A3B9  ;
-   
+    background-color: #99A3B9;
 }
 
 
@@ -28,7 +25,7 @@ main {
     background-color: #ffffff;
     border-radius: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
- 
+
 }
 
 #sidebar {
@@ -58,7 +55,7 @@ main {
     text-align: center;
     justify-content: center;
     margin-bottom: 20px;
-    
+
 }
 
 #imagemavatar{
@@ -97,15 +94,15 @@ border-radius: 80%;
     flex-direction: column;
     gap: 8px;
     list-style: none;
-    
+
 }
 
 .side-item {
     border-radius: 8px;
     padding: 14px;
     cursor: pointer;
-    
-   
+
+
 }
 
 .side-item.active {
@@ -247,7 +244,7 @@ border-radius: 80%;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
  }
-  
+
 
  .card2{
     margin: 20px;
@@ -291,7 +288,7 @@ border-radius: 80%;
     outline: none; /* Remove default focus outline */
     border-color: #007bff; /* Change border color on focus */
 }
- 
+
 
  .cardtoken{
     display: flex;
@@ -309,7 +306,6 @@ border-radius: 80%;
 
  .botao {
     width: 350px;
-    height: px;
     margin: 10px;
 	border-radius: 20px;
 	border: 1px solid #0077ff;
@@ -326,7 +322,7 @@ border-radius: 80%;
 
 .botao:hover{
     background-color: #0077ff; /* Darken the background on hover */
-   
+
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
 
 
@@ -345,7 +341,7 @@ a {
 a:focus {
     outline: none; /* Remove o contorno quando o link está em foco */
 }
-  
+
 
 input {
 	background-color: #eee;
@@ -365,13 +361,14 @@ input {
     border-radius: 30px;
 }
 
-#tokenrequest{
+#tokenrequest {
     display: flex;
     width: 400px;
     height: 150px;
     padding: 10px;
     border: 2px solid #ccc;
     border-radius: 5px;
+}
 
 #botao2 {
     width: 150px;
@@ -393,7 +390,7 @@ input {
 
 #botao2:hover{
     background-color: #dc3545; /* Darken the background on hover */
-   
+
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
 
 
@@ -410,8 +407,8 @@ input {
     display: flex;
     justify-content: center;
 
-
 }
+
 
 
 

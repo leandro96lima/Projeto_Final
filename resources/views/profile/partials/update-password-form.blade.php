@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             padding: 0;
         }
 
@@ -68,8 +67,8 @@
 <body>
 <section>
     <header>
-        <h2>{{ __('Update Password') }}</h2>
-        <p>{{ __('Ensure your account is using a long, random password to stay secure.') }}</p>
+        <h2>{{ __('Atualizar Senha') }}</h2>
+        <p>{{ __('Certifique-se de que sua conta está usando uma senha longa e aleatória para manter a segurança.') }}</p>
     </header>
 
     <form method="post" action="{{ route('password.update') }}">
@@ -77,28 +76,28 @@
         @method('put')
 
         <div class="form-group">
-            <label for="update_password_current_password">{{ __('Current Password') }}</label>
+            <label for="update_password_current_password">{{ __('Senha Atual') }}</label>
             <input id="update_password_current_password" name="current_password" type="password" autocomplete="current-password" />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="error-message" />
         </div>
 
         <div class="form-group">
-            <label for="update_password_password">{{ __('New Password') }}</label>
+            <label for="update_password_password">{{ __('Nova Senha') }}</label>
             <input id="update_password_password" name="password" type="password" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="error-message" />
         </div>
 
         <div class="form-group">
-            <label for="update_password_password_confirmation">{{ __('Confirm Password') }}</label>
+            <label for="update_password_password_confirmation">{{ __('Confirmar Senha') }}</label>
             <input id="update_password_password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="error-message" />
         </div>
 
         <div class="button-container">
-            <button type="submit" class="primary-button">{{ __('Save') }}</button>
+            <button type="submit" class="primary-button">{{ __('Gravar') }}</button>
 
             @if (session('status') === 'password-updated')
-                <p class="status-message">{{ __('Saved.') }}</p>
+                <p class="status-message">{{ __('Gravado.') }}</p>
             @endif
         </div>
     </form>

@@ -1,12 +1,13 @@
 <section style="margin-bottom: 24px;">
     <header>
         <h2 style="font-size: 1.25rem; font-weight: 500; color: #1f2937;">
-            Delete Account
+            Deletar conta
         </h2>
 
         <p style="margin-top: 4px; font-size: 0.875rem; color: #4b5563;">
-            Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
+            Uma vez que sua conta for deletada, todos os seus recursos e dados serão permanentemente excluídos. Antes de deletar sua conta, por favor, faça o download de quaisquer dados ou informações que você deseja manter.
         </p>
+
     </header>
 <br>
     <button
@@ -25,17 +26,17 @@
 	transition: transform 80ms ease-in;
     text-align: center;"
     >
-        Delete Account
+        Deletar Conta
     </button>
 
     <div id="confirm-user-deletion" style="display: none; background: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; justify-content: center; align-items: center;">
         <div style="background: white; padding: 24px; border-radius: 8px; width: 400px;">
             <h2 style="font-size: 1.25rem; font-weight: 500; color: #1f2937;">
-                Are you sure you want to delete your account?
+                Você tem certeza de que deseja deletar sua conta?
             </h2>
 
             <p style="margin-top: 4px; font-size: 0.875rem; color: #4b5563;">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
+                Uma vez que sua conta for deletada, todos os seus recursos e dados serão permanentemente excluídos. Por favor, insira sua senha para confirmar que você deseja deletar sua conta permanentemente.
             </p>
 
             <div style="margin-top: 24px;">
@@ -45,7 +46,7 @@
                     name="password"
                     type="password"
                     style="margin-top: 4px; width: 75%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px;"
-                    placeholder="Password"
+                    placeholder="Senha"
                 />
                 <div style="color: red; margin-top: 8px;" id="password-error"></div>
             </div>
@@ -55,14 +56,14 @@
                     onclick="closeModal()"
                     style="background-color: #3b82f6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
                 >
-                    Cancel
+                    Cancelar
                 </button>
 
                 <button
                     type="submit"
                     style="background-color: #e3342f; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-left: 12px;"
                 >
-                    Delete Account
+                    Deletar Conta
                 </button>
             </div>
         </div>

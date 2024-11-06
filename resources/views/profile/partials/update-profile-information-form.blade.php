@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             padding: 0;
         }
 
@@ -20,7 +19,9 @@
         }
 
         p {
-            color: gray;
+            margin-top: 0.25rem; /* mt-1 */
+            font-size: 0.875rem; /* text-sm */
+            color: #4b5563; /* text-gray-600 */
         }
 
         .form-group {
@@ -86,10 +87,10 @@
 <div>
     <header>
         <h2>
-            {{ __('Profile Information') }}
+            {{ __('Informações do Perfil') }}
         </h2>
         <p>
-            {{ __("Update your account's profile information, email address, and user type.") }}
+            {{ __("Atualize as informações do perfil da sua conta, endereço de e-mail e tipo de usuário.") }}
         </p>
     </header>
 
@@ -99,7 +100,7 @@
 
         <!-- Nome -->
         <div class="form-group">
-            <label for="name">{{ __('Name') }}</label>
+            <label for="name">{{ __('Nome') }}</label>
             <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" placeholder="Nome" />
             <x-input-error class="error-message" :messages="$errors->get('name')" />
         </div>
@@ -113,31 +114,27 @@
 
         <!-- Inputs para Token e Type em colunas -->
         <div class="form-group">
-            <label for="token">{{ __('Token for Type Change') }}</label>
+            <label for="token">{{ __('Token para Mudança de Tipo') }}</label>
             <input id="token" name="token" type="text" required autocomplete="off" />
             <x-input-error class="error-message" :messages="$errors->get('token')" />
         </div>
 
         <div class="form-group">
-            <label for="type">{{ __('Type') }}</label>
-            <select id="type" name="type" required>
-                <option value="User" {{ old('type', $user->type) === 'User' ? 'selected' : '' }}>User</option>
-                <option value="Technician" {{ old('type', $user->type) === 'Technician' ? 'selected' : '' }}>Technician</option>
-                <!-- Add other types as necessary -->
-            </select>
+            <label for="type">{{ __('Tipo') }}</label>
+                <input id="type" type="text" value="{{ old('type', $user->getType()) }}" required readonly/>
             <x-input-error class="error-message" :messages="$errors->get('type')" />
         </div>
 
-        @if ($user->type === 'Technician')
+        @if ($user->getType() === 'Technician')
             <p>Specialty: {{ $user->specialty }}</p>
         @endif
 
         <!-- Botão de salvar -->
         <div class="button-container">
-            <button type="submit" class="primary-button">{{ __('Save') }}</button>
+            <button type="submit" class="primary-button">{{ __('Salvar') }}</button>
 
             @if (session('status') === 'type-updated')
-                <p class="status-message">{{ __('Type updated.') }}</p>
+                <p class="status-message">{{ __('Tipo atualizado.') }}</p>
             @endif
         </div>
     </form>
