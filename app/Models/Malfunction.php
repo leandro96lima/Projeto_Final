@@ -17,7 +17,7 @@ class Malfunction extends Model
             $q->whereHas('equipment', function ($q) use ($search) {
                 $q->where('type', 'like', '%' . $search . '%');
             })
-                ->orWhereHas('technician.user', function ($q) use ($search) {
+                ->orWhereHas('ticket.technician.user', function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%');
                 })
                 ->orWhere('diagnosis', 'like', '%' . $search . '%')
@@ -29,8 +29,8 @@ class Malfunction extends Model
 
     public function scopeWithStatus($query, $status)
     {
-        return $query->whereHas('ticket', function ($query) use ($status) {
-            $query->where('tickets.status', $status);
+        return $query->whereHas('ticket', function($q) use ($status) {
+            $q->where('tickets.status', $status);
         });
     }
 

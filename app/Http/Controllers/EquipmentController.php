@@ -20,16 +20,7 @@ class EquipmentController extends Controller
     {
         $query = Equipment::query();
 
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            $query->search($search);
-        }
-
-        if ($request->filled('sort')) {
-            $query->sortBy($request->sort, $request->direction);
-        }
-
-        $equipments = $query->paginate(10);
+        $equipments = $this->equipmentService->getEquipments($request,$query);
 
         return view('equipments.index', compact('equipments'));
     }

@@ -17,7 +17,7 @@ class TicketStatusNotPendingApproval implements Rule
     {
         // You can keep this method if you need to perform validation,
         // but for filtering, you may not need this logic here.
-        return true;
+        return $value !== 'pending_approval';
     }
 
     public function message()

@@ -24,16 +24,16 @@ class MalfunctionService
         $this->malfunctionRepository = $malfunctionRepository;
     }
 
-    public function getMalfunctions(array $validatedData)
+    public function getMalfunctions($request)
     {
-        // Extract the search term and status from the validated data
-        $search = $validatedData['search'] ?? null;
-        $status = $validatedData['status'] ?? null ;
-        $sort = $validatedData['sort'] ?? null ;
-        $direction = $validatedData['direction'] ?? null ;
 
         // Build the query for malfunctions, excluding those with tickets in 'pending_approval'
-        $malfunctionsQuery = $this->malfunctionRepository->getMalfunctionsFromDb($search, $sort, $direction, $status);
+        $malfunctionsQuery = $this->malfunctionRepository->getMalfunctionsFromDb(
+            $request->input('status'),
+            $request->input('search'),
+            $request->input('sort'),
+            $request->input('direction')
+        );
 
         // Paginate the results
         $paginatedMalfunctions = $malfunctionsQuery->paginate(20);

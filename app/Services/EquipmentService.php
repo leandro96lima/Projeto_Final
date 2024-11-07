@@ -8,6 +8,24 @@ use App\Models\EquipmentApprovalRequest;
 
 class EquipmentService
 {
+
+    public function getEquipments($request, $query){
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->search($search);
+        }
+
+        if ($request->filled('sort')) {
+            $query->sortBy($request->sort, $request->direction);
+        }
+
+         $equipments = $query->paginate(20);
+
+        return $equipments;
+    }
+
+
     public function createEquipment($data)
     {
         // Verificação manual de duplicidade

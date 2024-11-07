@@ -19,12 +19,10 @@ class MalfunctionController extends Controller
         $this->malfunctionService = $malfunctionService;
     }
 
-    public function index(GetMalfunctionsRequest $request)
+    public function index(Request $request)
     {
-        $validatedData = $request->validated(); // Validates the request
-
         // Pass validated data to the service
-        $malfunctions = $this->malfunctionService->getMalfunctions($validatedData);
+        $malfunctions = $this->malfunctionService->getMalfunctions($request);
 
         return view('malfunctions.index', compact('malfunctions'));
     }

@@ -42,7 +42,7 @@
             <ul><b>Tempo de Resolução:</b>
                 <span class="resolutionTime">
                     @if($malfunction->ticket->resolution_time)
-                        {{ $malfunction->ticket->resolution_time }} minuto(s)
+                        {{ (int) optional($malfunction->ticket)->resolution_time }} minuto(s)
                     @else
                         Em espera para terminar
                     @endif

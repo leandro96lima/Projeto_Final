@@ -30,9 +30,9 @@
 
             <div>
                 <form method="GET" action="{{ route('malfunctions.index') }}">
+                    <label for="status">{{ __('Filtrar por Status:') }}</label>
                     <select name="status" onchange="this.form.submit()" class="form-select">
-                        <option value="" disabled selected hidden>Filtrar por Status:</option>
-                        @foreach(['' => 'Todas as Avarias', 'open' => 'Abertas', 'in_progress' => 'Em Curso', 'closed' => 'Fechadas'] as $value => $label)
+                        @foreach(['' => 'Todos as Avarias', 'open' => 'Abertas', 'in_progress' => 'Em Curso', 'closed' => 'Fechadas'] as $value => $label)
                             <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
                         @endforeach
                     </select>
@@ -125,7 +125,7 @@
                         <td>{{ $malfunction->ticket->status ?? 'N/A' }}</td>
                         <td>{{ $malfunction->ticket->technician->user->name ?? 'Sem técnico' }}</td>
                         <td>{{ $malfunction->diagnosis ?? 'N/A' }}</td>
-                        <td>{{ $malfunction->ticket->resolution_time ?? 0 }} minuto(s)</td>
+                        <td>{{ (int) optional($malfunction->ticket)->resolution_time ?? 0 }} minuto(s)</td>
                         <td>
                             <a href="{{ route('malfunctions.show', $malfunction->id) }}">
                                 <button class="botao4">Mostrar Relatório</button>

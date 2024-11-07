@@ -35,7 +35,7 @@ class TicketService
         );
 
         // Aplica a paginação
-        $paginatedTickets = $tickets->simplePaginate(10);
+        $paginatedTickets = $tickets->simplePaginate(20);
 
         // Lógica de negócios para calcular o tempo de espera
         foreach ($paginatedTickets as $ticket) {

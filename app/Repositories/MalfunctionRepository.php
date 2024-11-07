@@ -14,7 +14,10 @@ class MalfunctionRepository
 
     public function getMalfunctionsFromDb($search = null, $status = null, $sort = null, $direction = 'asc')
     {
-        $query = $this->malfunction::with('equipment', 'technician', 'ticket');
+        $query = $this->malfunction::with('equipment', 'technician', 'ticket')
+            ->whereHas('ticket', function($query) {
+                $query->where('status', '!=', 'pending_approval');
+            });
 
         // Aplicar busca se fornecida
         if ($search) $query->withSearch($search);
