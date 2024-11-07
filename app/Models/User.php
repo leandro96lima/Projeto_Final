@@ -45,22 +45,6 @@ class User extends Authenticatable
         return $this->type ?? null; // Retorna null se não estiver inicializado
     }
 
-
-//    public function newFromBuilder($attributes = [], $connection = null)
-//    {
-//        $instance = parent::newFromBuilder($attributes, $connection);
-//
-//        if (!empty($instance->type)) {
-//            $class = '\\App\\Models\\' . ucfirst($instance->type);
-//
-//            if (class_exists($class)) {
-//                return (new $class)->newFromBuilder($attributes, $connection);
-//            }
-//        }
-//
-//        return $instance;
-//    }
-
     public function technician()
     {
         return $this->hasOne(Technician::class);

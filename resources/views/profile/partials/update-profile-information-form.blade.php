@@ -121,12 +121,16 @@
 
         <div class="form-group">
             <label for="type">{{ __('Tipo') }}</label>
-                <input id="type" type="text" value="{{ old('type', $user->getType()) }}" required readonly/>
+                <input id="type" type="text" value="{{ old('type', $user->type) }}" required readonly/>
             <x-input-error class="error-message" :messages="$errors->get('type')" />
         </div>
 
-        @if ($user->getType() === 'Technician')
-            <p>Specialty: {{ $user->specialty }}</p>
+        @if (auth()->user()->type === 'Technician')
+            <div class="form-group">
+                <label for="type">{{ __('Especialidade') }}</label>
+            <input id="specialty" type="text" value="{{ old('specialty', auth()->user()->technician->specialty) }}" readonly/>
+            <x-input-error class="error-message" :messages="$errors->get('type')" />
+        </div>
         @endif
 
         <!-- Botão de salvar -->
