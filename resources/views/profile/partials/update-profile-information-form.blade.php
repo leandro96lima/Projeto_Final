@@ -101,14 +101,14 @@
         <!-- Nome -->
         <div class="form-group">
             <label for="name">{{ __('Nome') }}</label>
-            <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" placeholder="Nome" />
+            <input id="name" name="name" type="text" value="{{ old('name', auth()->user()->name) }}" required autofocus autocomplete="name" placeholder="Nome" />
             <x-input-error class="error-message" :messages="$errors->get('name')" />
         </div>
 
         <!-- Email -->
         <div class="form-group">
             <label for="email">{{ __('Email') }}</label>
-            <input id="email" name="email" type="email" value="{{ old('email', $user->email) }}" required autocomplete="username" />
+            <input id="email" name="email" type="email" value="{{ old('email', auth()->user()->email) }}" required autocomplete="username" />
             <x-input-error class="error-message" :messages="$errors->get('email')" />
         </div>
 
@@ -121,7 +121,7 @@
 
         <div class="form-group">
             <label for="type">{{ __('Tipo') }}</label>
-                <input id="type" type="text" value="{{ old('type', $user->type) }}" required readonly/>
+                <input id="type" type="text" value="{{ old('type', auth()->user()->type) }}" required readonly/>
             <x-input-error class="error-message" :messages="$errors->get('type')" />
         </div>
 
