@@ -42,6 +42,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy'); // Delete ticket
     });
 
+    Route::resources([
+        'equipments' => EquipmentController::class,
+    ]);
+
     Route::get('/tickets/partials/user-create-equipment', function () {
         return view('tickets.create'); // Retorna a view do partial
     })->name('user.create.equipment');
@@ -56,9 +60,7 @@ Route::middleware(['auth', CheckUserType::class . ':AdminTechnician'])->group(fu
 });
 Route::middleware(['auth', CheckUserType::class . ':Admin'])->group(function () {
 
-    Route::resources([
-        'equipments' => EquipmentController::class,
-    ]);
+
 
         Route::get('/admin/requests', [AdminController::class, 'requests'])->name('admin.requests');
         // Routes for TypeChangeRequest
