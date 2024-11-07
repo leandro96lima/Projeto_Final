@@ -20,7 +20,7 @@ class EquipmentService
             $query->sortBy($request->sort, $request->direction);
         }
 
-         $equipments = $query->paginate(20);
+         $equipments = $query->simplePaginate(20);
 
         return $equipments;
     }

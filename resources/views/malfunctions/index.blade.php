@@ -32,7 +32,7 @@
                 <form method="GET" action="{{ route('malfunctions.index') }}">
                     <label for="status">{{ __('Filtrar por Status:') }}</label>
                     <select name="status" onchange="this.form.submit()" class="form-select">
-                        @foreach(['' => 'Todos as Avarias', 'open' => 'Abertas', 'in_progress' => 'Em Curso', 'closed' => 'Fechadas'] as $value => $label)
+                        @foreach(['' => 'Todas as Avarias', 'open' => 'Abertas', 'in_progress' => 'Em Curso', 'closed' => 'Fechadas'] as $value => $label)
                             <option value="{{ $value }}" {{ request('status') === $value ? 'selected' : '' }}>{{ __($label) }}</option>
                         @endforeach
                     </select>

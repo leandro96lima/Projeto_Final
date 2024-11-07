@@ -16,10 +16,9 @@
 <body>
 
 @include('layouts.quick-fix-nav')
-
 <header>
     <main>
-        <h1>Perfil do Utilizador</h1>
+        <h1>{{ __('Perfil do ' . Auth::user()->name) }}</h1>
     </main>
 </header>
 

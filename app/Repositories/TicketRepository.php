@@ -7,6 +7,7 @@ use App\Models\Malfunction;
 use App\Models\Ticket;
 use App\Models\EquipmentApprovalRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TicketRepository extends BaseRepository
 {
@@ -18,6 +19,12 @@ class TicketRepository extends BaseRepository
     public function getTicketsFromDb($status = null, $search = null, $sort = null, $direction = "asc")
     {
         $query = Ticket::with(['technician.user', 'malfunction']);
+
+        // Verifique se o usuário não é Admin ou Technician
+        if (!in_array(Auth::user()->getType(), ['Admin', 'Technician'])) {
+            // Filtra os tickets para mostrar apenas os pertencentes ao usuário autenticado
+            $query->where('user_id', Auth::id());
+        }
 
         if ($status) $query->withStatus($status);
         if ($search) $query->search($search);
