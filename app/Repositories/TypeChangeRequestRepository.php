@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Http\Controllers\AdminController;
+use App\Mail\TokenMail;
 use App\Models\TypeChangeRequest;
 use App\Models\User;
 use App\Notifications\TypeChangeRequestNotification;
@@ -32,7 +33,7 @@ class TypeChangeRequestRepository
         // Se não houver administradores e o usuário deseja se tornar Admin
         if ($adminCount === 0 && $requestedType === 'Admin') {
             Log::warning('Sem administradores. Enviando notificação para o helpdesk.', ['user_id' => $user->id]);
-            $this->sendTypeChangeToken($user->id, 'Admin'); // Chama o método no repositório
+            $this->sendTypeChangeToken($user->id, 'Admin');
             return true; // Permite que o usuário solicite mudança para Admin
         }
 

@@ -77,11 +77,11 @@
                         <td>{{ $request->reason }}</td>
                         <td>{{ $request->status }}</td>
                         <td>
-                            <form class="action-form" method="POST" action="{{ route('admin.approve-type-change-request', $request) }}">
+                            <form class="action-form" method="POST" action="{{ route('admin.type-change-requests.approve', $request) }}">
                                 @csrf
                                 <button type="submit" class="botao3">Approve</button>
                             </form>
-                            <form class="action-form" method="POST" action="{{ route('admin.reject-type-change-request', $request) }}">
+                            <form class="action-form" method="POST" action="{{ route('admin.type-change-requests.reject', $request) }}">
                                 @csrf
                                 <button type="submit" class="botao2">Reject</button>
                             </form>
